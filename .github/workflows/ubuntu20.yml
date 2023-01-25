@@ -1,0 +1,20 @@
+name: Ubuntu 20.04 CI (GCC 9)
+
+on: [push, pull_request]
+
+jobs:
+  ubuntu-build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup cmake
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: "~3.20.0"  # use most recent 3.20.x version
+      - name: Use cmake
+        run: |
+          mkdir build &&
+          cd build &&
+          cmake .. &&
+          cmake --build . &&
+          ctest -VV

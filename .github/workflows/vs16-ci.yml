@@ -1,0 +1,37 @@
+name: VS16-CI
+
+on: [push, pull_request]
+
+jobs:
+  ci:
+    if: >-
+      ! contains(toJSON(github.event.commits.*.message), '[skip ci]') &&
+      ! contains(toJSON(github.event.commits.*.message), '[skip github]')
+    name: windows-vs16
+    runs-on: windows-2019
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {gen: Visual Studio 16 2019, arch: Win32}
+          - {gen: Visual Studio 16 2019, arch: Win32}
+          - {gen: Visual Studio 16 2019, arch: x64}
+          - {gen: Visual Studio 16 2019, arch: x64}
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+    - name: Configure
+      run: |
+        cmake -G "${{matrix.gen}}" -A ${{matrix.arch}} -B build
+    - name: Build Debug
+      run: cmake --build build --config Debug --verbose
+    - name: Build Release
+      run: cmake --build build --config Release --verbose
+    - name: Run Release tests
+      run: |
+        cd build
+        ctest -C Release -VV
+    - name: Run Debug tests
+      run: |
+        cd build
+        ctest -C Debug -VV
