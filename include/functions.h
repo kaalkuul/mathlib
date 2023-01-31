@@ -209,7 +209,9 @@ Real evaluate(Real value, Real threshold, ResponseCurveType curveType)
 		result = value;
 		break;
 	case ResponseCurveType::Parabolic:
-		result = value * ::abs(value);
+		result = (value >= Real(0))
+			? value * value
+			: -value * value;
 		break;
 	case ResponseCurveType::Cubic:
 		result = value * value * value;
@@ -217,7 +219,7 @@ Real evaluate(Real value, Real threshold, ResponseCurveType curveType)
 	case ResponseCurveType::Exponential:
 		result = (value >= Real(0))
 			? pow(2.0f, value) - Real(1)
-			: -(pow(2.0f, ::abs(value)) - Real(1));
+			: -(pow(2.0f, -value) - Real(1));
 		break;
 	case ResponseCurveType::Cosine:
 		result = (value >= Real(0))
