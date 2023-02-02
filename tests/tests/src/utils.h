@@ -13,13 +13,7 @@
 
 #include "mathlib.h"
 
-#include "matchers/catch_matchers.h"
-#include "matchers/catch_matchers_vec2.h"
-#include "matchers/catch_matchers_vec3.h"
-#include "matchers/catch_matchers_mat2.h"
-#include "matchers/catch_matchers_mat3.h"
-#include "matchers/catch_matchers_mat34.h"
-#include "matchers/catch_matchers_quat.h"
+#include "mathlib_testlib.h"
 
 const float CPI6 = 0.86602f;
 const float SPI6 = 0.50000f;

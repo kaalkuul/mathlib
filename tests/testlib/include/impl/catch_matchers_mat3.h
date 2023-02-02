@@ -1,20 +1,22 @@
 #pragma once
 
-#include "../utils.h"
-
 namespace Catch
 {
     using namespace mathlib;
 
     template <class Real>
-    struct StringMaker<Vec2<Real>>
+    struct StringMaker<Mat3<Real>>
     {
-        static std::string convert(Vec2<Real> const& v)
+        static std::string convert(Mat3<Real> const& m)
         {
             std::ostringstream rss;
             rss << std::scientific
-                << std::setprecision(std::numeric_limits<double>::max_digits10 - 1)
-                << "[" << v.x << "," << v.y << "]";
+                << std::setprecision(4)
+                << "["
+                << "[" << m.x.x << "," << m.x.y << "," << m.x.z << "],"
+                << "[" << m.y.x << "," << m.y.y << "," << m.y.z << "],"
+                << "[" << m.z.x << "," << m.z.y << "," << m.z.z << "]"
+                << "]";
             return rss.str();
         }
     };
@@ -25,17 +27,17 @@ namespace Matches
     using namespace mathlib;
 
     template <class Real>
-    class Vec2Matcher final : public Catch::Matchers::MatcherBase<Vec2<Real>>
+    class Mat3Matcher final : public Catch::Matchers::MatcherBase<Mat3<Real>>
     {
     public:
-        Vec2Matcher(const Vec2<Real>& target, double margin)
+        Mat3Matcher(const Mat3<Real>& target, double margin)
             : m_target(target), m_margin(margin)
         {
             CATCH_ENFORCE(margin >= 0, "Invalid margin: " << margin << '.'
                 << " Margin has to be non-negative.");
         }
 
-        bool match(Vec2<Real> const& matchee) const override
+        bool match(Mat3<Real> const& matchee) const override
         {
             return marginCheck(matchee, m_target, m_margin);
         }
@@ -46,13 +48,13 @@ namespace Matches
         }
 
     private:
-        Vec2<Real> m_target;
+        Mat3<Real> m_target;
         double m_margin;
     };
 
     template <class Real>
-    Vec2Matcher<Real> WithinAbs(const Vec2<Real>& target, double margin = 1e-3)
+    Mat3Matcher<Real> WithinAbs(const Mat3<Real>& target, double margin = 1e-3)
     {
-        return Vec2Matcher<Real>(target, margin);
+        return Mat3Matcher<Real>(target, margin);
     }
 }

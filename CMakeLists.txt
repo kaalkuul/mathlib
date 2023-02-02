@@ -10,11 +10,12 @@ if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
 endif()
 
+option(MATHLIB_BUILD_TEST_LIB "Enable test library for mathlib" ON)
 option(MATHLIB_BUILD_TESTING "Enable testing for mathlib" ON)
 
 add_subdirectory(src)
 
-if (MATHLIB_BUILD_TESTING)
+if (MATHLIB_BUILD_TEST_LIB OR MATHLIB_BUILD_TESTING)
   enable_testing()
   add_subdirectory(tests)
 endif()
