@@ -1,0 +1,9 @@
+if(NOT TARGET mathlib::mathlib)
+    include("${CMAKE_CURRENT_LIST_DIR}/mathlib-targets.cmake")
+endif()
+
+set(MATHLIB_lIBRARIES mathlib::mathlib)
+
+if(MATHLIB_BUILD_TEST_LIB)
+    list(APPEND MATHLIB_lIBRARIES mathlib::testlib)
+endif()

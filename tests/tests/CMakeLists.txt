@@ -16,10 +16,14 @@ target_compile_definitions(mathlib_tests
 	TEST_DATA_DIR=R"\(${TEST_DATA_DIR}\)"
 	CATCH_CONFIG_FAST_COMPILE DO_NOT_USE_WMAIN)
 
-target_link_libraries(mathlib_tests Catch2::Catch2 mathlib mathlib_testlib)
+target_link_libraries(mathlib_tests
+	PUBLIC
+		mathlib::mathlib
+		mathlib::testlib
+	PRIVATE
+		Catch2::Catch2
+)
 
 set_property(TARGET mathlib_tests PROPERTY FOLDER "Tests")
-
-enable_testing()
 
 add_test(mathlib_tests mathlib_tests ${CATCH_EXTRA_ARGS})

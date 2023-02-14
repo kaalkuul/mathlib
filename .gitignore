@@ -1,2 +1,8 @@
 /build/
 /Testing/
+/examples/integration/build_install/
+/examples/integration/build/
+/examples/integration/usr/
+/examples/testing/build_install/
+/examples/testing/build/
+/examples/testing/usr/
