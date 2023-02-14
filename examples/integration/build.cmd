@@ -1,5 +1,13 @@
 @echo off
 
+if "%1"=="clean" (
+    echo Cleaning...
+    rd /s /q build_install
+    rd /s /q build
+    echo done.
+    exit /B 0
+)
+
 cmake -S ..\.. -B build_install ^
     -DCMAKE_INSTALL_PREFIX="%CD%\usr" ^
     -DMATHLIB_BUILD_TEST_LIB=OFF ^
