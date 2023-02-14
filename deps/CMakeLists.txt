@@ -1,8 +1,8 @@
 if (MATHLIB_BUILD_TEST_LIB OR MATHLIB_BUILD_TESTS)
   find_package(Catch2 3 QUIET)
 
-  if (NOT Catch2_FOUND)
-    message("Catch2 not found. Using FetchContent to make Catch2 available locally.")
+  if (NOT TARGET Catch2::Catch2)
+    message("Catch2 not found. Using FetchContent to make it available locally.")
     
     Include(FetchContent)
 

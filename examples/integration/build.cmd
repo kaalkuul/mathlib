@@ -28,6 +28,20 @@ if errorlevel 1 goto failed
 cmake --build build --config Debug
 if errorlevel 1 goto failed
 
+
+echo.
+echo Running program (Release)
+build\Release\integration.exe
+if errorlevel 1 goto failed
+echo OK
+
+echo.
+echo Running program (Release)
+build\Debug\integration.exe
+if errorlevel 1 goto failed
+echo OK
+
+
 exit /B 0
 
 :failed
