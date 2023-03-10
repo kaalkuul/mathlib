@@ -71,6 +71,9 @@ public:
 	Coord minorCoord() const;
 	bool isNull() const;
 
+	const Real* data() const;
+	Real* data();
+
 	template <class CastReturnType>
 	Vec2<CastReturnType> cast() const;
 

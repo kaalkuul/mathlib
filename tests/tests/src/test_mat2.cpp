@@ -515,6 +515,19 @@ namespace
                 Catch::Matchers::WithinAbs(0.02f, 0.001f));
         }
 
+        SECTION("data()")
+        {
+            Mat2f m = Mat2f::One;
+            const float* cdata = m.data();
+            float* data = m.data();
+            
+            REQUIRE(cdata == data);
+            REQUIRE(cdata[0] == 1.0f);
+            REQUIRE(cdata[1] == 0.0f);
+            REQUIRE(cdata[2] == 0.0f);
+            REQUIRE(cdata[3] == 1.0f);
+        }
+
         SECTION("cast()")
         {
             REQUIRE(Mat2f::Zero.cast<double>() == Mat2d::Zero);

@@ -842,6 +842,27 @@ namespace {
             REQUIRE(!Mat34f(1.1).isOrthonormal());
         }
 
+        SECTION("data()")
+        {
+            Mat34f m = Mat34f(Mat3f::One, Vec3f(1, 2, 3));
+            const float* cdata = m.data();
+            float* data = m.data();
+
+            REQUIRE(cdata == data);
+            REQUIRE(cdata[0] == 1.0f);
+            REQUIRE(cdata[1] == 0.0f);
+            REQUIRE(cdata[2] == 0.0f);
+            REQUIRE(cdata[3] == 0.0f);
+            REQUIRE(cdata[4] == 1.0f);
+            REQUIRE(cdata[5] == 0.0f);
+            REQUIRE(cdata[6] == 0.0f);
+            REQUIRE(cdata[7] == 0.0f);
+            REQUIRE(cdata[8] == 1.0f);
+            REQUIRE(cdata[9] == 1.0f);
+            REQUIRE(cdata[10] == 2.0f);
+            REQUIRE(cdata[11] == 3.0f);
+        }
+
         SECTION("cast()")
         {
             REQUIRE(Mat34f::Zero.cast<double>() == Mat34d::Zero);

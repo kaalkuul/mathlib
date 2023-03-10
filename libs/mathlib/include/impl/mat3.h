@@ -822,6 +822,18 @@ bool Mat3<Real>::isInitialized() const
 }
 
 template <class Real>
+const Real* Mat3<Real>::data() const
+{
+	return x.data();
+}
+
+template <class Real>
+Real* Mat3<Real>::data()
+{
+	return x.data();
+}
+
+template <class Real>
 template <class CastReturnType>
 Mat3<CastReturnType> Mat3<Real>::cast() const
 {

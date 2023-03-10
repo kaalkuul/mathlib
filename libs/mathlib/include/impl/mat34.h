@@ -447,6 +447,18 @@ bool Mat34<Real>::isInitialized() const
 }
 
 template <class Real>
+const Real* Mat34<Real>::data() const
+{
+	return rs.data();
+}
+
+template <class Real>
+Real* Mat34<Real>::data()
+{
+	return rs.data();
+}
+
+template <class Real>
 template <class CastReturnType>
 Mat34<CastReturnType> Mat34<Real>::cast() const
 {

@@ -77,6 +77,9 @@ public:
 	bool isIdentity() const;
 	bool isInitialized() const;
 
+	const Real* data() const;
+	Real* data();
+
 	template <class CastReturnType>
 	Mat34<CastReturnType> cast() const;
 

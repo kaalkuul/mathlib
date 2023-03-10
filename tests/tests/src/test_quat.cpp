@@ -115,6 +115,19 @@ namespace {
             REQUIRE_THAT(q1, Matches::WithinAbs(b));
         }
 
+        SECTION("data()")
+        {
+            Quatf q = Quatf::One;
+            const float* cdata = q.data();
+            float* data = q.data();
+
+            REQUIRE(cdata == data);
+            REQUIRE(cdata[0] == 0.0f);
+            REQUIRE(cdata[1] == 0.0f);
+            REQUIRE(cdata[2] == 0.0f);
+            REQUIRE(cdata[3] == 1.0f);
+        }
+
         SECTION("cast()")
         {
             REQUIRE(Quatf::One.cast<double>() == Quatd::One);

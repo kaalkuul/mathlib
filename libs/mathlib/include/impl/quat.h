@@ -548,6 +548,18 @@ void Quat<Real>::toAxisAngle(Vec3<Real> &axis, Real &angle) const
 }
 
 template <class Real>
+const Real* Quat<Real>::data() const
+{
+	return &x;
+}
+
+template <class Real>
+Real* Quat<Real>::data()
+{
+	return &x;
+}
+
+template <class Real>
 template <class CastReturnType>
 Quat<CastReturnType> Quat<Real>::cast() const
 {

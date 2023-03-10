@@ -85,6 +85,9 @@ public:
 	bool isIdentity() const;
 	bool isInitialized() const;
 
+	const Real* data() const;
+	Real* data();
+
 	template <class CastReturnType>
 	Mat3<CastReturnType> cast() const;
 
@@ -95,6 +98,19 @@ public:
 
 	static void multiply(Mat3& dest, const Mat3& a, const Mat3& b);
 
+private:
+	enum Flags : unsigned int
+	{
+		Normal = 0x1,
+		Orthogonal = 0x2,
+		Orthonormal = 0x3,
+		Mask = 0x3,
+		Identity = 0x4,
+		Uninitialized = 0x8
+	};
+
+	unsigned int flags;
+
 public:
     Vec3<Real> x;
     Vec3<Real> y;
@@ -104,19 +120,6 @@ public:
 	static const Mat3 One;
 
 	static const Tolerance DefaultTolerance;
-
-private:
-	enum Flags : unsigned int
-	{
-		Normal			= 0x1,
-		Orthogonal		= 0x2,
-		Orthonormal		= 0x3,
-		Mask			= 0x3,
-		Identity		= 0x4,
-		Uninitialized	= 0x8
-	};
-
-	unsigned int flags;
 };
 
 MATHLIB_NS_END

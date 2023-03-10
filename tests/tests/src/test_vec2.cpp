@@ -538,6 +538,17 @@ namespace {
             REQUIRE(!Vec2f(2, 1).isNull());
         }
 
+        SECTION("data()")
+        {
+            Vec2f v = Vec2f::OneX;
+            const float* cdata = v.data();
+            float* data = v.data();
+
+            REQUIRE(cdata == data);
+            REQUIRE(cdata[0] == 1.0f);
+            REQUIRE(cdata[1] == 0.0f);
+        }
+
         SECTION("cast()")
         {
             REQUIRE(Vec2f::Zero.cast<double>() == Vec2d::Zero);

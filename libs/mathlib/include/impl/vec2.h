@@ -446,6 +446,18 @@ bool Vec2<Real>::isNull() const
 }
 
 template <class Real>
+const Real* Vec2<Real>::data() const
+{
+	return &x;
+}
+
+template <class Real>
+Real* Vec2<Real>::data()
+{
+	return &x;
+}
+
+template <class Real>
 template <class CastReturnType>
 Vec2<CastReturnType> Vec2<Real>::cast() const
 {

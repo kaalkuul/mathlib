@@ -562,6 +562,18 @@ namespace {
             REQUIRE(!Vec3f(3, 2, 1).isNull());
         }
 
+        SECTION("data()")
+        {
+            Vec3f v = Vec3f::OneX;
+            const float* cdata = v.data();
+            float* data = v.data();
+
+            REQUIRE(cdata == data);
+            REQUIRE(cdata[0] == 1.0f);
+            REQUIRE(cdata[1] == 0.0f);
+            REQUIRE(cdata[2] == 0.0f);
+        }
+
         SECTION("cast()")
         {
             REQUIRE(Vec3f::Zero.cast<double>() == Vec3d::Zero);

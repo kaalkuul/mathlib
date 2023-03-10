@@ -919,6 +919,24 @@ namespace
                 Catch::Matchers::WithinAbs(0.03f, 0.001f));
         }
 
+        SECTION("data()")
+        {
+            Mat3f m = Mat3f::One;
+            const float* cdata = m.data();
+            float* data = m.data();
+
+            REQUIRE(cdata == data);
+            REQUIRE(cdata[0] == 1.0f);
+            REQUIRE(cdata[1] == 0.0f);
+            REQUIRE(cdata[2] == 0.0f);
+            REQUIRE(cdata[3] == 0.0f);
+            REQUIRE(cdata[4] == 1.0f);
+            REQUIRE(cdata[5] == 0.0f);
+            REQUIRE(cdata[6] == 0.0f);
+            REQUIRE(cdata[7] == 0.0f);
+            REQUIRE(cdata[8] == 1.0f);
+        }
+
         SECTION("cast()")
         {
             REQUIRE(Mat3f::Zero.cast<double>() == Mat3d::Zero);

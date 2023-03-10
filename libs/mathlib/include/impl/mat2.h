@@ -451,6 +451,18 @@ bool Mat2<Real>::isInitialized() const
 }
 
 template <class Real>
+const Real* Mat2<Real>::data() const
+{
+	return x.data();
+}
+
+template <class Real>
+Real* Mat2<Real>::data()
+{
+	return x.data();
+}
+
+template <class Real>
 template <class CastReturnType>
 Mat2<CastReturnType> Mat2<Real>::cast() const
 {

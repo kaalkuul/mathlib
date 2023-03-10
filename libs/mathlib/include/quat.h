@@ -57,6 +57,9 @@ public:
 	Quat inverse() const;
 	void toAxisAngle(Vec3<Real> &v, Real &a) const;
 
+	const Real* data() const;
+	Real* data();
+
 	template <class CastReturnType>
 	Quat<CastReturnType> cast() const;
 
