@@ -609,6 +609,14 @@ bool Vec3<Real>::isNull() const
 }
 
 template <class Real>
+template <class CastReturnType>
+Vec3<CastReturnType> Vec3<Real>::cast() const
+{
+	return Vec3<CastReturnType>(static_cast<CastReturnType>(x),
+		static_cast<CastReturnType>(y), static_cast<CastReturnType>(z));
+}
+
+template <class Real>
 Vec3<Real> Vec3<Real>::randomUnitVector()
 {
 	Vec3<Real> n;

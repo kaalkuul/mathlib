@@ -538,6 +538,17 @@ namespace {
             REQUIRE(!Vec2f(2, 1).isNull());
         }
 
+        SECTION("cast()")
+        {
+            REQUIRE(Vec2f::Zero.cast<double>() == Vec2d::Zero);
+            REQUIRE(Vec2f::OneX.cast<double>() == Vec2d::OneX);
+            REQUIRE(Vec2f::OneY.cast<double>() == Vec2d::OneY);
+
+            REQUIRE(Vec2d::Zero.cast<float>() == Vec2f::Zero);
+            REQUIRE(Vec2d::OneX.cast<float>() == Vec2f::OneX);
+            REQUIRE(Vec2d::OneY.cast<float>() == Vec2f::OneY);
+        }
+
         SECTION("randomUnitVector()")
         {
             for (int i = 0; i < N_TEST_RUNS; i++)

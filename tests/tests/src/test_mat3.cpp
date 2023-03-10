@@ -919,6 +919,15 @@ namespace
                 Catch::Matchers::WithinAbs(0.03f, 0.001f));
         }
 
+        SECTION("cast()")
+        {
+            REQUIRE(Mat3f::Zero.cast<double>() == Mat3d::Zero);
+            REQUIRE(Mat3f::One.cast<double>() == Mat3d::One);
+
+            REQUIRE(Mat3d::Zero.cast<float>() == Mat3f::Zero);
+            REQUIRE(Mat3d::One.cast<float>() == Mat3f::One);
+        }
+
         SECTION("transform(Vec3<Real>& dest, const Vec3<Real>& src)")
         {
             Mat3f m(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9));

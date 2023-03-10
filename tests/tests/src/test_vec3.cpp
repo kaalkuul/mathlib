@@ -562,6 +562,19 @@ namespace {
             REQUIRE(!Vec3f(3, 2, 1).isNull());
         }
 
+        SECTION("cast()")
+        {
+            REQUIRE(Vec3f::Zero.cast<double>() == Vec3d::Zero);
+            REQUIRE(Vec3f::OneX.cast<double>() == Vec3d::OneX);
+            REQUIRE(Vec3f::OneY.cast<double>() == Vec3d::OneY);
+            REQUIRE(Vec3f::OneZ.cast<double>() == Vec3d::OneZ);
+
+            REQUIRE(Vec3d::Zero.cast<float>() == Vec3f::Zero);
+            REQUIRE(Vec3d::OneX.cast<float>() == Vec3f::OneX);
+            REQUIRE(Vec3d::OneY.cast<float>() == Vec3f::OneY);
+            REQUIRE(Vec3d::OneZ.cast<float>() == Vec3f::OneZ);
+        }
+
         SECTION("randomUnitVector()")
         {
             for (int i = 0; i < N_TEST_RUNS; i++)

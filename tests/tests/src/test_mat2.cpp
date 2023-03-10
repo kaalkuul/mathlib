@@ -515,6 +515,15 @@ namespace
                 Catch::Matchers::WithinAbs(0.02f, 0.001f));
         }
 
+        SECTION("cast()")
+        {
+            REQUIRE(Mat2f::Zero.cast<double>() == Mat2d::Zero);
+            REQUIRE(Mat2f::One.cast<double>() == Mat2d::One);
+
+            REQUIRE(Mat2d::Zero.cast<float>() == Mat2f::Zero);
+            REQUIRE(Mat2d::One.cast<float>() == Mat2f::One);
+        }
+
         SECTION("transform(Vec2<Real>& dest, const Vec2<Real>& src)")
         {
             Mat2f m(Vec2f(1, 2), Vec2f(4, 5));

@@ -842,6 +842,15 @@ namespace {
             REQUIRE(!Mat34f(1.1).isOrthonormal());
         }
 
+        SECTION("cast()")
+        {
+            REQUIRE(Mat34f::Zero.cast<double>() == Mat34d::Zero);
+            REQUIRE(Mat34f::One.cast<double>() == Mat34d::One);
+
+            REQUIRE(Mat34d::Zero.cast<float>() == Mat34f::Zero);
+            REQUIRE(Mat34d::One.cast<float>() == Mat34f::One);
+        }
+
         SECTION("transform(Vec3<Real>& dest, const Vec3<Real>& src)")
         {
             Mat34f m(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9), Vec3f(10, 11, 12));

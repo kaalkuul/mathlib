@@ -114,5 +114,12 @@ namespace {
             REQUIRE_THAT(qdot75, Matches::WithinAbs(Quatf::from(Vec3f::OneZ, Constantsf::PI_OVER_2 * 3 * 0.75f)));
             REQUIRE_THAT(q1, Matches::WithinAbs(b));
         }
+
+        SECTION("cast()")
+        {
+            REQUIRE(Quatf::One.cast<double>() == Quatd::One);
+
+            REQUIRE(Quatd::One.cast<float>() == Quatf::One);
+        }
     }
 }

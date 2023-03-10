@@ -822,6 +822,14 @@ bool Mat3<Real>::isInitialized() const
 }
 
 template <class Real>
+template <class CastReturnType>
+Mat3<CastReturnType> Mat3<Real>::cast() const
+{
+	return Mat3<CastReturnType>::from(x.cast<CastReturnType>(),
+		y.cast<CastReturnType>(), z.cast<CastReturnType>());
+}
+
+template <class Real>
 void Mat3<Real>::transform(Vec3<Real>& dest, const Vec3<Real>& src) const
 {
 	dest.x = src.x * x.x + src.y * y.x + src.z * z.x;

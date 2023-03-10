@@ -447,6 +447,14 @@ bool Mat34<Real>::isInitialized() const
 }
 
 template <class Real>
+template <class CastReturnType>
+Mat34<CastReturnType> Mat34<Real>::cast() const
+{
+	return Mat34<CastReturnType>(rs.cast<CastReturnType>(),
+		t.cast<CastReturnType>());
+}
+
+template <class Real>
 void Mat34<Real>::transform(Vec3<Real>& dest, const Vec3<Real>& src) const
 {
 	dest.x = src.x * rs.x.x + src.y * rs.y.x + src.z * rs.z.x + t.x;

@@ -70,6 +70,9 @@ public:
 	bool isIdentity() const;
 	bool isInitialized() const;
 
+	template <class CastReturnType>
+	Mat2<CastReturnType> cast() const;
+
 	void transform(Vec2<Real>& dest, const Vec2<Real>& src) const;
 	void transform(Vec2<Real>* dest, const Vec2<Real>* src, size_t count) const;
 	void transform(Vec2<Real>* dest, const Vec2<Real>* src, size_t count,

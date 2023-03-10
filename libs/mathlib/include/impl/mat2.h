@@ -451,6 +451,13 @@ bool Mat2<Real>::isInitialized() const
 }
 
 template <class Real>
+template <class CastReturnType>
+Mat2<CastReturnType> Mat2<Real>::cast() const
+{
+	return Mat2<CastReturnType>::from(x.cast<CastReturnType>(), y.cast<CastReturnType>());
+}
+
+template <class Real>
 void Mat2<Real>::transform(Vec2<Real>& dest, const Vec2<Real>& src) const
 {
 	dest.x = src.x * x.x + src.y * y.x;

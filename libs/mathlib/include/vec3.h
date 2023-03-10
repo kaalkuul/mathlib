@@ -65,6 +65,9 @@ public:
 	Coord minorCoord() const;
 	bool isNull() const;
 
+	template <class CastReturnType>
+	Vec3<CastReturnType> cast() const;
+
 	static Vec3 randomUnitVector();
 
 	static const Vec3 Zero;
