@@ -450,8 +450,10 @@ template <class Real>
 template <class CastReturnType>
 Mat34<CastReturnType> Mat34<Real>::cast() const
 {
-	return Mat34<CastReturnType>(rs.cast<CastReturnType>(),
-		t.cast<CastReturnType>());
+	return Mat34<CastReturnType>(
+		rs.template cast<CastReturnType>(),
+		t.template cast<CastReturnType>()
+	);
 }
 
 template <class Real>

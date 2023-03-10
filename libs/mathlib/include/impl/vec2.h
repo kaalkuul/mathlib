@@ -449,7 +449,10 @@ template <class Real>
 template <class CastReturnType>
 Vec2<CastReturnType> Vec2<Real>::cast() const
 {
-	return Vec2<CastReturnType>(static_cast<CastReturnType>(x), static_cast<CastReturnType>(y));
+	return Vec2<CastReturnType>(
+		static_cast<CastReturnType>(x),
+		static_cast<CastReturnType>(y)
+	);
 }
 
 template <class Real>

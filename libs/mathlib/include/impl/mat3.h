@@ -825,8 +825,11 @@ template <class Real>
 template <class CastReturnType>
 Mat3<CastReturnType> Mat3<Real>::cast() const
 {
-	return Mat3<CastReturnType>::from(x.cast<CastReturnType>(),
-		y.cast<CastReturnType>(), z.cast<CastReturnType>());
+	return Mat3<CastReturnType>::from(
+		x.template cast<CastReturnType>(),
+		y.template cast<CastReturnType>(),
+		z.template cast<CastReturnType>()
+	);
 }
 
 template <class Real>

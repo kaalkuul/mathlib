@@ -551,8 +551,10 @@ template <class Real>
 template <class CastReturnType>
 Quat<CastReturnType> Quat<Real>::cast() const
 {
-	return Quat<CastReturnType>(static_cast<CastReturnType>(x),
-		static_cast<CastReturnType>(y), static_cast<CastReturnType>(z),
+	return Quat<CastReturnType>(
+		static_cast<CastReturnType>(x),
+		static_cast<CastReturnType>(y),
+		static_cast<CastReturnType>(z),
 		static_cast<CastReturnType>(w), false);
 }
 

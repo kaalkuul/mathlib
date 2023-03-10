@@ -454,7 +454,10 @@ template <class Real>
 template <class CastReturnType>
 Mat2<CastReturnType> Mat2<Real>::cast() const
 {
-	return Mat2<CastReturnType>::from(x.cast<CastReturnType>(), y.cast<CastReturnType>());
+	return Mat2<CastReturnType>::from(
+		x.template cast<CastReturnType>(),
+		y.template cast<CastReturnType>()
+	);
 }
 
 template <class Real>
