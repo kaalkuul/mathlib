@@ -47,6 +47,9 @@ template <class Real> class Mat2;
 template <class Real> class Mat3;
 template <class Real> class Mat34;
 template <class Real> class Quat;
+template <class Real> class ColorRGB;
+template <class Real> class ColorRGBA;
+template <class Real> class ColorHSV;
 
 typedef Constants<float> Constantsf;
 typedef Vec2<float> Vec2f;
@@ -55,6 +58,9 @@ typedef Mat2<float> Mat2f;
 typedef Mat3<float> Mat3f;
 typedef Mat34<float> Mat34f;
 typedef Quat<float> Quatf;
+typedef ColorRGB<float> ColorRGBf;
+typedef ColorRGBA<float> ColorRGBAf;
+typedef ColorHSV<float> ColorHSVf;
 
 typedef Constants<double> Constantsd;
 typedef Vec2<double> Vec2d;
@@ -63,5 +69,8 @@ typedef Mat2<double> Mat2d;
 typedef Mat3<double> Mat3d;
 typedef Mat34<double> Mat34d;
 typedef Quat<double> Quatd;
+typedef ColorRGB<double> ColorRGBd;
+typedef ColorRGBA<double> ColorRGBAd;
+typedef ColorHSV<double> ColorHSVd;
 
 MATHLIB_NS_END

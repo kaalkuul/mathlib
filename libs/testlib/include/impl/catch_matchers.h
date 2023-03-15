@@ -55,4 +55,29 @@ namespace Matches
             && marginCheck(matchee.z, target.z, margin)
             && marginCheck(matchee.w, target.w, margin);
     }
+
+    template <class Real>
+    bool marginCheck(const ColorRGB<Real>& matchee, const ColorRGB<Real>& target, double margin)
+    {
+        return marginCheck(matchee.r, target.r, margin)
+            && marginCheck(matchee.g, target.g, margin)
+            && marginCheck(matchee.b, target.b, margin);
+    }
+
+    template <class Real>
+    bool marginCheck(const ColorRGBA<Real>& matchee, const ColorRGBA<Real>& target, double margin)
+    {
+        return marginCheck(matchee.r, target.r, margin)
+            && marginCheck(matchee.g, target.g, margin)
+            && marginCheck(matchee.b, target.b, margin)
+            && marginCheck(matchee.a, target.a, margin);
+    }
+
+    template <class Real>
+    bool marginCheck(const ColorHSV<Real>& matchee, const ColorHSV<Real>& target, double margin)
+    {
+        return marginCheck(matchee.h, target.h, margin)
+            && marginCheck(matchee.s, target.s, margin)
+            && marginCheck(matchee.v, target.v, margin);
+    }
 }

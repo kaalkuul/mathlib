@@ -4,6 +4,8 @@ add_library(mathlib INTERFACE
   include/constants.h
   include/functions.h
   include/interpolation.h
+  include/colorrgb.h
+  include/colorrgba.h
   include/vec2.h
   include/vec3.h
   include/quat.h
@@ -11,6 +13,8 @@ add_library(mathlib INTERFACE
   include/mat3.h
   include/mat34.h
   include/impl/constants.h
+  include/impl/colorrgb.h
+  include/impl/colorrgba.h
   include/impl/vec2.h
   include/impl/vec3.h
   include/impl/quat.h

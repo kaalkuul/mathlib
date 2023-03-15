@@ -3,6 +3,9 @@ add_executable(mathlib_tests
 	src/utils.h src/utils.cpp
 	src/test_functions.cpp
 	src/test_interpolation.cpp
+	src/test_colorrgb.cpp
+	src/test_colorrgba.cpp
+	src/test_colorhsv.cpp
 	src/test_vec2.cpp
 	src/test_vec3.cpp
 	src/test_quat.cpp
