@@ -43,9 +43,48 @@ Quat<Real>& Quat<Real>::set(const Quat& q)
 }
 
 template <class Real>
-Quat<Real>& Quat<Real>::set(const Mat3<Real> &m)
+Quat<Real>& Quat<Real>::set(const Mat3<Real>& m)
 {
-	Real tr = m.trace(); 
+	Real tr = m.trace();
+	if (tr > Real(0))
+	{
+		Real s = sqrt(Real(1) + tr) * Real(2);
+		w = s / Real(4);
+		x = (m.y.z - m.z.y) / s;
+		y = (m.z.x - m.x.z) / s;
+		z = (m.x.y - m.y.x) / s;
+	}
+	else if (m.x.x > m.y.y && m.x.x > m.z.z)
+	{
+		Real s = sqrt(Real(1) + m.x.x - m.y.y - m.z.z) * Real(2);
+		w = (m.y.z - m.z.y) / s;
+		x = s / Real(4);
+		y = (m.y.x + m.x.y) / s;
+		z = (m.z.x + m.x.z) / s;
+	}
+	else if (m.y.y > m.z.z)
+	{
+		Real s = sqrt(Real(1) + m.y.y - m.x.x - m.z.z) * Real(2);
+		w = (m.z.x - m.x.z) / s;
+		x = (m.y.x + m.x.y) / s;
+		y = s / Real(4);
+		z = (m.z.y + m.y.z) / s;
+	}
+	else
+	{
+		Real s = sqrt(Real(1) + m.z.z - m.x.x - m.y.y) * Real(2);
+		w = (m.x.y - m.y.x) / s;
+		x = (m.z.x + m.x.z) / s;
+		y = (m.z.y + m.y.z) / s;
+		z = s / Real(4);
+	}
+	return *this;
+}
+
+template <class Real>
+Quat<Real>& Quat<Real>::set(const Mat4<Real>& m)
+{
+	Real tr = m.x.x + m.y.y + m.z.z;
 	if (tr > Real(0))
 	{
 		Real s = sqrt(Real(1) + tr) * Real(2);
@@ -289,6 +328,14 @@ Quat<Real> Quat<Real>::from(const Quat& q)
 
 template <class Real>
 Quat<Real> Quat<Real>::from(const Mat3<Real>& m)
+{
+	Quat r;
+	r.set(m);
+	return r;
+}
+
+template <class Real>
+Quat<Real> Quat<Real>::from(const Mat4<Real>& m)
 {
 	Quat r;
 	r.set(m);

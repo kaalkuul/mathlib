@@ -12,14 +12,14 @@ public:
 	// Constructors
 	Mat34();
 	Mat34(Real k);
-	Mat34(const Mat3<Real> &r, const Vec3<Real> &t);
+	Mat34(const Mat3<Real> &r, const Vec3<Real> &t = Vec3<Real>::Zero);
 	Mat34(const Vec3<Real> &x, const Vec3<Real> &y, const Vec3<Real> &z, const Vec3<Real> &t);
 
 	// Setters
 	Mat34& setIdentity();
 	Mat34& set(const Mat34 &m);
 	Mat34& set(const Mat3<Real> &r, const Vec3<Real> &t = Vec3<Real>::Zero);
-	Mat34& set(const Vec3<Real> &x, const Vec3<Real> &y, const Vec3<Real> &z, const Vec3<Real> &t);
+	Mat34& set(const Vec3<Real> &x, const Vec3<Real> &y, const Vec3<Real> &z, const Vec3<Real> &t = Vec3<Real>::Zero);
 	Mat34& set(Coord ecoord, const Vec3<Real>& exact, Coord acoord, const Vec3<Real>& approx);
 	Mat34& set(const Vec3<Real> &axis, Real angle, const Vec3<Real>& t = Vec3<Real>::Zero);
 	Mat34& set(Coord axis, Real angle, const Vec3<Real>& t = Vec3<Real>::Zero);

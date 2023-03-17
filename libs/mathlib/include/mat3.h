@@ -104,7 +104,6 @@ private:
 		Normal = 0x1,
 		Orthogonal = 0x2,
 		Orthonormal = 0x3,
-		Mask = 0x3,
 		Identity = 0x4,
 		Uninitialized = 0x8
 	};

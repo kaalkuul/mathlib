@@ -13,7 +13,8 @@ public:
 	// Setters
 	Quat& setIdentity();
 	Quat& set(const Quat &q);
-	Quat& set(const Mat3<Real> &m);
+	Quat& set(const Mat3<Real>& m);
+	Quat& set(const Mat4<Real>& m);
 	Quat& set(const Vec3<Real> &axis, Real angle);
 	Quat& set(const Vec3<Real> &from, const Vec3<Real> &to);
 	Quat& lerp(const Quat &from, const Quat &to, Real weight);
@@ -29,6 +30,7 @@ public:
 	// Create from
 	static Quat from(const Quat& q);
 	static Quat from(const Mat3<Real>& m);
+	static Quat from(const Mat4<Real>& m);
 	static Quat from(const Vec3<Real>& axis, Real angle);
 	static Quat from(const Vec3<Real>& from, const Vec3<Real>& to);
 	static Quat fromLerp(const Quat& from, const Quat& to, Real weight);

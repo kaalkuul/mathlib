@@ -26,6 +26,15 @@ namespace Matches
     }
 
     template <class Real>
+    bool marginCheck(const Vec4<Real>& matchee, const Vec4<Real>& target, double margin)
+    {
+        return marginCheck(matchee.x, target.x, margin)
+            && marginCheck(matchee.y, target.y, margin)
+            && marginCheck(matchee.z, target.z, margin)
+            && marginCheck(matchee.w, target.w, margin);
+    }
+
+    template <class Real>
     bool marginCheck(const Mat2<Real>& matchee, const Mat2<Real>& target, double margin)
     {
         return marginCheck(matchee.x, target.x, margin)
@@ -38,6 +47,15 @@ namespace Matches
         return marginCheck(matchee.x, target.x, margin)
             && marginCheck(matchee.y, target.y, margin)
             && marginCheck(matchee.z, target.z, margin);
+    }
+
+    template <class Real>
+    bool marginCheck(const Mat4<Real>& matchee, const Mat4<Real>& target, double margin)
+    {
+        return marginCheck(matchee.x, target.x, margin)
+            && marginCheck(matchee.y, target.y, margin)
+            && marginCheck(matchee.z, target.z, margin)
+            && marginCheck(matchee.t, target.t, margin);
     }
 
     template <class Real>

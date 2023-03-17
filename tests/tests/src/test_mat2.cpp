@@ -148,7 +148,6 @@ namespace
             Mat2f a = Mat2f::One;
             Mat2f b = Mat2f::from(Constantsf::PI_OVER_3);
             Mat2f expect = Mat2f::from(Constantsf::PI_OVER_8);
-            Quatf qe = Quatf::from(Constantsf::PI_OVER_8);
             Mat2f m0, actual, m1;
             m0.slerpMaxAngle(a, b, 0.0f);
             actual.slerpMaxAngle(a, b, Constantsf::PI_OVER_8);

@@ -51,7 +51,7 @@ Mat3<Real>& Mat3<Real>::setIdentity()
 	x = Vec3<Real>::OneX;
 	y = Vec3<Real>::OneY;
 	z = Vec3<Real>::OneZ;
-	flags = Flags::Mask | Flags::Identity;
+	flags = Flags::Orthonormal | Flags::Identity;
 	return *this;
 }
 
@@ -449,7 +449,7 @@ Mat3<Real>& Mat3<Real>::rotate(const Mat3& m)
 
 	flags &= m.flags;
 
-	return optimize();
+	return *this;
 }
 
 template <class Real>
@@ -518,7 +518,7 @@ Mat3<Real>& Mat3<Real>::rotate(Coord axis, Real angle)
 	default:
 		assert(0);
 	}
-	return optimize();
+	return *this;
 }
 
 template <class Real>
@@ -544,7 +544,7 @@ Mat3<Real>& Mat3<Real>::rotatePre(const Mat3& m)
 
 	flags &= m.flags;
 
-	return optimize();
+	return *this;
 }
 
 template <class Real>
@@ -613,7 +613,7 @@ Mat3<Real>& Mat3<Real>::rotatePre(Coord axis, Real angle)
 	default:
 		assert(0);
 	}
-	return optimize();
+	return *this;
 }
 
 template <class Real>
@@ -806,7 +806,7 @@ bool Mat3<Real>::isOrthogonal() const
 template <class Real>
 bool Mat3<Real>::isOrthonormal() const
 {
-	return (flags & Flags::Mask) == Flags::Mask;
+	return (flags & Flags::Orthonormal) == Flags::Orthonormal;
 }
 
 template <class Real>

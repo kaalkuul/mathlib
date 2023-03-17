@@ -8,9 +8,11 @@ add_executable(mathlib_tests
 	src/test_colorhsv.cpp
 	src/test_vec2.cpp
 	src/test_vec3.cpp
+	src/test_vec4.cpp
 	src/test_quat.cpp
 	src/test_mat2.cpp
 	src/test_mat3.cpp
+	src/test_mat4.cpp
 	src/test_mat34.cpp
 )
 
