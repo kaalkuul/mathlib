@@ -495,7 +495,9 @@ Mat4<Real>& Mat4<Real>::translatePre(const Vec3<Real>& translation)
 {
 	// r * v = rs * (v + translation) + t
 	//       = (rs) * v + (rs * translation + t)
-	t += *this * translation;
+	Vec3<Real> delta;
+	transformVector(delta, translation);
+	t += delta;
 	return *this;
 }
 
@@ -854,9 +856,9 @@ Mat4<CastReturnType> Mat4<Real>::cast() const
 template <class Real>
 void Mat4<Real>::transform(Vec3<Real>& dest, const Vec3<Real>& src) const
 {
-	dest.x = src.x * x.x + src.y * y.x + src.z * z.x;
-	dest.y = src.x * x.y + src.y * y.y + src.z * z.y;
-	dest.z = src.x * x.z + src.y * y.z + src.z * z.z;
+	dest.x = src.x * x.x + src.y * y.x + src.z * z.x + t.x;
+	dest.y = src.x * x.y + src.y * y.y + src.z * z.y + t.y;
+	dest.z = src.x * x.z + src.y * y.z + src.z * z.z + t.z;
 }
 
 template <class Real>
@@ -877,6 +879,37 @@ void Mat4<Real>::transform(Vec3<Real>* dest, const Vec3<Real>* src, size_t count
 	for (size_t i = 0; i < count; i++)
 	{
 		transform(*((Vec3<Real>*)d), *((const Vec3<Real>*)s));
+		d += destStride;
+		s += srcStride;
+	}
+}
+
+template <class Real>
+void Mat4<Real>::transformVector(Vec3<Real>& dest, const Vec3<Real>& src) const
+{
+	dest.x = src.x * x.x + src.y * y.x + src.z * z.x;
+	dest.y = src.x * x.y + src.y * y.y + src.z * z.y;
+	dest.z = src.x * x.z + src.y * y.z + src.z * z.z;
+}
+
+template <class Real>
+void Mat4<Real>::transformVector(Vec3<Real>* dest, const Vec3<Real>* src, size_t count) const
+{
+	for (size_t i = 0; i < count; i++)
+	{
+		transformVector(*dest++, *src++);
+	}
+}
+
+template <class Real>
+void Mat4<Real>::transformVector(Vec3<Real>* dest, const Vec3<Real>* src, size_t count,
+	size_t destStride, size_t srcStride) const
+{
+	const char* d = (const char*)dest;
+	const char* s = (const char*)src;
+	for (size_t i = 0; i < count; i++)
+	{
+		transformVector(*((Vec3<Real>*)d), *((const Vec3<Real>*)s));
 		d += destStride;
 		s += srcStride;
 	}

@@ -95,6 +95,11 @@ public:
 	void transform(Vec3<Real>* dest, const Vec3<Real>* src, size_t count,
 		size_t destStride, size_t srcStride) const;
 
+	void transformVector(Vec3<Real>& dest, const Vec3<Real>& src) const;
+	void transformVector(Vec3<Real>* dest, const Vec3<Real>* src, size_t count) const;
+	void transformVector(Vec3<Real>* dest, const Vec3<Real>* src, size_t count,
+		size_t destStride, size_t srcStride) const;
+
 	static void multiply(Mat4& dest, const Mat4& a, const Mat4& b);
 
 private:

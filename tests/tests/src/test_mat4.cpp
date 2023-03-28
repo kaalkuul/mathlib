@@ -803,24 +803,62 @@ namespace
 
         SECTION("transform(Vec3<Real>& dest, const Vec3<Real>& src)")
         {
-            Mat4f m(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9));
+            Mat4f m(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9), Vec3f(10, 11, 12));
             Vec3f v;
             m.transform(v, Vec3f::OneX);
-            REQUIRE_THAT(v, Matches::WithinAbs(Vec3f(1, 2, 3)));
+            REQUIRE_THAT(v, Matches::WithinAbs(Vec3f(1, 2, 3) + Vec3f(10, 11, 12)));
             m.transform(v, Vec3f::OneY);
-            REQUIRE_THAT(v, Matches::WithinAbs(Vec3f(4, 5, 6)));
+            REQUIRE_THAT(v, Matches::WithinAbs(Vec3f(4, 5, 6) + Vec3f(10, 11, 12)));
             m.transform(v, Vec3f::OneZ);
-            REQUIRE_THAT(v, Matches::WithinAbs(Vec3f(7, 8, 9)));
+            REQUIRE_THAT(v, Matches::WithinAbs(Vec3f(7, 8, 9) + Vec3f(10, 11, 12)));
         }
 
         SECTION("transform(Vec3<Real>* dest, const Vec3<Real>* src, size_t count)")
         {
-            Mat4f m(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9));
+            Mat4f m(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9), Vec3f(10, 11, 12));
             Vec3f d[3], v[3];
             v[0] = Vec3f::OneX;
             v[1] = Vec3f::OneY;
             v[2] = Vec3f::OneZ;
             m.transform(d, v, 3);
+            REQUIRE_THAT(d[0], Matches::WithinAbs(Vec3f(1, 2, 3) + Vec3f(10, 11, 12)));
+            REQUIRE_THAT(d[1], Matches::WithinAbs(Vec3f(4, 5, 6) + Vec3f(10, 11, 12)));
+            REQUIRE_THAT(d[2], Matches::WithinAbs(Vec3f(7, 8, 9) + Vec3f(10, 11, 12)));
+        }
+
+        SECTION("transform(Vec3<Real>* dest, const Vec3<Real>* src, size_t count, size_t destStride, size_t srcStride)")
+        {
+            Mat4f m(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9), Vec3f(10, 11, 12));
+            Vec3f d[6], v[6];
+            v[0] = Vec3f::OneX;
+            v[2] = Vec3f::OneY;
+            v[4] = Vec3f::OneZ;
+            m.transform(d, v, 3, 2*sizeof(Vec3f), 2*sizeof(Vec3f));
+            REQUIRE_THAT(d[0], Matches::WithinAbs(Vec3f(1, 2, 3) + Vec3f(10, 11, 12)));
+            REQUIRE_THAT(d[2], Matches::WithinAbs(Vec3f(4, 5, 6) + Vec3f(10, 11, 12)));
+            REQUIRE_THAT(d[4], Matches::WithinAbs(Vec3f(7, 8, 9) + Vec3f(10, 11, 12)));
+        }
+
+        SECTION("transformVector(Vec3<Real>& dest, const Vec3<Real>& src)")
+        {
+            Mat4f m(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9), Vec3f(10, 11, 12));
+            Vec3f v;
+            m.transformVector(v, Vec3f::OneX);
+            REQUIRE_THAT(v, Matches::WithinAbs(Vec3f(1, 2, 3)));
+            m.transformVector(v, Vec3f::OneY);
+            REQUIRE_THAT(v, Matches::WithinAbs(Vec3f(4, 5, 6)));
+            m.transformVector(v, Vec3f::OneZ);
+            REQUIRE_THAT(v, Matches::WithinAbs(Vec3f(7, 8, 9)));
+        }
+
+        SECTION("transformVector(Vec3<Real>* dest, const Vec3<Real>* src, size_t count)")
+        {
+            Mat4f m(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9), Vec3f(10, 11, 12));
+            Vec3f d[3], v[3];
+            v[0] = Vec3f::OneX;
+            v[1] = Vec3f::OneY;
+            v[2] = Vec3f::OneZ;
+            m.transformVector(d, v, 3);
             REQUIRE_THAT(d[0], Matches::WithinAbs(Vec3f(1, 2, 3)));
             REQUIRE_THAT(d[1], Matches::WithinAbs(Vec3f(4, 5, 6)));
             REQUIRE_THAT(d[2], Matches::WithinAbs(Vec3f(7, 8, 9)));
@@ -828,12 +866,12 @@ namespace
 
         SECTION("transform(Vec3<Real>* dest, const Vec3<Real>* src, size_t count, size_t destStride, size_t srcStride)")
         {
-            Mat4f m(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9));
+            Mat4f m(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9), Vec3f(10, 11, 12));
             Vec3f d[6], v[6];
             v[0] = Vec3f::OneX;
             v[2] = Vec3f::OneY;
             v[4] = Vec3f::OneZ;
-            m.transform(d, v, 3, 2*sizeof(Vec3f), 2*sizeof(Vec3f));
+            m.transformVector(d, v, 3, 2 * sizeof(Vec3f), 2 * sizeof(Vec3f));
             REQUIRE_THAT(d[0], Matches::WithinAbs(Vec3f(1, 2, 3)));
             REQUIRE_THAT(d[2], Matches::WithinAbs(Vec3f(4, 5, 6)));
             REQUIRE_THAT(d[4], Matches::WithinAbs(Vec3f(7, 8, 9)));
