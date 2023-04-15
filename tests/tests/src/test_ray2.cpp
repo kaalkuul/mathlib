@@ -71,8 +71,8 @@ namespace {
                 CHECK(ray.start == Vec2f::OneX);
                 CHECK(ray.direction == Vec2f(-0.707106769f, 0.707106769f));
                 Vec2f point = Vec2f::Zero;
-                float d = abs(-ray.direction.y * (point.x - ray.start.x) + ray.direction.x * (point.y - ray.start.y));
-                REQUIRE_THAT(d, Catch::Matchers::WithinAbs(sqrt(2.0f) / 2.0f, 1e-6));
+                float d = MATHLIB_NS::abs(-ray.direction.y * (point.x - ray.start.x) + ray.direction.x * (point.y - ray.start.y));
+                CHECK_THAT(d, Catch::Matchers::WithinAbs(sqrt(2.0f) / 2.0f, 1e-6));
             }
             REQUIRE_THAT(ray.distance(Vec2f::Zero), Catch::Matchers::WithinAbs(sqrt(2.0f) / 2.0f, 1e-6));
         }

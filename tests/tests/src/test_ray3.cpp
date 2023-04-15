@@ -86,8 +86,8 @@ namespace {
                 REQUIRE_THAT(l, Catch::Matchers::WithinAbs(sqrt(2.0f) / 2.0f, 1e-6));
                 float d = (l == 0.0f)
                     ? MATHLIB_NS::distance(ray.start, point)
-                    : abs(n * (point - ray.start));
-                REQUIRE_THAT(d, Catch::Matchers::WithinAbs(sqrt(2.0f) / 2.0f, 1e-6));
+                    : MATHLIB_NS::abs(n * (point - ray.start));
+                CHECK_THAT(d, Catch::Matchers::WithinAbs(sqrt(2.0f) / 2.0f, 1e-6));
             }
             REQUIRE_THAT(ray.distance(Vec3f::Zero), Catch::Matchers::WithinAbs(sqrt(2.0f) / 2.0f, 1e-6));
         }

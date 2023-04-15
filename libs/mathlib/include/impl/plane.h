@@ -81,7 +81,7 @@ template <class Real>
 bool Plane<Real>::contains(const Vec3<Real>& p, Real tolerance) const
 {
 	Real d = distance(p);
-	return abs(d) <= tolerance;
+	return MATHLIB_NS::abs(d) <= tolerance;
 }
 
 template <class Real>
@@ -273,7 +273,7 @@ bool Plane<Real>::intersectAtSinglePoint(Vec3<Real>& point, const Plane& p0, con
 	const Real EPSILON = Real(1e-4);
 
 	Real det = (p0.normal % p1.normal) * p2.normal;
-	if (abs(det) < EPSILON)
+	if (MATHLIB_NS::abs(det) < EPSILON)
 	{
 		point = Vec3<Real>::Zero;
 		return false;

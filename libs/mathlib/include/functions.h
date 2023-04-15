@@ -5,6 +5,12 @@
 MATHLIB_NS_BEGIN
 
 template <class Real>
+Real abs(Real value)
+{
+	return (value < Real(0)) ? -value : value;
+}
+
+template <class Real>
 Real degreeToRadian(Real x)
 {
 	return x * Constants<Real>::PI / Real(180);

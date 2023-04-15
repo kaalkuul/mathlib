@@ -113,7 +113,7 @@ Vec3<Real>& Vec3<Real>::slerp(const Vec3<Real>& u, const Vec3<Real>& v, Real rat
 		Vec3<Real> n = (u % v) / (lengthU * lengthV);
 		Real sinAngle = n * n.normalized();
 
-		if (abs(sinAngle) < 0.05f)
+		if (MATHLIB_NS::abs(sinAngle) < 0.05f)
 		{
 			x = u.x + (v.x - u.x) * ratio;
 			y = u.y + (v.y - u.y) * ratio;

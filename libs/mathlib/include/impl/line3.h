@@ -69,7 +69,7 @@ Real Line3<Real>::distance(const Vec3<Real>& point) const
 	Real l = n.normalize();
 	return (l == Real(0))
 		? MATHLIB_NS::distance(start, point)
-		: abs(n * (point - start));
+		: MATHLIB_NS::abs(n * (point - start));
 }
 
 template <class Real>

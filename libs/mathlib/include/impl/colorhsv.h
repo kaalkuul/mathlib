@@ -76,7 +76,7 @@ ColorHSV<Real>& ColorHSV<Real>::interp(const ColorHSV<Real>& a, const ColorHSV<R
 		return set(b);
 
     Real d = b.h - a.h;
-    Real delta = d + ((abs(d) > Real(180)) ? ((d < Real(0)) ? Real(360) : -Real(360)) : Real(0));
+    Real delta = d + ((MATHLIB_NS::abs(d) > Real(180)) ? ((d < Real(0)) ? Real(360) : -Real(360)) : Real(0));
 
 	this->h = fmodPositive(a.h + delta * ratio, Real(360));
 	this->s = lerp(a.s, b.s, ratio);

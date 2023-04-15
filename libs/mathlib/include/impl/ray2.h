@@ -45,7 +45,7 @@ Vec2<Real> Ray2<Real>::pointAt(Real dist) const
 template <class Real>
 Real Ray2<Real>::distance(const Vec2<Real> &point) const
 {
-	return abs(-direction.y * (point.x - start.x) + direction.x * (point.y - start.y));
+	return MATHLIB_NS::abs(-direction.y * (point.x - start.x) + direction.x * (point.y - start.y));
 }
 
 template <class Real>
