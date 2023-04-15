@@ -3,7 +3,7 @@
 MATHLIB_NS_BEGIN
 
 template <class Real>
-const Sphere<Real> Sphere<Real>::One = Sphere<Real>(Vec3<Real>::Zero, Real(1));
+const Sphere<Real> Sphere<Real>::One = Sphere<Real>(Vec3<Real>(Real(0), Real(0), Real(0)), Real(1));
 
 //
 // Constructors

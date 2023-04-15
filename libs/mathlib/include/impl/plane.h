@@ -4,13 +4,13 @@ MATHLIB_NS_BEGIN
 
 
 template <class Real>
-const Plane<Real> Plane<Real>::XY = Plane<Real>(Vec3<Real>::OneZ, Real(0));
+const Plane<Real> Plane<Real>::XY = Plane<Real>(Vec3<Real>(Real(0), Real(0), Real(1)), Real(0));
 
 template <class Real>
-const Plane<Real> Plane<Real>::YZ = Plane<Real>(Vec3<Real>::OneX, Real(0));
+const Plane<Real> Plane<Real>::YZ = Plane<Real>(Vec3<Real>(Real(1), Real(0), Real(0)), Real(0));
 
 template <class Real>
-const Plane<Real> Plane<Real>::ZX = Plane<Real>(Vec3<Real>::OneY, Real(0));
+const Plane<Real> Plane<Real>::ZX = Plane<Real>(Vec3<Real>(Real(0), Real(1), Real(1)), Real(0));
 
 
 template <class Real>
