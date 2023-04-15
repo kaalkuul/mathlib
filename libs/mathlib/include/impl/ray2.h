@@ -53,7 +53,7 @@ template <class CastReturnType>
 Ray2<CastReturnType> Ray2<Real>::cast() const
 {
 	return Ray2<CastReturnType>::from(
-		start.cast<CastReturnType>(),
+		start.template cast<CastReturnType>(),
 		direction.template cast<CastReturnType>()
 	);
 }
