@@ -58,7 +58,7 @@ template <class CastReturnType>
 Ray3<CastReturnType> Ray3<Real>::cast() const
 {
 	return Ray3<CastReturnType>::from(
-		start.cast<CastReturnType>(),
+		start.template cast<CastReturnType>(),
 		direction.template cast<CastReturnType>()
 	);
 }
