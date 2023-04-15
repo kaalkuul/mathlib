@@ -98,4 +98,46 @@ namespace Matches
             && marginCheck(matchee.s, target.s, margin)
             && marginCheck(matchee.v, target.v, margin);
     }
+
+    template <class Real>
+    bool marginCheck(const Line2<Real>& matchee, const Line2<Real>& target, double margin)
+    {
+        return marginCheck(matchee.start, target.start, margin)
+            && marginCheck(matchee.end, target.end, margin);
+    }
+
+    template <class Real>
+    bool marginCheck(const Line3<Real>& matchee, const Line3<Real>& target, double margin)
+    {
+        return marginCheck(matchee.start, target.start, margin)
+            && marginCheck(matchee.end, target.end, margin);
+    }
+
+    template <class Real>
+    bool marginCheck(const Ray2<Real>& matchee, const Ray2<Real>& target, double margin)
+    {
+        return marginCheck(matchee.start, target.start, margin)
+            && marginCheck(matchee.end, target.end, margin);
+    }
+
+    template <class Real>
+    bool marginCheck(const Ray3<Real>& matchee, const Ray3<Real>& target, double margin)
+    {
+        return marginCheck(matchee.start, target.start, margin)
+            && marginCheck(matchee.end, target.end, margin);
+    }
+
+    template <class Real>
+    bool marginCheck(const Plane<Real>& matchee, const Plane<Real>& target, double margin)
+    {
+        return marginCheck(matchee.normal, target.normal, margin)
+            && marginCheck(matchee.d, target.d, margin);
+    }
+
+    template <class Real>
+    bool marginCheck(const Sphere<Real>& matchee, const Sphere<Real>& target, double margin)
+    {
+        return marginCheck(matchee.center, target.center, margin)
+            && marginCheck(matchee.radius, target.radius, margin);
+    }
 }

@@ -16,6 +16,12 @@ add_library(mathlib_testlib INTERFACE
 	include/impl/catch_matchers_mat4.h
 	include/impl/catch_matchers_mat34.h
 	include/impl/catch_matchers_quat.h
+	include/impl/catch_matchers_line2.h
+	include/impl/catch_matchers_line3.h
+	include/impl/catch_matchers_ray2.h
+	include/impl/catch_matchers_ray3.h
+	include/impl/catch_matchers_plane.h
+	include/impl/catch_matchers_sphere.h
 )
 
 add_library(mathlib::testlib ALIAS mathlib_testlib)
