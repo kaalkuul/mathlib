@@ -117,7 +117,7 @@ Real distance(const Vec2<Real> &a, const Vec2<Real> &b)
 }
 
 template <class Real>
-Real distanceSqr(const Vec2<Real> &a,const Vec2<Real> &b)
+Real distanceSqr(const Vec2<Real> &a, const Vec2<Real> &b)
 {
 	Real x = b.x - a.x;
 	Real y = b.y - a.y;
@@ -125,7 +125,7 @@ Real distanceSqr(const Vec2<Real> &a,const Vec2<Real> &b)
 }
 
 template <class Real>
-Real distance(const Vec3<Real> &a,const Vec3<Real> &b)
+Real distance(const Vec3<Real> &a, const Vec3<Real> &b)
 {
 	Real x = b.x - a.x;
 	Real y = b.y - a.y;
@@ -134,7 +134,7 @@ Real distance(const Vec3<Real> &a,const Vec3<Real> &b)
 }
 
 template <class Real>
-Real distanceSqr(const Vec3<Real> &a,const Vec3<Real> &b)
+Real distanceSqr(const Vec3<Real> &a, const Vec3<Real> &b)
 {
 	Real x = b.x - a.x;
 	Real y = b.y - a.y;

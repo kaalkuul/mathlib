@@ -11,7 +11,9 @@ const Vec2<Real> Vec2<Real>::OneX = Vec2<Real>(Real(1), Real(0));
 template <class Real>
 const Vec2<Real> Vec2<Real>::OneY = Vec2<Real>(Real(0), Real(1));
 
+//
 // Constructors
+//
 
 template <class Real>
 Vec2<Real>::Vec2()

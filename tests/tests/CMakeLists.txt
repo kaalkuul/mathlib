@@ -3,6 +3,7 @@ add_executable(mathlib_tests
 	src/utils.h src/utils.cpp
 	src/test_functions.cpp
 	src/test_interpolation.cpp
+	src/test_linearequations.cpp
 	src/test_colorrgb.cpp
 	src/test_colorrgba.cpp
 	src/test_colorhsv.cpp
@@ -14,6 +15,13 @@ add_executable(mathlib_tests
 	src/test_mat3.cpp
 	src/test_mat4.cpp
 	src/test_mat34.cpp
+	src/test_line2.cpp
+	src/test_line3.cpp
+	src/test_ray2.cpp
+	src/test_ray3.cpp
+	src/test_plane.cpp
+	src/test_sphere.cpp
+	src/test_spline3.cpp
 )
 
 target_compile_definitions(mathlib_tests
