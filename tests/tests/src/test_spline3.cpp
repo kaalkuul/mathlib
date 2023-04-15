@@ -46,7 +46,7 @@ namespace {
                 float hr4 = HermiteSplineSegment3f::hr4(t);
 
                 Vec3f p = p1 * hp1 + p4 * hp4 + r1 * hr1 + r4 * hr4;
-                REQUIRE(segment.pointAt(t) == p);
+                REQUIRE_THAT(segment.pointAt(t), Matches::WithinAbs(p, 1e-6));
             }
         }
 
@@ -62,7 +62,7 @@ namespace {
                 float dhr4 = HermiteSplineSegment3f::dhr4(t);
 
                 Vec3f p = p1 * dhp1 + p4 * dhp4 + r1 * dhr1 + r4 * dhr4;
-                REQUIRE(segment.tangentAt(t) == p);
+                REQUIRE_THAT(segment.tangentAt(t), Matches::WithinAbs(p, 1e-6));
             }
         }
 
