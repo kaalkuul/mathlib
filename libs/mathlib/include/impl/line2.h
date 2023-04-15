@@ -75,8 +75,8 @@ template <class CastReturnType>
 Line2<CastReturnType> Line2<Real>::cast() const
 {
 	return Line2<CastReturnType>::from(
-		start.cast<CastReturnType>(),
-		end.cast<CastReturnType>()
+		start.template cast<CastReturnType>(),
+		end.template cast<CastReturnType>()
 	);
 }
 

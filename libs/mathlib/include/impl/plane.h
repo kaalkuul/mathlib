@@ -262,7 +262,7 @@ template <class CastReturnType>
 Plane<CastReturnType> Plane<Real>::cast() const
 {
 	return Plane<CastReturnType>(
-		normal.cast<CastReturnType>(),
+		normal.template cast<CastReturnType>(),
 		static_cast<CastReturnType>(d)
 	);
 }

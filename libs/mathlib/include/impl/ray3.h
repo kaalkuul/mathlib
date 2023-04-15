@@ -59,7 +59,7 @@ Ray3<CastReturnType> Ray3<Real>::cast() const
 {
 	return Ray3<CastReturnType>::from(
 		start.cast<CastReturnType>(),
-		direction.cast<CastReturnType>()
+		direction.template cast<CastReturnType>()
 	);
 }
 

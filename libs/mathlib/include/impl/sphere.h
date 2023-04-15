@@ -115,7 +115,7 @@ template <class CastReturnType>
 Sphere<CastReturnType> Sphere<Real>::cast() const
 {
 	return Sphere<CastReturnType>(
-		center.cast<CastReturnType>(),
+		center.template cast<CastReturnType>(),
 		static_cast<CastReturnType>(radius)
 	);
 }

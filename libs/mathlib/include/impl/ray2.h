@@ -54,7 +54,7 @@ Ray2<CastReturnType> Ray2<Real>::cast() const
 {
 	return Ray2<CastReturnType>::from(
 		start.cast<CastReturnType>(),
-		direction.cast<CastReturnType>()
+		direction.template cast<CastReturnType>()
 	);
 }
 
