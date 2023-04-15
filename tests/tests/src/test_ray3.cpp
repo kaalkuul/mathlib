@@ -74,6 +74,21 @@ namespace {
             ray = Ray3f::from(Vec3f::Zero, Vec3f::OneY);
             REQUIRE_THAT(ray.distance(Vec3f(3.0f, 10.0f, 0.0f)), Catch::Matchers::WithinAbs(3.0f, 1e-10));
             ray = Ray3f::from(Vec3f::OneX, Vec3f::OneY - Vec3f::OneX);
+            {
+                CHECK(ray.start == Vec3f::OneX);
+                CHECK(ray.direction == Vec3f(-0.707106769f, 0.707106769f, 0.0f));
+                Vec3f point = Vec3f::Zero;
+                Vec3f northo = (point - ray.start) % ray.direction;
+                CHECK(northo == Vec3f(0.0f, 0.0f, -0.707106769f));
+                Vec3f n = ray.direction % northo;
+                CHECK(n == Vec3f(-0.49999997019767761f, -0.49999997019767761f, 0.0f));
+                float l = n.normalize();
+                REQUIRE_THAT(l, Catch::Matchers::WithinAbs(sqrt(2.0f) / 2.0f, 1e-6));
+                float d = (l == 0.0f)
+                    ? MATHLIB_NS::distance(ray.start, point)
+                    : abs(n * (point - ray.start));
+                REQUIRE_THAT(d, Catch::Matchers::WithinAbs(sqrt(2.0f) / 2.0f, 1e-6));
+            }
             REQUIRE_THAT(ray.distance(Vec3f::Zero), Catch::Matchers::WithinAbs(sqrt(2.0f) / 2.0f, 1e-6));
         }
 
