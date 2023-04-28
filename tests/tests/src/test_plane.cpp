@@ -68,6 +68,32 @@ namespace {
             REQUIRE(plane.d == -2.0f);
         }
 
+        SECTION("fromPointAndTangents(const Vec3<Real>& point, const Vec3<Real>& u, const Vec3<Real>& v)")
+        {
+            Planef plane;
+
+            plane = Planef::fromPointAndTangents(Vec3f::Zero, Vec3f::OneX, Vec3f::OneY);
+            REQUIRE(plane == Planef::XY);
+
+            plane = Planef::fromPointAndTangents(Vec3f::Zero, Vec3f::OneZ, Vec3f::OneX);
+            REQUIRE(plane == Planef::ZX);
+
+            plane = Planef::fromPointAndTangents(Vec3f::Zero, Vec3f::OneY, Vec3f::OneZ);
+            REQUIRE(plane == Planef::YZ);
+
+            plane = Planef::fromPointAndTangents(Vec3f(2.0f, 0.0f, 0.0f), Vec3f::OneY, Vec3f::OneZ);
+            REQUIRE(plane.normal == Vec3f::OneX);
+            REQUIRE(plane.d == -2.0f);
+
+            plane = Planef::fromPointAndTangents(Vec3f(0.0f, 2.0f, 0.0f), Vec3f::OneZ, Vec3f::OneX);
+            REQUIRE(plane.normal == Vec3f::OneY);
+            REQUIRE(plane.d == -2.0f);
+
+            plane = Planef::fromPointAndTangents(Vec3f(0.0f, 0.0f, 2.0f), Vec3f::OneX, Vec3f::OneY);
+            REQUIRE(plane.normal == Vec3f::OneZ);
+            REQUIRE(plane.d == -2.0f);
+        }
+
         // Comparison operators
 
         SECTION("operator== (const plane &rhs)")

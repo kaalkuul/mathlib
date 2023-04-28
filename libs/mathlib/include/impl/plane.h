@@ -35,6 +35,14 @@ Plane<Real> Plane<Real>::from(const Vec3<Real>& point, const Vec3<Real>& normal)
 	return plane;
 }
 
+// Creates a plane from a point and a normal
+template <class Real>
+Plane<Real> Plane<Real>::fromPointAndTangents(const Vec3<Real>& point, const Vec3<Real>& u, const Vec3<Real>& v)
+{
+	Vec3<Real> n = u % v;
+	return from(point, n);
+}
+
 // Creates a plane going through the points a, b and c
 template <class Real>
 Plane<Real> Plane<Real>::from(const Vec3<Real>& a, const Vec3<Real>& b, const Vec3<Real>& c)
