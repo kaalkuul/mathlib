@@ -434,6 +434,10 @@ template <class Real>
 Mat4<Real>& Mat4<Real>::translate(const Vec3<Real>& translation)
 {
 	t += translation;
+	if (!translation.isNull())
+	{
+		flags &= ~Flags::Identity;
+	}
 	return *this;
 }
 
@@ -448,6 +452,10 @@ Mat4<Real>& Mat4<Real>::scale(const Vec3<Real>& coefficients)
 	t.x *= coefficients.x;
 	t.y *= coefficients.y;
 	t.z *= coefficients.z;
+	if (coefficients.x != Real(1) || coefficients.y != Real(1) || coefficients.z != Real(1))
+	{
+		flags &= ~Flags::Identity;
+	}
 	return *this;
 }
 
@@ -498,6 +506,10 @@ Mat4<Real>& Mat4<Real>::translatePre(const Vec3<Real>& translation)
 	Vec3<Real> delta;
 	transformVector(delta, translation);
 	t += delta;
+	if (!translation.isNull())
+	{
+		flags &= ~Flags::Identity;
+	}
 	return *this;
 }
 
@@ -509,6 +521,10 @@ Mat4<Real>& Mat4<Real>::scalePre(const Vec3<Real>& coefficients)
 	x *= coefficients.x;
 	y *= coefficients.y;
 	z *= coefficients.z;
+	if (coefficients.x != Real(1) || coefficients.y != Real(1) || coefficients.z != Real(1))
+	{
+		flags &= ~Flags::Identity;
+	}
 	return *this;
 }
 
