@@ -2,12 +2,10 @@
 
 namespace Catch
 {
-    using namespace mathlib;
-
     template <class Real>
-    struct StringMaker<Ray2<Real>>
+    struct StringMaker<mathlib::Ray2<Real>>
     {
-        static std::string convert(Ray2<Real> const& ray)
+        static std::string convert(mathlib::Ray2<Real> const& ray)
         {
             std::ostringstream rss;
             rss << std::scientific
@@ -22,20 +20,18 @@ namespace Catch
 
 namespace Matches
 {
-    using namespace mathlib;
-
     template <class Real>
-    class Ray2Matcher final : public Catch::Matchers::MatcherBase<Ray2<Real>>
+    class Ray2Matcher final : public Catch::Matchers::MatcherBase<mathlib::Ray2<Real>>
     {
     public:
-        Ray2Matcher(const Ray2<Real>& target, double margin)
+        Ray2Matcher(const mathlib::Ray2<Real>& target, double margin)
             : m_target(target), m_margin(margin)
         {
             CATCH_ENFORCE(margin >= 0, "Invalid margin: " << margin << '.'
                 << " Margin has to be non-negative.");
         }
 
-        bool match(Ray2<Real> const& matchee) const override
+        bool match(mathlib::Ray2<Real> const& matchee) const override
         {
             return marginCheck(matchee, m_target, m_margin);
         }
@@ -46,12 +42,12 @@ namespace Matches
         }
 
     private:
-        Ray2<Real> m_target;
+        mathlib::Ray2<Real> m_target;
         double m_margin;
     };
 
     template <class Real>
-    Ray2Matcher<Real> WithinAbs(const Ray2<Real>& target, double margin = 1e-3)
+    Ray2Matcher<Real> WithinAbs(const mathlib::Ray2<Real>& target, double margin = 1e-3)
     {
         return Ray2Matcher<Real>(target, margin);
     }

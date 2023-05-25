@@ -2,12 +2,10 @@
 
 namespace Catch
 {
-    using namespace mathlib;
-
     template <class Real>
-    struct StringMaker<Line3<Real>>
+    struct StringMaker<mathlib::Line3<Real>>
     {
-        static std::string convert(Line3<Real> const& line)
+        static std::string convert(mathlib::Line3<Real> const& line)
         {
             std::ostringstream rss;
             rss << std::scientific
@@ -22,20 +20,18 @@ namespace Catch
 
 namespace Matches
 {
-    using namespace mathlib;
-
     template <class Real>
-    class Line3Matcher final : public Catch::Matchers::MatcherBase<Line3<Real>>
+    class Line3Matcher final : public Catch::Matchers::MatcherBase<mathlib::Line3<Real>>
     {
     public:
-        Line3Matcher(const Line3<Real>& target, double margin)
+        Line3Matcher(const mathlib::Line3<Real>& target, double margin)
             : m_target(target), m_margin(margin)
         {
             CATCH_ENFORCE(margin >= 0, "Invalid margin: " << margin << '.'
                 << " Margin has to be non-negative.");
         }
 
-        bool match(Line3<Real> const& matchee) const override
+        bool match(mathlib::Line3<Real> const& matchee) const override
         {
             return marginCheck(matchee, m_target, m_margin);
         }
@@ -46,12 +42,12 @@ namespace Matches
         }
 
     private:
-        Line3<Real> m_target;
+        mathlib::Line3<Real> m_target;
         double m_margin;
     };
 
     template <class Real>
-    Line3Matcher<Real> WithinAbs(const Line3<Real>& target, double margin = 1e-3)
+    Line3Matcher<Real> WithinAbs(const mathlib::Line3<Real>& target, double margin = 1e-3)
     {
         return Line3Matcher<Real>(target, margin);
     }

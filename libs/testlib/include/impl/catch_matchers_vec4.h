@@ -2,12 +2,10 @@
 
 namespace Catch
 {
-    using namespace mathlib;
-
     template <class Real>
-    struct StringMaker<Vec4<Real>>
+    struct StringMaker<mathlib::Vec4<Real>>
     {
-        static std::string convert(Vec4<Real> const& v)
+        static std::string convert(mathlib::Vec4<Real> const& v)
         {
             std::ostringstream rss;
             rss << std::scientific
@@ -20,20 +18,18 @@ namespace Catch
 
 namespace Matches
 {
-    using namespace mathlib;
-
     template <class Real>
-    class Vec4Matcher final : public Catch::Matchers::MatcherBase<Vec4<Real>>
+    class Vec4Matcher final : public Catch::Matchers::MatcherBase<mathlib::Vec4<Real>>
     {
     public:
-        Vec4Matcher(const Vec4<Real>& target, double margin)
+        Vec4Matcher(const mathlib::Vec4<Real>& target, double margin)
             : m_target(target), m_margin(margin)
         {
             CATCH_ENFORCE(margin >= 0, "Invalid margin: " << margin << '.'
                 << " Margin has to be non-negative.");
         }
 
-        bool match(Vec4<Real> const& matchee) const override
+        bool match(mathlib::Vec4<Real> const& matchee) const override
         {
             return marginCheck(matchee, m_target, m_margin);
         }
@@ -44,12 +40,12 @@ namespace Matches
         }
 
     private:
-        Vec4<Real> m_target;
+        mathlib::Vec4<Real> m_target;
         double m_margin;
     };
 
     template <class Real>
-    Vec4Matcher<Real> WithinAbs(const Vec4<Real>& target, double margin = 1e-3)
+    Vec4Matcher<Real> WithinAbs(const mathlib::Vec4<Real>& target, double margin = 1e-3)
     {
         return Vec4Matcher<Real>(target, margin);
     }

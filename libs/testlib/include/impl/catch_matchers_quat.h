@@ -2,12 +2,10 @@
 
 namespace Catch
 {
-    using namespace mathlib;
-
     template <class Real>
-    struct StringMaker<Quat<Real>>
+    struct StringMaker<mathlib::Quat<Real>>
     {
-        static std::string convert(Quat<Real> const& q)
+        static std::string convert(mathlib::Quat<Real> const& q)
         {
             std::ostringstream rss;
             rss << std::scientific
@@ -20,20 +18,18 @@ namespace Catch
 
 namespace Matches
 {
-    using namespace mathlib;
-
     template <class Real>
-    class QuatMatcher final : public Catch::Matchers::MatcherBase<Quat<Real>>
+    class QuatMatcher final : public Catch::Matchers::MatcherBase<mathlib::Quat<Real>>
     {
     public:
-        QuatMatcher(const Quat<Real>& target, double margin)
+        QuatMatcher(const mathlib::Quat<Real>& target, double margin)
             : m_target(target), m_margin(margin)
         {
             CATCH_ENFORCE(margin >= 0, "Invalid margin: " << margin << '.'
                 << " Margin has to be non-negative.");
         }
 
-        bool match(Quat<Real> const& matchee) const override
+        bool match(mathlib::Quat<Real> const& matchee) const override
         {
             return marginCheck(matchee, m_target, m_margin);
         }
@@ -44,12 +40,12 @@ namespace Matches
         }
 
     private:
-        Quat<Real> m_target;
+        mathlib::Quat<Real> m_target;
         double m_margin;
     };
 
     template <class Real>
-    QuatMatcher<Real> WithinAbs(const Quat<Real>& target, double margin = 1e-3)
+    QuatMatcher<Real> WithinAbs(const mathlib::Quat<Real>& target, double margin = 1e-3)
     {
         return QuatMatcher<Real>(target, margin);
     }

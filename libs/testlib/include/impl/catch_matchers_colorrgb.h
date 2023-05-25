@@ -2,12 +2,10 @@
 
 namespace Catch
 {
-    using namespace mathlib;
-
     template <class Real>
-    struct StringMaker<ColorRGB<Real>>
+    struct StringMaker<mathlib::ColorRGB<Real>>
     {
-        static std::string convert(ColorRGB<Real> const& c)
+        static std::string convert(mathlib::ColorRGB<Real> const& c)
         {
             std::ostringstream rss;
             rss << std::scientific
@@ -20,20 +18,18 @@ namespace Catch
 
 namespace Matches
 {
-    using namespace mathlib;
-
     template <class Real>
-    class ColorRGBMatcher final : public Catch::Matchers::MatcherBase<ColorRGB<Real>>
+    class ColorRGBMatcher final : public Catch::Matchers::MatcherBase<mathlib::ColorRGB<Real>>
     {
     public:
-        ColorRGBMatcher(const ColorRGB<Real>& target, double margin)
+        ColorRGBMatcher(const mathlib::ColorRGB<Real>& target, double margin)
             : m_target(target), m_margin(margin)
         {
             CATCH_ENFORCE(margin >= 0, "Invalid margin: " << margin << '.'
                 << " Margin has to be non-negative.");
         }
 
-        bool match(ColorRGB<Real> const& matchee) const override
+        bool match(mathlib::ColorRGB<Real> const& matchee) const override
         {
             return marginCheck(matchee, m_target, m_margin);
         }
@@ -44,12 +40,12 @@ namespace Matches
         }
 
     private:
-        ColorRGB<Real> m_target;
+        mathlib::ColorRGB<Real> m_target;
         double m_margin;
     };
 
     template <class Real>
-    ColorRGBMatcher<Real> WithinAbs(const ColorRGB<Real>& target, double margin = 1e-3)
+    ColorRGBMatcher<Real> WithinAbs(const mathlib::ColorRGB<Real>& target, double margin = 1e-3)
     {
         return ColorRGBMatcher<Real>(target, margin);
     }
