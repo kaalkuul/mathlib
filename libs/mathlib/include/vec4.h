@@ -9,8 +9,8 @@ public:
 	// Constructors
 	Vec4();
 	explicit Vec4(Real k);
-	Vec4(Real x, Real y, Real z, Real w = Real(0));
-	Vec4(const Vec3<Real>& u, Real w = Real(0));
+	Vec4(Real x, Real y, Real z, Real w = Real(1));
+	Vec4(const Vec3<Real>& u, Real w = Real(1));
 
 	// Setters
 	Vec4& set(Real x, Real y, Real z, Real w = Real(0));

@@ -6,13 +6,13 @@ template <class Real>
 const Vec4<Real> Vec4<Real>::Zero = Vec4<Real>(Real(0));
 
 template <class Real>
-const Vec4<Real> Vec4<Real>::OneX = Vec4<Real>(Real(1), Real(0), Real(0), Real(0));
+const Vec4<Real> Vec4<Real>::OneX = Vec4<Real>(Real(1), Real(0), Real(0), Real(1));
 
 template <class Real>
-const Vec4<Real> Vec4<Real>::OneY = Vec4<Real>(Real(0), Real(1), Real(0), Real(0));
+const Vec4<Real> Vec4<Real>::OneY = Vec4<Real>(Real(0), Real(1), Real(0), Real(1));
 
 template <class Real>
-const Vec4<Real> Vec4<Real>::OneZ = Vec4<Real>(Real(0), Real(0), Real(1), Real(0));
+const Vec4<Real> Vec4<Real>::OneZ = Vec4<Real>(Real(0), Real(0), Real(1), Real(1));
 
 template <class Real>
 const Vec4<Real> Vec4<Real>::OneW = Vec4<Real>(Real(0), Real(0), Real(0), Real(1));

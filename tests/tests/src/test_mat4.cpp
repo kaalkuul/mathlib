@@ -10,9 +10,10 @@ namespace
 
         SECTION("Mat4f::Zero")
         {
-            REQUIRE(Mat4f::Zero.x == Vec3f::Zero);
-            REQUIRE(Mat4f::Zero.y == Vec3f::Zero);
-            REQUIRE(Mat4f::Zero.z == Vec3f::Zero);
+            REQUIRE(Mat4f::Zero.x == Vec4f::Zero);
+            REQUIRE(Mat4f::Zero.y == Vec4f::Zero);
+            REQUIRE(Mat4f::Zero.z == Vec4f::Zero);
+            REQUIRE(Mat4f::Zero.t == Vec4f::Zero);
             REQUIRE(Mat4f::Zero.isInitialized());
             REQUIRE(!Mat4f::Zero.isNormal());
             REQUIRE(Mat4f::Zero.isOrthogonal());
@@ -22,9 +23,10 @@ namespace
 
         SECTION("Mat4f::One")
         {
-            REQUIRE(Mat4f::One.x == Vec3f::OneX);
-            REQUIRE(Mat4f::One.y == Vec3f::OneY);
-            REQUIRE(Mat4f::One.z == Vec3f::OneZ);
+            REQUIRE(Mat4f::One.x == Vec4f(1, 0, 0, 0));
+            REQUIRE(Mat4f::One.y == Vec4f(0, 1, 0, 0));
+            REQUIRE(Mat4f::One.z == Vec4f(0, 0, 1, 0));
+            REQUIRE(Mat4f::One.t == Vec4f::OneW);
             REQUIRE(Mat4f::One.isInitialized());
             REQUIRE(Mat4f::One.isNormal());
             REQUIRE(Mat4f::One.isOrthogonal());
@@ -47,9 +49,10 @@ namespace
         SECTION("Mat4(Real k)")
         {
             Mat4f m(3);
-            REQUIRE(m.x == Vec3f(3, 0, 0));
-            REQUIRE(m.y == Vec3f(0, 3, 0));
-            REQUIRE(m.z == Vec3f(0, 0, 3));
+            REQUIRE(m.x == Vec4f(3, 0, 0, 0));
+            REQUIRE(m.y == Vec4f(0, 3, 0, 0));
+            REQUIRE(m.z == Vec4f(0, 0, 3, 0));
+            REQUIRE(m.t == Vec4f(0, 0, 0, 1));
             REQUIRE(m.isInitialized());
             REQUIRE(!m.isNormal());
             REQUIRE(m.isOrthogonal());
@@ -60,9 +63,9 @@ namespace
         SECTION("Mat4(const Vec3<Real> &u, const Vec3<Real> &v, const Vec3<Real> &w)")
         {
             Mat4f m(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9), Vec3f(10, 11, 12));
-            REQUIRE(m.x == Vec4f(1, 2, 3));
-            REQUIRE(m.y == Vec4f(4, 5, 6));
-            REQUIRE(m.z == Vec4f(7, 8, 9));
+            REQUIRE(m.x == Vec4f(1, 2, 3, 0));
+            REQUIRE(m.y == Vec4f(4, 5, 6, 0));
+            REQUIRE(m.z == Vec4f(7, 8, 9, 0));
             REQUIRE(m.t == Vec4f(10, 11, 12, 1));
             REQUIRE(m.isInitialized());
             REQUIRE(!m.isNormal());
@@ -352,7 +355,7 @@ namespace
         {
             Mat4f k(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9));
             Mat4f m = -k;
-            REQUIRE_THAT(m, Matches::WithinAbs(Mat4f(Vec3f(-1, -2, -3), Vec3f(-4, -5, -6), Vec3f(-7, -8, -9), -Vec4f::OneW)));
+            REQUIRE_THAT(m, Matches::WithinAbs(Mat4f(Vec4f(-1, -2, -3, 0), Vec4f(-4, -5, -6, 0), Vec4f(-7, -8, -9, 0), -Vec4f::OneW)));
             REQUIRE(m.isInitialized());
             REQUIRE(!m.isNormal());
             REQUIRE(!m.isOrthogonal());
@@ -388,9 +391,9 @@ namespace
         {
             Mat4f a(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9));
             Mat4f b;
-            b.x = Vec3f(1, 2, 3);
-            b.y = Vec3f(4, 5, 6);
-            b.z = Vec3f(7, 8, 9);
+            b.x = Vec4f(1, 2, 3, 0);
+            b.y = Vec4f(4, 5, 6, 0);
+            b.z = Vec4f(7, 8, 9, 0);
             b.t = Vec4f::OneW;
             REQUIRE(a == a);
             REQUIRE(a == b);
@@ -905,6 +908,44 @@ namespace
             REQUIRE_THAT(d[0], Matches::WithinAbs(Vec3f(1, 2, 3) + Vec3f(10, 11, 12)));
             REQUIRE_THAT(d[2], Matches::WithinAbs(Vec3f(4, 5, 6) + Vec3f(10, 11, 12)));
             REQUIRE_THAT(d[4], Matches::WithinAbs(Vec3f(7, 8, 9) + Vec3f(10, 11, 12)));
+        }
+
+        SECTION("transform(Vec4<Real>& dest, const Vec4<Real>& src)")
+        {
+            Mat4f m(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9), Vec3f(10, 11, 12));
+            Vec4f v;
+            m.transform(v, Vec4f::OneX);
+            REQUIRE_THAT(v, Matches::WithinAbs(Vec4f(11, 13, 15)));
+            m.transform(v, Vec4f::OneY);
+            REQUIRE_THAT(v, Matches::WithinAbs(Vec4f(14, 16, 18)));
+            m.transform(v, Vec4f::OneZ);
+            REQUIRE_THAT(v, Matches::WithinAbs(Vec4f(17, 19, 21)));
+        }
+
+        SECTION("transform(Vec4<Real>* dest, const Vec4<Real>* src, size_t count)")
+        {
+            Mat4f m(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9), Vec3f(10, 11, 12));
+            Vec4f d[3], v[3];
+            v[0] = Vec4f::OneX;
+            v[1] = Vec4f::OneY;
+            v[2] = Vec4f::OneZ;
+            m.transform(d, v, 3);
+            REQUIRE_THAT(d[0], Matches::WithinAbs(Vec4f(11, 13, 15)));
+            REQUIRE_THAT(d[1], Matches::WithinAbs(Vec4f(14, 16, 18)));
+            REQUIRE_THAT(d[2], Matches::WithinAbs(Vec4f(17, 19, 21)));
+        }
+
+        SECTION("transform(Vec3<Real>* dest, const Vec3<Real>* src, size_t count, size_t destStride, size_t srcStride)")
+        {
+            Mat4f m(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9), Vec3f(10, 11, 12));
+            Vec4f d[6], v[6];
+            v[0] = Vec4f::OneX;
+            v[2] = Vec4f::OneY;
+            v[4] = Vec4f::OneZ;
+            m.transform(d, v, 3, 2 * sizeof(Vec4f), 2 * sizeof(Vec4f));
+            REQUIRE_THAT(d[0], Matches::WithinAbs(Vec4f(11, 13, 15)));
+            REQUIRE_THAT(d[2], Matches::WithinAbs(Vec4f(14, 16, 18)));
+            REQUIRE_THAT(d[4], Matches::WithinAbs(Vec4f(17, 19, 21)));
         }
 
         SECTION("transformVector(Vec3<Real>& dest, const Vec3<Real>& src)")

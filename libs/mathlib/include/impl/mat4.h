@@ -3,7 +3,12 @@
 MATHLIB_NS_BEGIN
 
 template <class Real>
-const Mat4<Real> Mat4<Real>::Zero = Mat4<Real>(Real(0));
+const Mat4<Real> Mat4<Real>::Zero = Mat4<Real>(
+	Vec4<Real>(Real(0), Real(0), Real(0), Real(0)),
+	Vec4<Real>(Real(0), Real(0), Real(0), Real(0)),
+	Vec4<Real>(Real(0), Real(0), Real(0), Real(0)),
+	Vec4<Real>(Real(0), Real(0), Real(0), Real(0))
+);
 
 template <class Real>
 const Mat4<Real> Mat4<Real>::One = Mat4<Real>(Real(1));
@@ -55,10 +60,10 @@ Mat4<Real>::Mat4(const Vec4<Real>& x, const Vec4<Real>& y, const Vec4<Real>& z, 
 template <class Real>
 Mat4<Real>& Mat4<Real>::setIdentity()
 {
-	x = Vec4<Real>::OneX;
-	y = Vec4<Real>::OneY;
-	z = Vec4<Real>::OneZ;
-	t = Vec4<Real>::OneW;
+	x.set(Real(1), Real(0), Real(0), Real(0));
+	y.set(Real(0), Real(1), Real(0), Real(0));
+	z.set(Real(0), Real(0), Real(1), Real(0));
+	t.set(Real(0), Real(0), Real(0), Real(1));
 	flags = Flags::Orthonormal | Flags::Identity;
 	return *this;
 }
@@ -110,20 +115,20 @@ Mat4<Real>& Mat4<Real>::set(const Quat<Real>& q, const Vec3<Real>& t)
 template <class Real>
 Mat4<Real>& Mat4<Real>::set(const Vec3<Real>& x, const Vec3<Real>& y, const Vec3<Real>& z, const Vec3<Real>& t)
 {
-	this->x = x;
-	this->y = y;
-	this->z = z;
-	this->t = Vec4<Real>(t, Real(1));
+	this->x.set(x, Real(0));
+	this->y.set(y, Real(0));
+	this->z.set(z, Real(0));
+	this->t.set(t, Real(1));
 	return optimize();
 }
 
 template <class Real>
 Mat4<Real>& Mat4<Real>::set(const Vec4<Real>& x, const Vec4<Real>& y, const Vec4<Real>& z, const Vec4<Real>& t)
 {
-	this->x = x;
-	this->y = y;
-	this->z = z;
-	this->t = t;
+	this->x.set(x);
+	this->y.set(y);
+	this->z.set(z);
+	this->t.set(t);
 	return optimize();
 }
 
@@ -383,6 +388,14 @@ template <class Real>
 Vec3<Real> Mat4<Real>::operator*(const Vec3<Real>& u) const
 {
 	Vec3<Real> r;
+	transform(r, u);
+	return r;
+}
+
+template <class Real>
+Vec4<Real> Mat4<Real>::operator*(const Vec4<Real>& u) const
+{
+	Vec4<Real> r;
 	transform(r, u);
 	return r;
 }
@@ -901,6 +914,38 @@ void Mat4<Real>::transform(Vec3<Real>* dest, const Vec3<Real>* src, size_t count
 }
 
 template <class Real>
+void Mat4<Real>::transform(Vec4<Real>& dest, const Vec4<Real>& src) const
+{
+	dest.x = src.x * x.x + src.y * y.x + src.z * z.x + src.w * t.x;
+	dest.y = src.x * x.y + src.y * y.y + src.z * z.y + src.w * t.y;
+	dest.z = src.x * x.z + src.y * y.z + src.z * z.z + src.w * t.z;
+	dest.w = src.x * x.w + src.y * y.w + src.z * z.w + src.w * t.w;
+}
+
+template <class Real>
+void Mat4<Real>::transform(Vec4<Real>* dest, const Vec4<Real>* src, size_t count) const
+{
+	for (size_t i = 0; i < count; i++)
+	{
+		transform(*dest++, *src++);
+	}
+}
+
+template <class Real>
+void Mat4<Real>::transform(Vec4<Real>* dest, const Vec4<Real>* src, size_t count,
+	size_t destStride, size_t srcStride) const
+{
+	const char* d = (const char*)dest;
+	const char* s = (const char*)src;
+	for (size_t i = 0; i < count; i++)
+	{
+		transform(*((Vec4<Real>*)d), *((const Vec4<Real>*)s));
+		d += destStride;
+		s += srcStride;
+	}
+}
+
+template <class Real>
 void Mat4<Real>::transformVector(Vec3<Real>& dest, const Vec3<Real>& src) const
 {
 	dest.x = src.x * x.x + src.y * y.x + src.z * z.x;
@@ -926,6 +971,38 @@ void Mat4<Real>::transformVector(Vec3<Real>* dest, const Vec3<Real>* src, size_t
 	for (size_t i = 0; i < count; i++)
 	{
 		transformVector(*((Vec3<Real>*)d), *((const Vec3<Real>*)s));
+		d += destStride;
+		s += srcStride;
+	}
+}
+
+template <class Real>
+void Mat4<Real>::transformVector(Vec4<Real>& dest, const Vec4<Real>& src) const
+{
+	dest.x = src.x * x.x + src.y * y.x + src.z * z.x;
+	dest.y = src.x * x.y + src.y * y.y + src.z * z.y;
+	dest.z = src.x * x.z + src.y * y.z + src.z * z.z;
+	dest.w = src.x * x.w + src.y * y.w + src.z * z.w;
+}
+
+template <class Real>
+void Mat4<Real>::transformVector(Vec4<Real>* dest, const Vec4<Real>* src, size_t count) const
+{
+	for (size_t i = 0; i < count; i++)
+	{
+		transformVector(*dest++, *src++);
+	}
+}
+
+template <class Real>
+void Mat4<Real>::transformVector(Vec4<Real>* dest, const Vec4<Real>* src, size_t count,
+	size_t destStride, size_t srcStride) const
+{
+	const char* d = (const char*)dest;
+	const char* s = (const char*)src;
+	for (size_t i = 0; i < count; i++)
+	{
+		transformVector(*((Vec4<Real>*)d), *((const Vec4<Real>*)s));
 		d += destStride;
 		s += srcStride;
 	}

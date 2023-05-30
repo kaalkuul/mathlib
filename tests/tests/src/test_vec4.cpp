@@ -21,7 +21,7 @@ namespace {
             REQUIRE(Vec4f::OneX.x == 1.0f);
             REQUIRE(Vec4f::OneX.y == 0.0f);
             REQUIRE(Vec4f::OneX.z == 0.0f);
-            REQUIRE(Vec4f::OneX.w == 0.0f);
+            REQUIRE(Vec4f::OneX.w == 1.0f);
         }
 
         SECTION("Vec4f::OneY")
@@ -29,7 +29,7 @@ namespace {
             REQUIRE(Vec4f::OneY.x == 0.0f);
             REQUIRE(Vec4f::OneY.y == 1.0f);
             REQUIRE(Vec4f::OneY.z == 0.0f);
-            REQUIRE(Vec4f::OneY.w == 0.0f);
+            REQUIRE(Vec4f::OneY.w == 1.0f);
         }
 
         SECTION("Vec4f::OneZ")
@@ -37,7 +37,7 @@ namespace {
             REQUIRE(Vec4f::OneZ.x == 0.0f);
             REQUIRE(Vec4f::OneZ.y == 0.0f);
             REQUIRE(Vec4f::OneZ.z == 1.0f);
-            REQUIRE(Vec4f::OneZ.w == 0.0f);
+            REQUIRE(Vec4f::OneZ.w == 1.0f);
         }
 
         SECTION("Vec4f::OneW")
@@ -166,7 +166,7 @@ namespace {
             REQUIRE(cdata[0] == 1.0f);
             REQUIRE(cdata[1] == 0.0f);
             REQUIRE(cdata[2] == 0.0f);
-            REQUIRE(cdata[3] == 0.0f);
+            REQUIRE(cdata[3] == 1.0f);
         }
 
         SECTION("cast()")

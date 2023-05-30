@@ -45,6 +45,7 @@ public:
 	Mat4 operator/(Real k) const;
 	Mat4 operator*(const Mat4& m) const;
 	Vec3<Real> operator*(const Vec3<Real>& u) const;
+	Vec4<Real> operator*(const Vec4<Real>& u) const;
 
 	// Comparison operators
 	bool operator==(const Mat4& m) const;
@@ -94,10 +95,18 @@ public:
 	void transform(Vec3<Real>* dest, const Vec3<Real>* src, size_t count) const;
 	void transform(Vec3<Real>* dest, const Vec3<Real>* src, size_t count,
 		size_t destStride, size_t srcStride) const;
+	void transform(Vec4<Real>& dest, const Vec4<Real>& src) const;
+	void transform(Vec4<Real>* dest, const Vec4<Real>* src, size_t count) const;
+	void transform(Vec4<Real>* dest, const Vec4<Real>* src, size_t count,
+		size_t destStride, size_t srcStride) const;
 
 	void transformVector(Vec3<Real>& dest, const Vec3<Real>& src) const;
 	void transformVector(Vec3<Real>* dest, const Vec3<Real>* src, size_t count) const;
 	void transformVector(Vec3<Real>* dest, const Vec3<Real>* src, size_t count,
+		size_t destStride, size_t srcStride) const;
+	void transformVector(Vec4<Real>& dest, const Vec4<Real>& src) const;
+	void transformVector(Vec4<Real>* dest, const Vec4<Real>* src, size_t count) const;
+	void transformVector(Vec4<Real>* dest, const Vec4<Real>* src, size_t count,
 		size_t destStride, size_t srcStride) const;
 
 	static void multiply(Mat4& dest, const Mat4& a, const Mat4& b);
