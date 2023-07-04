@@ -8,6 +8,7 @@ add_library(mathlib INTERFACE
   include/colorrgb.h
   include/colorrgba.h
   include/colorhsv.h
+  include/aabb.h
   include/vec2.h
   include/vec3.h
   include/vec4.h
@@ -28,6 +29,7 @@ add_library(mathlib INTERFACE
   include/impl/colorrgb.h
   include/impl/colorrgba.h
   include/impl/colorhsv.h
+  include/impl/aabb.h
   include/impl/vec2.h
   include/impl/vec3.h
   include/impl/vec4.h

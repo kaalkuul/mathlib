@@ -268,7 +268,7 @@ Real & Vec3<Real>::operator[](Coord c)
 }
 
 template <class Real>
-Real Vec3<Real>::operator()(Coord c) const
+Real Vec3<Real>::operator[](Coord c) const
 {
 	switch (c)
 	{

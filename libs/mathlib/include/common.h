@@ -14,7 +14,7 @@ MATHLIB_NS_BEGIN
 // Coordinates used in vectors
 enum Coord : unsigned int
 {
-	X,
+	X = 0,
 	Y,
 	Z,
 	NX,
@@ -46,6 +46,7 @@ template <class Real> class GaussJordan;
 template <class Real> class ColorRGB;
 template <class Real> class ColorRGBA;
 template <class Real> class ColorHSV;
+template <class Real> class AABB;
 template <class Real> class Vec2;
 template <class Real> class Vec3;
 template <class Real> class Vec4;
@@ -71,6 +72,7 @@ typedef GaussJordan<float> GaussJordanf;
 typedef ColorRGB<float> ColorRGBf;
 typedef ColorRGBA<float> ColorRGBAf;
 typedef ColorHSV<float> ColorHSVf;
+typedef AABB<float> AABBf;
 typedef Vec2<float> Vec2f;
 typedef Vec3<float> Vec3f;
 typedef Vec4<float> Vec4f;
@@ -96,6 +98,7 @@ typedef GaussJordan<double> GaussJordand;
 typedef ColorRGB<double> ColorRGBd;
 typedef ColorRGBA<double> ColorRGBAd;
 typedef ColorHSV<double> ColorHSVd;
+typedef AABB<double> AABBd;
 typedef Vec2<double> Vec2d;
 typedef Vec3<double> Vec3d;
 typedef Vec4<double> Vec4d;

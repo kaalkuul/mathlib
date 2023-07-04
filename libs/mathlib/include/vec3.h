@@ -29,7 +29,7 @@ public:
 
 	// Access operators
 	Real& operator[](Coord c);
-    Real operator()(Coord c) const;
+    Real operator[](Coord c) const;
 
 	// Assignments
 	Vec3& operator+=(const Vec3& u);

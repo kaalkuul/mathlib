@@ -7,6 +7,7 @@ add_executable(mathlib_tests
 	src/test_colorrgb.cpp
 	src/test_colorrgba.cpp
 	src/test_colorhsv.cpp
+	src/test_aabb.cpp
 	src/test_vec2.cpp
 	src/test_vec3.cpp
 	src/test_vec4.cpp
