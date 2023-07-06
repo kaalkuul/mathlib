@@ -2,6 +2,37 @@
 
 MATHLIB_NS_BEGIN
 
+// Frustum conventions:
+//
+//     Near plane:
+//          Top right: 0
+//          Bottom right: 1
+//          Bottom left: 2
+//          Top left: 3
+//
+//     Far plane:  
+//          Top right: 4
+//          Bottom right: 5
+//          Bottom left: 6
+//          Top left: 7
+//
+//             7     4
+//                   |
+//                  /|
+//         3     0 / |             Y
+//                /  |             ^
+//               |   |             |
+//              /|   |             |
+//            ./ |   |             .----> X
+//             \ |   |            /
+//              \|   |           L
+//               |   |          Z
+//         2     1\  |
+//                 \ |
+//                  \|
+//                   |
+//             6     5
+
 //
 // Constructors
 //
