@@ -32,6 +32,7 @@ public:
 	static Mat34 from(const Vec3<Real>& x, const Vec3<Real>& y, const Vec3<Real>& z, const Vec3<Real>& t);
 	static Mat34 from(Coord ecoord, const Vec3<Real>& exact, Coord acoord, const Vec3<Real>& approx);
 	static Mat34 from(const Vec3<Real>& axis, Real angle, const Vec3<Real>& t = Vec3<Real>::Zero);
+	static Mat34 from(Coord axis, Real angle, const Vec3<Real>& t = Vec3<Real>::Zero);
 	static Mat34 fromSlerp(const Mat34& a, const Mat34& b, Real weight);
 	static Mat34 fromSlerpMaxAngle(const Mat34& a, const Mat34& b, Real maxAngle);
 

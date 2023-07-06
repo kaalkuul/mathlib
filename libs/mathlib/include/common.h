@@ -65,6 +65,7 @@ template <class Real> class HermiteSplineSegment3;
 template <class Real> class BezierSegment3;
 template <class Real> class BezierSegmentFwdDiff3;
 template <class Real> class SplineSolver3;
+template <class Real> class Frustum;
 
 typedef Constants<float> Constantsf;
 typedef TriDiagonal<float> TriDiagonalf;
@@ -91,6 +92,7 @@ typedef HermiteSplineSegment3<float> HermiteSplineSegment3f;
 typedef BezierSegment3<float> BezierSegment3f;
 typedef BezierSegmentFwdDiff3<float> BezierSegmentFwdDiff3f;
 typedef SplineSolver3<float> SplineSolver3f;
+typedef Frustum<float> Frustumf;
 
 typedef Constants<double> Constantsd;
 typedef TriDiagonal<double> TriDiagonald;
@@ -117,5 +119,6 @@ typedef HermiteSplineSegment3<double> HermiteSplineSegment3d;
 typedef BezierSegment3<double> BezierSegment3d;
 typedef BezierSegmentFwdDiff3<double> BezierSegmentFwdDiff3d;
 typedef SplineSolver3<double> SplineSolver3d;
+typedef Frustum<double> Frustumd;
 
 MATHLIB_NS_END

@@ -23,6 +23,7 @@ add_executable(mathlib_tests
 	src/test_plane.cpp
 	src/test_sphere.cpp
 	src/test_spline3.cpp
+	src/test_frustum.cpp
 )
 
 target_compile_definitions(mathlib_tests

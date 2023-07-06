@@ -24,6 +24,7 @@ add_library(mathlib INTERFACE
   include/plane.h
   include/sphere.h
   include/spline3.h
+  include/frustum.h
   include/impl/constants.h
   include/impl/linearequations.h
   include/impl/colorrgb.h
@@ -45,6 +46,7 @@ add_library(mathlib INTERFACE
   include/impl/plane.h
   include/impl/sphere.h
   include/impl/spline3.h
+  include/impl/frustum.h
 )
 
 add_library(mathlib::mathlib ALIAS mathlib)

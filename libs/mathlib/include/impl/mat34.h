@@ -164,6 +164,14 @@ Mat34<Real> Mat34<Real>::from(const Vec3<Real>& axis, Real angle, const Vec3<Rea
 }
 
 template <class Real>
+Mat34<Real> Mat34<Real>::from(Coord axis, Real angle, const Vec3<Real>& t)
+{
+	Mat34<Real> r;
+	r.set(axis, angle, t);
+	return r;
+}
+
+template <class Real>
 Mat34<Real> Mat34<Real>::fromSlerp(const Mat34& a, const Mat34& b, Real weight)
 {
 	Mat34<Real> r;
