@@ -14,16 +14,149 @@ AABB<Real>::AABB()
 
 template <class Real>
 AABB<Real>::AABB(const Vec3<Real>& _center, const Vec3<Real>& size)
-: center(_center), extents(size * 0.5f)
+: center(_center), extents(size * Real(0.5))
 {
 }
 
+
+//
+//  Setters
+//
+
 template <class Real>
-AABB<Real> AABB<Real>::from(const Vec3<Real>& min, const Vec3<Real>& max)
+AABB<Real>& AABB<Real>::set(const Vec3<Real>& point)
+{
+	center = point;
+	extents = Vec3<Real>::Zero;
+	return *this;
+}
+
+template <class Real>
+AABB<Real>& AABB<Real>::set(const Vec3<Real>& center, const Vec3<Real>& size)
+{
+	this->center = center;
+	this->extents = size * Real(0.5);
+	return *this;
+}
+
+template <class Real>
+AABB<Real>& AABB<Real>::setInfSup(const Vec3<Real>& inf, const Vec3<Real>& sup)
+{
+	center = (inf + sup) * Real(0.5);
+	extents = (sup - inf) * Real(0.5);
+	return *this;
+}
+
+template <class Real>
+AABB<Real>& AABB<Real>::set(int count, const Vec3<Real>* points)
+{
+	assert(count > 0);
+	assert(points != nullptr);
+
+	const Vec3<Real>* p = points;
+
+	Vec3<Real> inf = *p;
+	Vec3<Real> sup = *p;
+
+	p++;
+	count--;
+
+	while (count-- > 0)
+	{
+		if (p->x < inf.x) inf.x = p->x;
+		if (p->y < inf.y) inf.y = p->y;
+		if (p->z < inf.z) inf.z = p->z;
+
+		if (p->x > sup.x) sup.x = p->x;
+		if (p->y > sup.y) sup.y = p->y;
+		if (p->z > sup.z) sup.z = p->z;
+
+		p++;
+	}
+
+	return setInfSup(inf, sup);
+}
+
+template <class Real>
+AABB<Real>& AABB<Real>::add(const Vec3<Real>& point)
+{
+	Vec3<Real> inf = center - extents;
+	Vec3<Real> sup = center + extents;
+
+	bool outside = false;
+
+	if (point.x < inf.x)
+	{
+		inf.x = point.x;
+		outside = true;
+	}
+	if (point.y < inf.y)
+	{
+		inf.y = point.y;
+		outside = true;
+	}
+	if (point.z < inf.z)
+	{
+		inf.z = point.z;
+		outside = true;
+	}
+
+	if (point.x > sup.x)
+	{
+		sup.x = point.x;
+		outside = true;
+	}
+	if (point.y > sup.y)
+	{
+		sup.y = point.y;
+		outside = true;
+	}
+	if (point.z > sup.z)
+	{
+		sup.z = point.z;
+		outside = true;
+	}
+
+	return outside ? setInfSup(inf, sup) : *this;
+}
+
+
+//
+//  Assignments
+//
+
+template <class Real>
+AABB<Real> AABB<Real>::from(const Vec3<Real>& point)
 {
 	AABB<Real> result;
-	result.center = (min + max) * Real(0.5);
-	result.extents = (max - min) * Real(0.5);
+	result.center = point;
+	result.extents = Vec3<Real>::Zero;
+	return result;
+}
+
+template <class Real>
+AABB<Real> AABB<Real>::from(const Vec3<Real>& center, const Vec3<Real>& size)
+{
+	AABB<Real> result;
+	result.center = center;
+	result.extents = size * Real(0.5);
+	return result;
+}
+
+template <class Real>
+AABB<Real> AABB<Real>::fromInfSup(const Vec3<Real>& inf, const Vec3<Real>& sup)
+{
+	AABB<Real> result;
+	result.center = (inf + sup) * Real(0.5);
+	result.extents = (sup - inf) * Real(0.5);
+	return result;
+}
+
+template <class Real>
+AABB<Real> AABB<Real>::from(int count, const Vec3<Real>* points)
+{
+	AABB<Real> result;
+	result.set(count, points);
 	return result;
 }
 
@@ -125,13 +258,13 @@ bool AABB<Real>::operator!=(const AABB<Real>& rhs) const
 //
 
 template <class Real>
-Vec3<Real> AABB<Real>::min() const
+Vec3<Real> AABB<Real>::inf() const
 {
 	return center - extents;
 }
 
 template <class Real>
-Vec3<Real> AABB<Real>::max() const
+Vec3<Real> AABB<Real>::sup() const
 {
 	return center + extents;
 }
@@ -211,10 +344,10 @@ bool AABB<Real>::contains(const AABB<Real>& box) const
 template <class Real>
 bool AABB<Real>::intersects(const AABB<Real>& box) const
 {
-	const Vec3<Real>& m1 = min();
-	const Vec3<Real>& M1 = max();
-	const Vec3<Real>& m2 = box.min();
-	const Vec3<Real>& M2 = box.max();
+	const Vec3<Real>& m1 = inf();
+	const Vec3<Real>& M1 = sup();
+	const Vec3<Real>& m2 = box.inf();
+	const Vec3<Real>& M2 = box.sup();
 	if (m2.x > M1.x || M2.x < m1.x) return false;
 	if (m2.y > M1.y || M2.y < m1.y) return false;
 	if (m2.z > M1.z || M2.z < m1.z) return false;

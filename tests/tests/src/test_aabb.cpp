@@ -33,21 +33,98 @@ namespace {
         SECTION("AABB(const Vec3<Real>& center, const Vec3<Real>& extents)")
         {
             AABBf box;
-
             box = AABBf(Vec3f::Zero, Vec3f(1, 2, 3));
             REQUIRE(box.center == Vec3f::Zero);
             REQUIRE(box.extents == Vec3f(0.5f, 1.0f, 1.5f));
         }
 
-        // Create from
+        // Setters
 
-        SECTION("from(const Vec3<Real>& min, const Vec3<Real>& max)")
+        SECTION("set(const Vec3<Real>& point)")
         {
             AABBf box;
+            box.set(Vec3f(1, 2, 3));
+            REQUIRE(box.center == Vec3f(1, 2, 3));
+            REQUIRE(box.extents == Vec3f::Zero);
+        }
 
-            box = AABBf::from(Vec3f::Zero, Vec3f(1, 2, 3));
+        SECTION("set(const Vec3<Real>& center, const Vec3<Real>& size)")
+        {
+            AABBf box;
+            box.set(Vec3f::Zero, Vec3f(1, 2, 3));
+            REQUIRE(box.center == Vec3f::Zero);
+            REQUIRE(box.extents == Vec3f(0.5f, 1.0f, 1.5f));
+        }
+
+        SECTION("setInfSup(const Vec3<Real>& inf, const Vec3<Real>& sup)")
+        {
+            AABBf box;
+            box.setInfSup(Vec3f::Zero, Vec3f(1, 2, 3));
             REQUIRE(box.center == Vec3f(0.5f, 1.0f, 1.5f));
             REQUIRE(box.extents == Vec3f(0.5f, 1.0f, 1.5f));
+        }
+
+        SECTION("set(int count, const Vec3<Real>* points)")
+        {
+            Vec3f points[] = {
+                Vec3f(-10, -10, -10),
+                Vec3f(-1, -1, -1),
+                Vec3f(1, 1, 1),
+                Vec3f(10, 10, 10)
+            };
+
+            AABBf box;
+            box.set(4, points);
+            REQUIRE(box.center == Vec3f(0, 0, 0));
+            REQUIRE(box.extents == Vec3f(10, 10, 10));
+        }
+
+        SECTION("add(const Vec3<Real>& point)")
+        {
+            AABBf box;
+            box.set(Vec3f::Zero)
+                .add(Vec3f(1, 1, 1))
+                .add(Vec3f(-1, -1, -1))
+                .add(Vec3f::Zero);
+            REQUIRE(box.center == Vec3f::Zero);
+            REQUIRE(box.extents == Vec3f(1, 1, 1));
+        }
+
+        // Create from
+
+        SECTION("from(const Vec3<Real>& point)")
+        {
+            AABBf box = AABBf::from(Vec3f(1, 2, 3));
+            REQUIRE(box.center == Vec3f(1, 2, 3));
+            REQUIRE(box.extents == Vec3f::Zero);
+        }
+
+        SECTION("from(const Vec3<Real>& center, const Vec3<Real>& size)")
+        {
+            AABBf box = AABBf::from(Vec3f::Zero, Vec3f(1, 2, 3));
+            REQUIRE(box.center == Vec3f::Zero);
+            REQUIRE(box.extents == Vec3f(0.5f, 1.0f, 1.5f));
+        }
+
+        SECTION("fromInfSup(const Vec3<Real>& inf, const Vec3<Real>& sup)")
+        {
+            AABBf box = AABBf::fromInfSup(Vec3f::Zero, Vec3f(1, 2, 3));
+            REQUIRE(box.center == Vec3f(0.5f, 1.0f, 1.5f));
+            REQUIRE(box.extents == Vec3f(0.5f, 1.0f, 1.5f));
+        }
+
+        SECTION("from(int count, const Vec3<Real>* points)")
+        {
+            Vec3f points[] = {
+                Vec3f(-10, -10, -10),
+                Vec3f(-1, -1, -1),
+                Vec3f(1, 1, 1),
+                Vec3f(10, 10, 10)
+            };
+
+            AABBf box = AABBf::from(4, points);
+            REQUIRE(box.center == Vec3f(0, 0, 0));
+            REQUIRE(box.extents == Vec3f(10, 10, 10));
         }
 
         // Assignment operators
@@ -104,20 +181,20 @@ namespace {
 
         //  Functions
 
-        SECTION("min() const")
+        SECTION("inf() const")
         {
             AABBf box;
 
             box = AABBf::One;
-            REQUIRE_THAT(box.min(), Matches::WithinAbs(Vec3f(-0.5f, -0.5f, -0.5f), 1e-10));
+            REQUIRE_THAT(box.inf(), Matches::WithinAbs(Vec3f(-0.5f, -0.5f, -0.5f), 1e-10));
         }
 
-        SECTION("max() const")
+        SECTION("sup() const")
         {
             AABBf box;
 
             box = AABBf::One;
-            REQUIRE_THAT(box.max(), Matches::WithinAbs(Vec3f(0.5f, 0.5f, 0.5f), 1e-10));
+            REQUIRE_THAT(box.sup(), Matches::WithinAbs(Vec3f(0.5f, 0.5f, 0.5f), 1e-10));
         }
 
         SECTION("size() const")

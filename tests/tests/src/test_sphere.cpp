@@ -23,6 +23,58 @@ namespace {
             REQUIRE(sphere.radius == 10.0f);
         }
 
+        // Setters
+
+        SECTION("set(const Vec3<Real>& center, Real radius)")
+        {
+            Spheref sphere;
+
+            sphere.set(Vec3f::Zero, 2.0f);
+            REQUIRE(sphere.center == Vec3f::Zero);
+            REQUIRE(sphere.radius == 2.0f);
+
+            sphere.set(Vec3f::OneX, 3.0f);
+            REQUIRE(sphere.center == Vec3f::OneX);
+            REQUIRE(sphere.radius == 3.0f);
+        }
+
+        SECTION("from(int count, const Vec3<Real>* points)")
+        {
+            SECTION("Case 1")
+            {
+                Vec3f points[] = {
+                    Vec3f(10, 0, 0),
+                    Vec3f(-10, 0, 0),
+                    Vec3f(0, 10, 0),
+                    Vec3f(0, -10, 0),
+                    Vec3f(0, 0, 10),
+                    Vec3f(0, 0, -10),
+                    Vec3f(-1, -1, -1),
+                    Vec3f(1, 1, 1),
+                };
+
+                Spheref sphere;
+                sphere.set(4, points);
+                REQUIRE(sphere.center == Vec3f::Zero);
+                REQUIRE(sphere.radius == 10.0f);
+            }
+
+            SECTION("Case 2")
+            {
+                Vec3f points[] = {
+                    Vec3f(-10, -10, -10),
+                    Vec3f(-1, -1, -1),
+                    Vec3f(1, 1, 1),
+                    Vec3f(10, 10, 10)
+                };
+
+                Spheref sphere;
+                sphere.set(4, points);
+                REQUIRE(sphere.center == Vec3f::Zero);
+                REQUIRE_THAT(sphere.radius, Catch::Matchers::WithinAbs(17.3205090, 1e-6));
+            }
+        }
+
         // Create from
 
         SECTION("from(const Vec3<Real>& center, Real radius)")
@@ -38,6 +90,40 @@ namespace {
             REQUIRE(sphere.radius == 3.0f);
         }
 
+        SECTION("from(int count, const Vec3<Real>* points)")
+        {
+            SECTION("Case 1")
+            {
+                Vec3f points[] = {
+                    Vec3f(10, 0, 0),
+                    Vec3f(-10, 0, 0),
+                    Vec3f(0, 10, 0),
+                    Vec3f(0, -10, 0),
+                    Vec3f(0, 0, 10),
+                    Vec3f(0, 0, -10),
+                    Vec3f(-1, -1, -1),
+                    Vec3f(1, 1, 1),
+                };
+
+                Spheref sphere = Spheref::from(4, points);
+                REQUIRE(sphere.center == Vec3f::Zero);
+                REQUIRE(sphere.radius == 10.0f);
+            }
+
+            SECTION("Case 2")
+            {
+                Vec3f points[] = {
+                    Vec3f(-10, -10, -10),
+                    Vec3f(-1, -1, -1),
+                    Vec3f(1, 1, 1),
+                    Vec3f(10, 10, 10)
+                };
+
+                Spheref sphere = Spheref::from(4, points);
+                REQUIRE(sphere.center == Vec3f::Zero);
+                REQUIRE_THAT(sphere.radius, Catch::Matchers::WithinAbs(17.3205090, 1e-6));
+            }
+        }
 
         // Assignment operators
 

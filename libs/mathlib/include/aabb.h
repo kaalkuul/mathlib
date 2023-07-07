@@ -10,8 +10,19 @@ public:
 	AABB();
 	AABB(const Vec3<Real>& center, const Vec3<Real>& size);
 
+	// Setters
+	AABB& set(const Vec3<Real>& point);
+	AABB& set(const Vec3<Real>& center, const Vec3<Real>& size);
+	AABB& setInfSup(const Vec3<Real>& inf, const Vec3<Real>& sup);
+	AABB& set(int count, const Vec3<Real>* points);
+
+	AABB<Real>& add(const Vec3<Real>& point);
+
 	// Create from
-	static AABB from(const Vec3<Real>& min, const Vec3<Real>& max);
+	static AABB from(const Vec3<Real>& point);
+	static AABB from(const Vec3<Real>& center, const Vec3<Real>& size);
+	static AABB fromInfSup(const Vec3<Real>& inf, const Vec3<Real>& sup);
+	static AABB from(int count, const Vec3<Real>* points);
 
 	// Assignments
 	AABB& operator+=(const Vec3<Real>& t);
@@ -30,8 +41,8 @@ public:
 	bool operator!= (const AABB& rhs) const;
 
 	// Functions
-	Vec3<Real> min() const;
-	Vec3<Real> max() const;
+	Vec3<Real> inf() const;
+	Vec3<Real> sup() const;
 	Vec3<Real> size() const;
 	Sphere<Real> innerSphere() const;
 	Sphere<Real> outerSphere() const;

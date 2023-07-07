@@ -22,6 +22,60 @@ Sphere<Real>::Sphere(const Vec3<Real>& p, Real r)
 	assert(r >= Real(0));
 }
 
+
+//
+// Setters
+//
+
+template <class Real>
+Sphere<Real>& Sphere<Real>::set(const Vec3<Real>& p, Real r)
+{
+	assert(r >= Real(0));
+	center = p;
+	radius = r;
+	return *this;
+}
+
+template <class Real>
+Sphere<Real>& Sphere<Real>::set(int count, const Vec3<Real>* points)
+{
+	assert(count > 0);
+	assert(points != nullptr);
+
+	Vec3<Real> inf = points[0];
+	Vec3<Real> sup = points[0];
+
+	const Vec3<Real>* p = &points[1];
+	
+	for (int i = 1; i < count; i++, p++)
+	{
+		if (p->x < inf.x) inf.x = p->x;
+		if (p->y < inf.y) inf.y = p->y;
+		if (p->z < inf.z) inf.z = p->z;
+
+		if (p->x > sup.x) sup.x = p->x;
+		if (p->y > sup.y) sup.y = p->y;
+		if (p->z > sup.z) sup.z = p->z;
+	}
+
+	Vec3<Real> c = (inf + sup) * Real(0.5);
+	Real radius2 = Real(0);
+
+	p = points;
+
+	for (int i = 0; i < count; i++, p++)
+	{
+		Real r2 = (*p - c).lengthSqr();
+		if (r2 > radius2)
+		{
+			radius2 = r2;
+		}
+	}
+
+	return set(c, sqrt(radius2));
+}
+
+
 //
 // Create from
 //
@@ -33,6 +87,14 @@ Sphere<Real> Sphere<Real>::from(const Vec3<Real>& p, Real r)
 	Sphere<Real> sphere;
 	sphere.center = p;
 	sphere.radius = r;
+	return sphere;
+}
+
+template <class Real>
+Sphere<Real> Sphere<Real>::from(int count, const Vec3<Real>* points)
+{
+	Sphere<Real> sphere;
+	sphere.set(count, points);
 	return sphere;
 }
 
