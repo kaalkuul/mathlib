@@ -79,6 +79,26 @@ namespace {
             REQUIRE(box.extents == Vec3f(10, 10, 10));
         }
 
+        SECTION("set(int count, const Vec3<Real>* points, int stride)")
+        {
+            Vec3f points[] = {
+                Vec3f::OneX * 1000,
+                Vec3f(-10, -10, -10),
+                Vec3f::OneX * 1000,
+                Vec3f(-1, -1, -1),
+                Vec3f::OneX * 1000,
+                Vec3f(1, 1, 1),
+                Vec3f::OneX * 1000,
+                Vec3f(10, 10, 10),
+                Vec3f::OneX * 1000,
+            };
+
+            AABBf box;
+            box.set(4, &points[1], sizeof(Vec3f)*2);
+            REQUIRE(box.center == Vec3f(0, 0, 0));
+            REQUIRE(box.extents == Vec3f(10, 10, 10));
+        }
+
         SECTION("add(const Vec3<Real>& point)")
         {
             AABBf box;
@@ -123,6 +143,25 @@ namespace {
             };
 
             AABBf box = AABBf::from(4, points);
+            REQUIRE(box.center == Vec3f(0, 0, 0));
+            REQUIRE(box.extents == Vec3f(10, 10, 10));
+        }
+
+        SECTION("from(int count, const Vec3<Real>* points, int stride)")
+        {
+            Vec3f points[] = {
+                Vec3f::OneX * 1000,
+                Vec3f(-10, -10, -10),
+                Vec3f::OneX * 1000,
+                Vec3f(-1, -1, -1),
+                Vec3f::OneX * 1000,
+                Vec3f(1, 1, 1),
+                Vec3f::OneX * 1000,
+                Vec3f(10, 10, 10),
+                Vec3f::OneX * 1000,
+            };
+
+            AABBf box = AABBf::from(4, &points[1], sizeof(Vec3f) * 2);
             REQUIRE(box.center == Vec3f(0, 0, 0));
             REQUIRE(box.extents == Vec3f(10, 10, 10));
         }

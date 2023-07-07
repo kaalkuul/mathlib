@@ -78,6 +78,39 @@ AABB<Real>& AABB<Real>::set(int count, const Vec3<Real>* points)
 }
 
 template <class Real>
+AABB<Real>& AABB<Real>::set(int count, const Vec3<Real>* points, int stride)
+{
+	assert(count > 0);
+	assert(points != nullptr);
+
+	const char* p = (const char*)(points);
+	const Vec3<Real>* v = (const Vec3<Real>*)(p);
+
+	Vec3<Real> inf = *v;
+	Vec3<Real> sup = *v;
+
+	p += stride;
+	count--;
+
+	while (count-- > 0)
+	{
+		v = (const Vec3<Real>*)(p);
+
+		if (v->x < inf.x) inf.x = v->x;
+		if (v->y < inf.y) inf.y = v->y;
+		if (v->z < inf.z) inf.z = v->z;
+
+		if (v->x > sup.x) sup.x = v->x;
+		if (v->y > sup.y) sup.y = v->y;
+		if (v->z > sup.z) sup.z = v->z;
+
+		p += stride;
+	}
+
+	return setInfSup(inf, sup);
+}
+
+template <class Real>
 AABB<Real>& AABB<Real>::add(const Vec3<Real>& point)
 {
 	Vec3<Real> inf = center - extents;
@@ -157,6 +190,14 @@ AABB<Real> AABB<Real>::from(int count, const Vec3<Real>* points)
 {
 	AABB<Real> result;
 	result.set(count, points);
+	return result;
+}
+
+template <class Real>
+AABB<Real> AABB<Real>::from(int count, const Vec3<Real>* points, int stride)
+{
+	AABB<Real> result;
+	result.set(count, points, stride);
 	return result;
 }
 

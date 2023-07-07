@@ -13,10 +13,12 @@ public:
 	// Setters
 	Sphere& set(const Vec3<Real>& center, Real radius);
 	Sphere& set(int count, const Vec3<Real>* points);
+	Sphere& set(int count, const Vec3<Real>* points, int stride);
 
 	// Create from
 	static Sphere from(const Vec3<Real>& center, Real radius);
 	static Sphere from(int count, const Vec3<Real>* points);
+	static Sphere from(int count, const Vec3<Real>* points, int stride);
 
 	// Assignments
 	Sphere& operator+=(const Vec3<Real>& t);

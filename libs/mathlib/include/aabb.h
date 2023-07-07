@@ -15,6 +15,7 @@ public:
 	AABB& set(const Vec3<Real>& center, const Vec3<Real>& size);
 	AABB& setInfSup(const Vec3<Real>& inf, const Vec3<Real>& sup);
 	AABB& set(int count, const Vec3<Real>* points);
+	AABB& set(int count, const Vec3<Real>* points, int stride);
 
 	AABB<Real>& add(const Vec3<Real>& point);
 
@@ -23,6 +24,7 @@ public:
 	static AABB from(const Vec3<Real>& center, const Vec3<Real>& size);
 	static AABB fromInfSup(const Vec3<Real>& inf, const Vec3<Real>& sup);
 	static AABB from(int count, const Vec3<Real>* points);
+	static AABB from(int count, const Vec3<Real>* points, int stride);
 
 	// Assignments
 	AABB& operator+=(const Vec3<Real>& t);
