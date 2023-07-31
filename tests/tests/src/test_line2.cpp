@@ -6,6 +6,14 @@ namespace {
 
     TEST_CASE("Line2", "")
     {
+        // Types
+
+        SECTION("Real")
+        {
+            REQUIRE(sizeof(Line2f::Real) == sizeof(float));
+            REQUIRE(sizeof(Line2d::Real) == sizeof(double));
+        }
+
         // Create from
 
         SECTION("from(const Vec2<Real>& start, const Vec2<Real>& end)")

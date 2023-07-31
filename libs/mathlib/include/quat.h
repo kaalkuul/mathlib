@@ -6,6 +6,9 @@ template <class Real>
 class Quat  
 {
 public:
+	typedef Real Real;
+
+public:
 	//Constructors
 	Quat();
 	Quat(Real px, Real py, Real pz, Real pw, bool autoNormalize = true);

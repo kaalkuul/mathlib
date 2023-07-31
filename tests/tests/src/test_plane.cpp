@@ -6,6 +6,14 @@ namespace {
 
     TEST_CASE("Plane", "")
     {
+        // Types
+
+        SECTION("Real")
+        {
+            REQUIRE(sizeof(Planef::Real) == sizeof(float));
+            REQUIRE(sizeof(Planed::Real) == sizeof(double));
+        }
+
         // Constants
 
         SECTION("Planef::XY")

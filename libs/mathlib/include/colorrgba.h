@@ -6,6 +6,9 @@ template <class Real>
 class ColorRGBA
 {
 public:
+	typedef Real Real;
+
+public:
 	// Constructors
 	ColorRGBA();
 	explicit ColorRGBA(Real k, Real a = Real(1));

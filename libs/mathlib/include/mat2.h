@@ -6,6 +6,7 @@ template <class Real>
 class Mat2
 {
 public:
+	typedef Real Real;
 	typedef MatrixTolerance<Real> Tolerance;
 
 public:

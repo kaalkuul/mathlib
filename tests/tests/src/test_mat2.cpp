@@ -6,6 +6,14 @@ namespace
 
     TEST_CASE("Mat2", "")
     {
+        // Types
+
+        SECTION("Real")
+        {
+            REQUIRE(sizeof(Mat2f::Real) == sizeof(float));
+            REQUIRE(sizeof(Mat2d::Real) == sizeof(double));
+        }
+
         // Constants
 
         SECTION("Mat2f::Zero")

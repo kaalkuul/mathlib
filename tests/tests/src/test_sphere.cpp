@@ -6,6 +6,14 @@ namespace {
 
     TEST_CASE("Sphere", "")
     {
+        // Types
+
+        SECTION("Real")
+        {
+            REQUIRE(sizeof(Spheref::Real) == sizeof(float));
+            REQUIRE(sizeof(Sphered::Real) == sizeof(double));
+        }
+
         // Constants
 
         SECTION("Spheref::One")

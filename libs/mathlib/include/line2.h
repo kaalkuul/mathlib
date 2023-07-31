@@ -6,6 +6,9 @@ template <class Real>
 class Line2
 {
 public:
+	typedef Real Real;
+
+public:
 	// Constructors
 	Line2();
 

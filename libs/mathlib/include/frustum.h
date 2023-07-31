@@ -6,6 +6,9 @@ template <class Real>
 class Frustum
 {
 public:
+	typedef Real Real;
+
+public:
 	// Constructors
 	Frustum();
 	Frustum(const Vec3<Real>* corners);

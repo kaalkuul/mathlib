@@ -6,6 +6,14 @@ namespace {
 
     TEST_CASE("Ray3", "")
     {
+        // Types
+
+        SECTION("Real")
+        {
+            REQUIRE(sizeof(Ray3f::Real) == sizeof(float));
+            REQUIRE(sizeof(Ray3d::Real) == sizeof(double));
+        }
+
         // Create from
 
         SECTION("from(const Vec3<Real>& start, const Vec3<Real>& direction)")

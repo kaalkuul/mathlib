@@ -6,6 +6,9 @@ template <class Real>
 class ColorHSV
 {
 public:
+	typedef Real Real;
+
+public:
 	// Constructors
 	ColorHSV();
 	ColorHSV(Real h, Real s, Real v);

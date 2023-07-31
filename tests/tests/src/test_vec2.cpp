@@ -6,6 +6,14 @@ namespace {
 
     TEST_CASE("Vec2", "")
     {
+        // Types
+
+        SECTION("Real")
+        {
+            REQUIRE(sizeof(Vec2f::Real) == sizeof(float));
+            REQUIRE(sizeof(Vec2d::Real) == sizeof(double));
+        }
+
         // Constants
 
         SECTION("Vec2f::Zero")

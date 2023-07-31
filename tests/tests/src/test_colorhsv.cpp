@@ -6,6 +6,14 @@ namespace {
 
     TEST_CASE("ColorHSV", "")
     {
+        // Types
+
+        SECTION("Real")
+        {
+            REQUIRE(sizeof(ColorHSVf::Real) == sizeof(float));
+            REQUIRE(sizeof(ColorHSVd::Real) == sizeof(double));
+        }
+
         // Constants
 
         SECTION("ColorHSVf::Black")

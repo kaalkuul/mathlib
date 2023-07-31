@@ -6,6 +6,14 @@ namespace {
 
     TEST_CASE("ColorRGBA", "")
     {
+        // Types
+
+        SECTION("Real")
+        {
+            REQUIRE(sizeof(ColorRGBAf::Real) == sizeof(float));
+            REQUIRE(sizeof(ColorRGBAd::Real) == sizeof(double));
+        }
+
         // Constants
 
         SECTION("ColorRGBAf::Black")

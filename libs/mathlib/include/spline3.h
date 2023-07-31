@@ -6,6 +6,9 @@ template <class Real>
 class HermiteSplineSegment3
 {
 public:
+	typedef Real Real;
+
+public:
     HermiteSplineSegment3();
     HermiteSplineSegment3(const Vec3<Real>& p1, const Vec3<Real>& p4, const Vec3<Real>& r1, const Vec3<Real>& r4);
 
@@ -41,6 +44,9 @@ private:
 template <class Real>
 class BezierSegment3
 {
+public:
+	typedef Real Real;
+
 public:
     BezierSegment3();
     BezierSegment3(const Vec3<Real>& p1, const Vec3<Real>& p2, const Vec3<Real>& p3, const Vec3<Real>& p4);
@@ -81,6 +87,9 @@ private:
 template <class Real>
 class BezierSegment3FwdDiff
 {
+public:
+	typedef Real Real;
+
 public:
 	BezierSegment3FwdDiff(const Vec3<Real>& P1, const Vec3<Real>& P2, const Vec3<Real>& P3, const Vec3<Real>& P4, Real d);
 

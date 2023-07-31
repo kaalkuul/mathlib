@@ -6,6 +6,9 @@ template <class Real>
 class Vec2
 {
 public:
+	typedef Real Real;
+
+public:
 	// Constructors
 	Vec2();
 	explicit Vec2(Real k);

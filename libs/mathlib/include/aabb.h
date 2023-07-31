@@ -6,6 +6,9 @@ template <class Real>
 class AABB
 {
 public:
+	typedef Real Real;
+
+public:
 	// Constructors
 	AABB();
 	AABB(const Vec3<Real>& center, const Vec3<Real>& size);

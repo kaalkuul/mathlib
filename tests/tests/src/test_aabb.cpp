@@ -6,6 +6,14 @@ namespace {
 
     TEST_CASE("AABB", "")
     {
+        // Types
+
+        SECTION("Real")
+        {
+            REQUIRE(sizeof(AABBf::Real) == sizeof(float));
+            REQUIRE(sizeof(AABBd::Real) == sizeof(double));
+        }
+
         // Constants
 
         SECTION("Vec3f::Zero")

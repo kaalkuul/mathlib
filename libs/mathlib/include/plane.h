@@ -6,6 +6,9 @@ template <class Real>
 class Plane
 {
 public:
+	typedef Real Real;
+
+public:
 	// Constructors
 	Plane();
 	Plane(const Vec3<Real>& normal, Real distance);

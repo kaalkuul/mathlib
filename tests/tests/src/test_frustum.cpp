@@ -19,6 +19,14 @@ namespace {
         };
         Frustumf frustum;
 
+        // Types
+
+        SECTION("Real")
+        {
+            REQUIRE(sizeof(Frustumf::Real) == sizeof(float));
+            REQUIRE(sizeof(Frustumd::Real) == sizeof(double));
+        }
+
         SECTION("set(const Vec3<Real>* corners)")
         {
             SECTION("plane normals are ok")

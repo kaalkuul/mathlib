@@ -6,6 +6,14 @@ namespace {
 
     TEST_CASE("HermiteSplineSegment3", "")
     {
+        // Types
+
+        SECTION("Real")
+        {
+            REQUIRE(sizeof(HermiteSplineSegment3f::Real) == sizeof(float));
+            REQUIRE(sizeof(HermiteSplineSegment3d::Real) == sizeof(double));
+        }
+
         // Constructors
 
         SECTION("HermiteSplineSegment3()")
@@ -192,6 +200,14 @@ namespace {
 
     TEST_CASE("BezierSegment3", "")
     {
+        // Types
+
+        SECTION("Real")
+        {
+            REQUIRE(sizeof(BezierSegment3f::Real) == sizeof(float));
+            REQUIRE(sizeof(BezierSegment3d::Real) == sizeof(double));
+        }
+
         // Constructors
 
         SECTION("BezierSegment3()")

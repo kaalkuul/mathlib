@@ -6,6 +6,9 @@ template <class Real>
 class Ray2
 {
 public:
+	typedef Real Real;
+
+public:
 	// Constructors
 	Ray2();
 

@@ -6,6 +6,16 @@ namespace {
 
     TEST_CASE("Quat", "")
     {
+        // Types
+
+        SECTION("Real")
+        {
+            REQUIRE(sizeof(Quatf::Real) == sizeof(float));
+            REQUIRE(sizeof(Quatd::Real) == sizeof(double));
+        }
+
+        // Constants
+
         SECTION("Quatf::One")
         {
             REQUIRE(Quatf::One.x == 0.0f);

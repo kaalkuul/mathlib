@@ -6,6 +6,9 @@ template <class Real>
 class Sphere
 {
 public:
+	typedef Real Real;
+
+public:
 	// Constructors
 	Sphere();
 	Sphere(const Vec3<Real>& center, Real radius);
