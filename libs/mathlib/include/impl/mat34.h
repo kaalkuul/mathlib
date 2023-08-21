@@ -189,6 +189,35 @@ Mat34<Real> Mat34<Real>::fromSlerpMaxAngle(const Mat34& a, const Mat34& b, Real 
 
 
 //
+//  Access operators
+//
+
+template <class Real>
+Vec3<Real>& Mat34<Real>::operator[](Coord c)
+{
+	switch (c)
+	{
+	case Coord::X: return rs.x;
+	case Coord::Y: return rs.y;
+	case Coord::Z: return rs.z;
+	default: assert(0); return rs.x;
+	}
+}
+
+template <class Real>
+Vec3<Real> Mat34<Real>::operator[](Coord c) const
+{
+	switch (c)
+	{
+	case Coord::X: return rs.x;
+	case Coord::Y: return rs.y;
+	case Coord::Z: return rs.z;
+	default: assert(0); return rs.x;
+	}
+}
+
+
+//
 //  Assignments
 //
 
@@ -423,6 +452,39 @@ Mat34<Real>& Mat34<Real>::transpose()
 //
 // Functions
 //
+
+template <class Real>
+Ray3<Real> Mat34<Real>::localAxis(Coord axis) const
+{
+	Vec3<Real> start = t;
+	Vec3<Real> direction;
+	switch (axis)
+	{
+	case Coord::X: direction = rs.x; break;
+	case Coord::Y: direction = rs.y; break;
+	case Coord::Z: direction = rs.z; break;
+	default: assert(0); direction = rs.x; break;
+	}
+	return Ray3<Real>::from(start, direction);
+}
+
+template <class Real>
+Plane<Real> Mat34<Real>::localPlane(Coord normal) const
+{
+	Vec3<Real> point = t;
+	Vec3<Real> normalVector;
+	switch (normal)
+	{
+	case Coord::X: normalVector = rs.x; break;
+	case Coord::Y: normalVector = rs.y; break;
+	case Coord::Z: normalVector = rs.z; break;
+	case Coord::NX: normalVector = -rs.x; break;
+	case Coord::NY: normalVector = -rs.y; break;
+	case Coord::NZ: normalVector = -rs.z; break;
+	default: assert(0); normalVector = rs.x; break;
+	}
+	return Plane<Real>::from(point, normalVector);
+}
 
 template <class Real>
 bool Mat34<Real>::isNormal() const

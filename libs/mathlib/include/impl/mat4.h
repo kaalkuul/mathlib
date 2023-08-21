@@ -315,6 +315,35 @@ Mat4<Real> Mat4<Real>::from(Coord axis, Real angle)
 
 
 //
+//  Access operators
+//
+
+template <class Real>
+Vec4<Real>& Mat4<Real>::operator[](Coord c)
+{
+	switch (c)
+	{
+	case Coord::X: return x;
+	case Coord::Y: return y;
+	case Coord::Z: return z;
+	default: assert(0); return x;
+	}
+}
+
+template <class Real>
+Vec4<Real> Mat4<Real>::operator[](Coord c) const
+{
+	switch (c)
+	{
+	case Coord::X: return x;
+	case Coord::Y: return y;
+	case Coord::Z: return z;
+	default: assert(0); return x;
+	}
+}
+
+
+//
 //  Assignments
 //
 
@@ -681,6 +710,39 @@ Mat4<Real>& Mat4<Real>::invert()
 //
 //  Functions
 //
+
+template <class Real>
+Ray3<Real> Mat4<Real>::localAxis(Coord axis) const
+{
+	Vec3<Real> start = t.toVec3();
+	Vec3<Real> direction;
+	switch (axis)
+	{
+	case Coord::X: direction = x.toVec3(); break;
+	case Coord::Y: direction = y.toVec3(); break;
+	case Coord::Z: direction = z.toVec3(); break;
+	default: assert(0); direction = x.toVec3(); break;
+	}
+	return Ray3<Real>::from(start, direction);
+}
+
+template <class Real>
+Plane<Real> Mat4<Real>::localPlane(Coord normal) const
+{
+	Vec3<Real> point = t.toVec3();
+	Vec3<Real> normalVector;
+	switch (normal)
+	{
+	case Coord::X: normalVector = x.toVec3(); break;
+	case Coord::Y: normalVector = y.toVec3(); break;
+	case Coord::Z: normalVector = z.toVec3(); break;
+	case Coord::NX: normalVector = -x.toVec3(); break;
+	case Coord::NY: normalVector = -y.toVec3(); break;
+	case Coord::NZ: normalVector = -z.toVec3(); break;
+	default: assert(0); normalVector = x.toVec3(); break;
+	}
+	return Plane<Real>::from(point, normalVector);
+}
 
 template <class Real>
 Mat4<Real> Mat4<Real>::transposed() const

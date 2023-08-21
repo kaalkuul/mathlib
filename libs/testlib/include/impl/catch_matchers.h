@@ -122,7 +122,7 @@ namespace Matches
     bool marginCheck(const mathlib::Ray3<Real>& matchee, const mathlib::Ray3<Real>& target, double margin)
     {
         return marginCheck(matchee.start, target.start, margin)
-            && marginCheck(matchee.end, target.end, margin);
+            && marginCheck(matchee.direction, target.direction, margin);
     }
 
     template <class Real>

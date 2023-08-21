@@ -37,6 +37,10 @@ public:
 	static Mat34 fromSlerp(const Mat34& a, const Mat34& b, Real weight);
 	static Mat34 fromSlerpMaxAngle(const Mat34& a, const Mat34& b, Real maxAngle);
 
+	// Access operators
+	Vec3<Real>& operator[](Coord c);
+	Vec3<Real> operator[](Coord c) const;
+
 	// Assignments
 	Mat34& operator*=(const Mat3<Real>& m);
 	Mat34& operator*=(const Mat34& m);
@@ -73,6 +77,8 @@ public:
 	Mat34& transpose();
 
 	// Functions
+	Ray3<Real> localAxis(Coord axis) const;
+	Plane<Real> localPlane(Coord normal) const;
 	bool isNormal() const;
 	bool isOrthogonal() const;
 	bool isOrthonormal() const;

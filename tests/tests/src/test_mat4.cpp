@@ -357,6 +357,29 @@ namespace
             REQUIRE(!m.isIdentity());
         }
 
+
+        // Access operators
+
+        SECTION("operator[](Coord c) const")
+        {
+            Mat4f m(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9));
+            REQUIRE_THAT(m[Coord::X], Matches::WithinAbs(Vec4f(1, 2, 3, 0)));
+            REQUIRE_THAT(m[Coord::Y], Matches::WithinAbs(Vec4f(4, 5, 6, 0)));
+            REQUIRE_THAT(m[Coord::Z], Matches::WithinAbs(Vec4f(7, 8, 9, 0)));
+        }
+
+        SECTION("operator[](Coord c)")
+        {
+            Mat4f m;
+            m[Coord::X] = Vec4f(1, 2, 3, 0);
+            m[Coord::Y] = Vec4f(4, 5, 6, 0);
+            m[Coord::Z] = Vec4f(7, 8, 9, 0);
+            REQUIRE_THAT(m[Coord::X], Matches::WithinAbs(Vec4f(1, 2, 3, 0)));
+            REQUIRE_THAT(m[Coord::Y], Matches::WithinAbs(Vec4f(4, 5, 6, 0)));
+            REQUIRE_THAT(m[Coord::Z], Matches::WithinAbs(Vec4f(7, 8, 9, 0)));
+        }
+
+
         // Arithmetic operators
 
         SECTION("operator-()")
@@ -753,6 +776,46 @@ namespace
         }
 
         // Functions
+
+        SECTION("localAxis(Coord axis)")
+        {
+            Mat4f m(Vec3f::OneX, Vec3f::OneY, Vec3f::OneZ, Vec3f(13, 14, 15));
+            REQUIRE_THAT(m.localAxis(Coord::X),
+                Matches::WithinAbs(Ray3f::from(
+                    Vec3f(13, 14, 15),
+                    Vec3f::OneX
+                )));
+            REQUIRE_THAT(m.localAxis(Coord::Y),
+                Matches::WithinAbs(Ray3f::from(
+                    Vec3f(13, 14, 15),
+                    Vec3f::OneY
+                )));
+            REQUIRE_THAT(m.localAxis(Coord::Z),
+                Matches::WithinAbs(Ray3f::from(
+                    Vec3f(13, 14, 15),
+                    Vec3f::OneZ
+                )));
+        }
+
+        SECTION("localPlane(Coord axis)")
+        {
+            Mat4f m(Vec3f::OneX, Vec3f::OneY, Vec3f::OneZ, Vec3f(13, 14, 15));
+            REQUIRE_THAT(m.localPlane(Coord::X),
+                Matches::WithinAbs(Planef::from(
+                    Vec3f(13, 14, 15),
+                    Vec3f::OneX
+                )));
+            REQUIRE_THAT(m.localPlane(Coord::Y),
+                Matches::WithinAbs(Planef::from(
+                    Vec3f(13, 14, 15),
+                    Vec3f::OneY
+                )));
+            REQUIRE_THAT(m.localPlane(Coord::Z),
+                Matches::WithinAbs(Planef::from(
+                    Vec3f(13, 14, 15),
+                    Vec3f::OneZ
+                )));
+        }
 
         SECTION("transposed()")
         {

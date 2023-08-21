@@ -36,6 +36,10 @@ public:
 	static Mat4 from(const Vec3<Real>& axis, Real angle);
 	static Mat4 from(Coord axis, Real angle);
 
+	// Access operators
+	Vec4<Real>& operator[](Coord c);
+	Vec4<Real> operator[](Coord c) const;
+
 	// Assignments
 	Mat4& operator*=(Real k);
 	Mat4& operator/=(Real k);
@@ -73,6 +77,8 @@ public:
 	Mat4& invert();
 
 	// Functions
+	Ray3<Real> localAxis(Coord axis) const;
+	Plane<Real> localPlane(Coord normal) const;
 	Mat4 transposed() const;
 	Real trace() const;
 	Real determinant() const;

@@ -418,6 +418,29 @@ namespace {
             REQUIRE(!m1.isIdentity());
         }
 
+
+        // Access operators
+
+        SECTION("operator[](Coord c) const")
+        {
+            Mat34f m(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9), Vec3f(10, 11, 12));
+            REQUIRE_THAT(m[Coord::X], Matches::WithinAbs(Vec3f(1, 2, 3)));
+            REQUIRE_THAT(m[Coord::Y], Matches::WithinAbs(Vec3f(4, 5, 6)));
+            REQUIRE_THAT(m[Coord::Z], Matches::WithinAbs(Vec3f(7, 8, 9)));
+        }
+
+        SECTION("operator[](Coord c)")
+        {
+            Mat34f m;
+            m[Coord::X] = Vec3f(1, 2, 3);
+            m[Coord::Y] = Vec3f(4, 5, 6);
+            m[Coord::Z] = Vec3f(7, 8, 9);
+            REQUIRE_THAT(m[Coord::X], Matches::WithinAbs(Vec3f(1, 2, 3)));
+            REQUIRE_THAT(m[Coord::Y], Matches::WithinAbs(Vec3f(4, 5, 6)));
+            REQUIRE_THAT(m[Coord::Z], Matches::WithinAbs(Vec3f(7, 8, 9)));
+        }
+
+
         // Assignments
 
         SECTION("operator*=(const Mat3 &m)")
@@ -833,6 +856,46 @@ namespace {
 
 
         // Functions
+
+        SECTION("localAxis(Coord axis)")
+        {
+            Mat34f m(Vec3f::OneX, Vec3f::OneY, Vec3f::OneZ, Vec3f(13, 14, 15));
+            REQUIRE_THAT(m.localAxis(Coord::X),
+                Matches::WithinAbs(Ray3f::from(
+                    Vec3f(13, 14, 15),
+                    Vec3f::OneX
+                )));
+            REQUIRE_THAT(m.localAxis(Coord::Y),
+                Matches::WithinAbs(Ray3f::from(
+                    Vec3f(13, 14, 15),
+                    Vec3f::OneY
+                )));
+            REQUIRE_THAT(m.localAxis(Coord::Z),
+                Matches::WithinAbs(Ray3f::from(
+                    Vec3f(13, 14, 15),
+                    Vec3f::OneZ
+                )));
+        }
+
+        SECTION("localPlane(Coord axis)")
+        {
+            Mat34f m(Vec3f::OneX, Vec3f::OneY, Vec3f::OneZ, Vec3f(13, 14, 15));
+            REQUIRE_THAT(m.localPlane(Coord::X),
+                Matches::WithinAbs(Planef::from(
+                    Vec3f(13, 14, 15),
+                    Vec3f::OneX
+                )));
+            REQUIRE_THAT(m.localPlane(Coord::Y),
+                Matches::WithinAbs(Planef::from(
+                    Vec3f(13, 14, 15),
+                    Vec3f::OneY
+                )));
+            REQUIRE_THAT(m.localPlane(Coord::Z),
+                Matches::WithinAbs(Planef::from(
+                    Vec3f(13, 14, 15),
+                    Vec3f::OneZ
+                )));
+        }
 
         SECTION("isIdentity()")
         {
