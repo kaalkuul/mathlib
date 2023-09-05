@@ -64,10 +64,19 @@ namespace {
 
         SECTION("Vec3(const Vec2<Real> &u, Coord c = Coord::Z)")
         {
-            Vec3f v(1, 2, 3);
-            REQUIRE_THAT(Vec3f(Vec2f(1, 2), Coord::X), Matches::WithinAbs(Vec3f(0, 1, 2)));
-            REQUIRE_THAT(Vec3f(Vec2f(1, 2), Coord::Y), Matches::WithinAbs(Vec3f(1, 0, 2)));
-            REQUIRE_THAT(Vec3f(Vec2f(1, 2), Coord::Z), Matches::WithinAbs(Vec3f(1, 2, 0)));
+            SECTION("simple cases")
+            {
+                REQUIRE_THAT(Vec3f(Vec2f(1, 2), Coord::X), Matches::WithinAbs(Vec3f(0, 1, 2)));
+                REQUIRE_THAT(Vec3f(Vec2f(1, 2), Coord::Y), Matches::WithinAbs(Vec3f(2, 0, 1)));
+                REQUIRE_THAT(Vec3f(Vec2f(1, 2), Coord::Z), Matches::WithinAbs(Vec3f(1, 2, 0)));
+            }
+
+            SECTION("Vec3(Vec2).toVec2 = I")
+            {
+                REQUIRE_THAT(Vec3f(Vec2f(1, 2), Coord::X).toVec2(Coord::X), Matches::WithinAbs(Vec2f(1, 2)));
+                REQUIRE_THAT(Vec3f(Vec2f(1, 2), Coord::Y).toVec2(Coord::Y), Matches::WithinAbs(Vec2f(1, 2)));
+                REQUIRE_THAT(Vec3f(Vec2f(1, 2), Coord::Z).toVec2(Coord::Z), Matches::WithinAbs(Vec2f(1, 2)));
+            }
         }
 
         // Create from
@@ -568,6 +577,14 @@ namespace {
             REQUIRE(!Vec3f(1, 2, 3).isNull());
             REQUIRE(!Vec3f(3, 1, 2).isNull());
             REQUIRE(!Vec3f(3, 2, 1).isNull());
+        }
+
+        SECTION("toVec2(Coord drop)")
+        {
+            Vec3f v(1, 2, 3);
+            REQUIRE_THAT(v.toVec2(Coord::X), Matches::WithinAbs(Vec2f(2, 3)));
+            REQUIRE_THAT(v.toVec2(Coord::Y), Matches::WithinAbs(Vec2f(3, 1)));
+            REQUIRE_THAT(v.toVec2(Coord::Z), Matches::WithinAbs(Vec2f(1, 2)));
         }
 
         SECTION("data()")

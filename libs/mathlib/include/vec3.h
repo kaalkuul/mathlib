@@ -67,6 +67,7 @@ public:
 	Coord majorCoord() const;
 	Coord minorCoord() const;
 	bool isNull() const;
+	Vec2<Real> toVec2(Coord drop = Coord::Z) const;
 
 	const Real* data() const;
 	Real* data();

@@ -40,10 +40,10 @@ Vec3<Real>::Vec3(const Vec2<Real> &u, Coord c)
 {
 	switch (c)
 	{
-	case Coord::X: x = Real(0);	y = u.x;	z = u.y;	break;
-	case Coord::Y: x = u.x;		y = Real(0);	z = u.y;	break;
-	case Coord::Z: x = u.x;		y = u.y;	z = Real(0);	break;
-	default: assert(0);
+	case Coord::X: x = Real(0);	y = u.x;		z = u.y;		break;
+	case Coord::Y: x = u.y;		y = Real(0);	z = u.x;		break;
+	case Coord::Z:
+	default:       x = u.x;		y = u.y;		z = Real(0);	break;
 	}
 }
 
@@ -606,6 +606,18 @@ template <class Real>
 bool Vec3<Real>::isNull() const
 {
 	return (x == Real(0) && y == Real(0) && z == Real(0));
+}
+
+template <class Real>
+Vec2<Real> Vec3<Real>::toVec2(Coord drop) const
+{
+	switch (drop)
+	{
+	case Coord::X: return Vec2<Real>(y, z);
+	case Coord::Y: return Vec2<Real>(z, x);
+	case Coord::Z:
+	default:       return Vec2<Real>(x, y);
+	}
 }
 
 template <class Real>
