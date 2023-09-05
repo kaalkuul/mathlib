@@ -12,7 +12,7 @@
 MATHLIB_NS_BEGIN
 
 // Coordinates used in vectors
-enum Coord : unsigned int
+enum class Coord : unsigned int
 {
 	X = 0,
 	Y,
