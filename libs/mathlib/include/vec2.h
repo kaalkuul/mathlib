@@ -80,6 +80,8 @@ public:
 	template <class CastReturnType>
 	Vec2<CastReturnType> cast() const;
 
+	static Real crossProduct(const Vec2& a, const Vec2& b, const Vec2& c);
+
 	static Vec2 randomUnitVector();
 
 	static const Vec2 Zero;

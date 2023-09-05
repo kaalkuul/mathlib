@@ -20,6 +20,7 @@ add_executable(mathlib_tests
 	src/test_line3.cpp
 	src/test_ray2.cpp
 	src/test_ray3.cpp
+	src/test_tri2.cpp
 	src/test_plane.cpp
 	src/test_sphere.cpp
 	src/test_spline3.cpp

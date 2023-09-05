@@ -21,6 +21,7 @@ add_library(mathlib INTERFACE
   include/line3.h
   include/ray2.h
   include/ray3.h
+  include/tri2.h
   include/plane.h
   include/sphere.h
   include/spline3.h
@@ -43,6 +44,7 @@ add_library(mathlib INTERFACE
   include/impl/line3.h
   include/impl/ray2.h
   include/impl/ray3.h
+  include/impl/tri2.h
   include/impl/plane.h
   include/impl/sphere.h
   include/impl/spline3.h
