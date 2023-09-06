@@ -37,7 +37,7 @@ public:
 
 	// Access operators
 	Real& operator[](Coord c);
-    Real operator()(Coord c) const;
+    Real operator[](Coord c) const;
 
 	// Assignments
 	Vec2& operator+=(const Vec2& u);

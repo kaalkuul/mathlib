@@ -8,7 +8,8 @@ add_library(mathlib_testlib INTERFACE
 	include/impl/catch_matchers_colorrgb.h
 	include/impl/catch_matchers_colorrgba.h
 	include/impl/catch_matchers_colorhsv.h
-	include/impl/catch_matchers_aabb.h
+	include/impl/catch_matchers_aabb2.h
+	include/impl/catch_matchers_aabb3.h
 	include/impl/catch_matchers_vec2.h
 	include/impl/catch_matchers_vec3.h
 	include/impl/catch_matchers_vec4.h
@@ -22,6 +23,7 @@ add_library(mathlib_testlib INTERFACE
 	include/impl/catch_matchers_ray2.h
 	include/impl/catch_matchers_ray3.h
 	include/impl/catch_matchers_plane.h
+	include/impl/catch_matchers_circle.h
 	include/impl/catch_matchers_sphere.h
 )
 

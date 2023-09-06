@@ -8,7 +8,8 @@ add_library(mathlib INTERFACE
   include/colorrgb.h
   include/colorrgba.h
   include/colorhsv.h
-  include/aabb.h
+  include/aabb2.h
+  include/aabb3.h
   include/vec2.h
   include/vec3.h
   include/vec4.h
@@ -23,6 +24,7 @@ add_library(mathlib INTERFACE
   include/ray3.h
   include/tri2.h
   include/plane.h
+  include/circle.h
   include/sphere.h
   include/spline3.h
   include/frustum.h
@@ -31,7 +33,8 @@ add_library(mathlib INTERFACE
   include/impl/colorrgb.h
   include/impl/colorrgba.h
   include/impl/colorhsv.h
-  include/impl/aabb.h
+  include/impl/aabb2.h
+  include/impl/aabb3.h
   include/impl/vec2.h
   include/impl/vec3.h
   include/impl/vec4.h
@@ -46,6 +49,7 @@ add_library(mathlib INTERFACE
   include/impl/ray3.h
   include/impl/tri2.h
   include/impl/plane.h
+  include/impl/circle.h
   include/impl/sphere.h
   include/impl/spline3.h
   include/impl/frustum.h

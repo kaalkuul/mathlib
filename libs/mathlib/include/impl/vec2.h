@@ -223,7 +223,7 @@ Real & Vec2<Real>::operator[](Coord c)
 }
 
 template <class Real>
-Real Vec2<Real>::operator()(Coord c) const
+Real Vec2<Real>::operator[](Coord c) const
 {
 	assert(c == Coord::X || c == Coord::Y);
 	return c == Coord::X ? x : y;

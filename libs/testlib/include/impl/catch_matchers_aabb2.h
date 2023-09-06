@@ -3,16 +3,16 @@
 namespace Catch
 {
     template <class Real>
-    struct StringMaker<mathlib::AABB<Real>>
+    struct StringMaker<mathlib::AABB2<Real>>
     {
-        static std::string convert(mathlib::AABB<Real> const& box)
+        static std::string convert(mathlib::AABB2<Real> const& box)
         {
             std::ostringstream rss;
             rss << std::scientific
                 << std::setprecision(std::numeric_limits<double>::max_digits10 - 1)
-                << "[" << box.center.x << "," << box.center.y << "," << box.center.z << "]"
+                << "[" << box.center.x << "," << box.center.y << "]"
                 << "-"
-                << "[" << box.extents.x << "," << box.extents.y << "," << box.extents.z << "]";
+                << "[" << box.extents.x << "," << box.extents.y << "]";
             return rss.str();
         }
     };
@@ -21,17 +21,17 @@ namespace Catch
 namespace Matches
 {
     template <class Real>
-    class AABBMatcher final : public Catch::Matchers::MatcherBase<mathlib::AABB<Real>>
+    class AABB2Matcher final : public Catch::Matchers::MatcherBase<mathlib::AABB2<Real>>
     {
     public:
-        AABBMatcher(const mathlib::AABB<Real>& target, double margin)
+        AABB2Matcher(const mathlib::AABB2<Real>& target, double margin)
             : m_target(target), m_margin(margin)
         {
             CATCH_ENFORCE(margin >= 0, "Invalid margin: " << margin << '.'
                 << " Margin has to be non-negative.");
         }
 
-        bool match(mathlib::AABB<Real> const& matchee) const override
+        bool match(mathlib::AABB2<Real> const& matchee) const override
         {
             return marginCheck(matchee, m_target, m_margin);
         }
@@ -42,13 +42,13 @@ namespace Matches
         }
 
     private:
-        mathlib::AABB<Real> m_target;
+        mathlib::AABB2<Real> m_target;
         double m_margin;
     };
 
     template <class Real>
-    AABBMatcher<Real> WithinAbs(const mathlib::AABB<Real>& target, double margin = 1e-3)
+    AABB2Matcher<Real> WithinAbs(const mathlib::AABB2<Real>& target, double margin = 1e-3)
     {
-        return AABBMatcher<Real>(target, margin);
+        return AABB2Matcher<Real>(target, margin);
     }
 }

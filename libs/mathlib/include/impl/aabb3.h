@@ -3,17 +3,17 @@
 MATHLIB_NS_BEGIN
 
 template <class Real>
-const AABB<Real> AABB<Real>::One = AABB<Real>(
+const AABB3<Real> AABB3<Real>::One = AABB3<Real>(
 	Vec3<Real>(Real(0), Real(0), Real(0)),
 	Vec3<Real>(Real(1), Real(1), Real(1)));
 
 template <class Real>
-AABB<Real>::AABB()
+AABB3<Real>::AABB3()
 {
 }
 
 template <class Real>
-AABB<Real>::AABB(const Vec3<Real>& _center, const Vec3<Real>& size)
+AABB3<Real>::AABB3(const Vec3<Real>& _center, const Vec3<Real>& size)
 : center(_center), extents(size * Real(0.5))
 {
 }
@@ -24,7 +24,7 @@ AABB<Real>::AABB(const Vec3<Real>& _center, const Vec3<Real>& size)
 //
 
 template <class Real>
-AABB<Real>& AABB<Real>::set(const Vec3<Real>& point)
+AABB3<Real>& AABB3<Real>::set(const Vec3<Real>& point)
 {
 	center = point;
 	extents = Vec3<Real>::Zero;
@@ -32,7 +32,7 @@ AABB<Real>& AABB<Real>::set(const Vec3<Real>& point)
 }
 
 template <class Real>
-AABB<Real>& AABB<Real>::set(const Vec3<Real>& center, const Vec3<Real>& size)
+AABB3<Real>& AABB3<Real>::set(const Vec3<Real>& center, const Vec3<Real>& size)
 {
 	this->center = center;
 	this->extents = size * Real(0.5);
@@ -40,7 +40,7 @@ AABB<Real>& AABB<Real>::set(const Vec3<Real>& center, const Vec3<Real>& size)
 }
 
 template <class Real>
-AABB<Real>& AABB<Real>::setInfSup(const Vec3<Real>& inf, const Vec3<Real>& sup)
+AABB3<Real>& AABB3<Real>::setInfSup(const Vec3<Real>& inf, const Vec3<Real>& sup)
 {
 	center = (inf + sup) * Real(0.5);
 	extents = (sup - inf) * Real(0.5);
@@ -48,7 +48,7 @@ AABB<Real>& AABB<Real>::setInfSup(const Vec3<Real>& inf, const Vec3<Real>& sup)
 }
 
 template <class Real>
-AABB<Real>& AABB<Real>::set(int count, const Vec3<Real>* points)
+AABB3<Real>& AABB3<Real>::set(int count, const Vec3<Real>* points)
 {
 	assert(count > 0);
 	assert(points != nullptr);
@@ -78,7 +78,7 @@ AABB<Real>& AABB<Real>::set(int count, const Vec3<Real>* points)
 }
 
 template <class Real>
-AABB<Real>& AABB<Real>::set(int count, const Vec3<Real>* points, int stride)
+AABB3<Real>& AABB3<Real>::set(int count, const Vec3<Real>* points, int stride)
 {
 	assert(count > 0);
 	assert(points != nullptr);
@@ -111,7 +111,7 @@ AABB<Real>& AABB<Real>::set(int count, const Vec3<Real>* points, int stride)
 }
 
 template <class Real>
-AABB<Real>& AABB<Real>::add(const Vec3<Real>& point)
+AABB3<Real>& AABB3<Real>::add(const Vec3<Real>& point)
 {
 	Vec3<Real> inf = center - extents;
 	Vec3<Real> sup = center + extents;
@@ -159,44 +159,44 @@ AABB<Real>& AABB<Real>::add(const Vec3<Real>& point)
 //
 
 template <class Real>
-AABB<Real> AABB<Real>::from(const Vec3<Real>& point)
+AABB3<Real> AABB3<Real>::from(const Vec3<Real>& point)
 {
-	AABB<Real> result;
+	AABB3<Real> result;
 	result.center = point;
 	result.extents = Vec3<Real>::Zero;
 	return result;
 }
 
 template <class Real>
-AABB<Real> AABB<Real>::from(const Vec3<Real>& center, const Vec3<Real>& size)
+AABB3<Real> AABB3<Real>::from(const Vec3<Real>& center, const Vec3<Real>& size)
 {
-	AABB<Real> result;
+	AABB3<Real> result;
 	result.center = center;
 	result.extents = size * Real(0.5);
 	return result;
 }
 
 template <class Real>
-AABB<Real> AABB<Real>::fromInfSup(const Vec3<Real>& inf, const Vec3<Real>& sup)
+AABB3<Real> AABB3<Real>::fromInfSup(const Vec3<Real>& inf, const Vec3<Real>& sup)
 {
-	AABB<Real> result;
+	AABB3<Real> result;
 	result.center = (inf + sup) * Real(0.5);
 	result.extents = (sup - inf) * Real(0.5);
 	return result;
 }
 
 template <class Real>
-AABB<Real> AABB<Real>::from(int count, const Vec3<Real>* points)
+AABB3<Real> AABB3<Real>::from(int count, const Vec3<Real>* points)
 {
-	AABB<Real> result;
+	AABB3<Real> result;
 	result.set(count, points);
 	return result;
 }
 
 template <class Real>
-AABB<Real> AABB<Real>::from(int count, const Vec3<Real>* points, int stride)
+AABB3<Real> AABB3<Real>::from(int count, const Vec3<Real>* points, int stride)
 {
-	AABB<Real> result;
+	AABB3<Real> result;
 	result.set(count, points, stride);
 	return result;
 }
@@ -207,28 +207,28 @@ AABB<Real> AABB<Real>::from(int count, const Vec3<Real>* points, int stride)
 //
 
 template <class Real>
-AABB<Real>& AABB<Real>::operator+= (const Vec3<Real>& t)
+AABB3<Real>& AABB3<Real>::operator+= (const Vec3<Real>& t)
 {
 	center += t;
 	return *this;
 }
 
 template <class Real>
-AABB<Real>& AABB<Real>::operator-= (const Vec3<Real>& t)
+AABB3<Real>& AABB3<Real>::operator-= (const Vec3<Real>& t)
 {
 	center -= t;
 	return *this;
 }
 
 template <class Real>
-AABB<Real>& AABB<Real>::operator*= (Real k)
+AABB3<Real>& AABB3<Real>::operator*= (Real k)
 {
 	extents *= k;
 	return *this;
 }
 
 template <class Real>
-AABB<Real>& AABB<Real>::operator/= (Real k)
+AABB3<Real>& AABB3<Real>::operator/= (Real k)
 {
 	assert(k != Real(0));
 	extents /= k;
@@ -241,37 +241,37 @@ AABB<Real>& AABB<Real>::operator/= (Real k)
 //
 
 template <class Real>
-AABB<Real> AABB<Real>::operator+ (const Vec3<Real>& t) const
+AABB3<Real> AABB3<Real>::operator+ (const Vec3<Real>& t) const
 {
-	AABB<Real> result;
+	AABB3<Real> result;
 	result.center = center + t;
 	result.extents = extents;
 	return result;
 }
 
 template <class Real>
-AABB<Real> AABB<Real>::operator- (const Vec3<Real>& t) const
+AABB3<Real> AABB3<Real>::operator- (const Vec3<Real>& t) const
 {
-	AABB<Real> result;
+	AABB3<Real> result;
 	result.center = center - t;
 	result.extents = extents;
 	return result;
 }
 
 template <class Real>
-AABB<Real> AABB<Real>::operator* (Real k) const
+AABB3<Real> AABB3<Real>::operator* (Real k) const
 {
-	AABB<Real> result;
+	AABB3<Real> result;
 	result.center = center;
 	result.extents = extents * k;
 	return result;
 }
 
 template <class Real>
-AABB<Real> AABB<Real>::operator/ (Real k) const
+AABB3<Real> AABB3<Real>::operator/ (Real k) const
 {
 	assert(k != Real(0));
-	AABB<Real> result;
+	AABB3<Real> result;
 	result.center = center;
 	result.extents = extents / k;
 	return result;
@@ -283,13 +283,13 @@ AABB<Real> AABB<Real>::operator/ (Real k) const
 //
 
 template <class Real>
-bool AABB<Real>::operator==(const AABB<Real>& rhs) const
+bool AABB3<Real>::operator==(const AABB3<Real>& rhs) const
 {
 	return center == rhs.center && extents == rhs.extents;
 }
 
 template <class Real>
-bool AABB<Real>::operator!=(const AABB<Real>& rhs) const
+bool AABB3<Real>::operator!=(const AABB3<Real>& rhs) const
 {
 	return center != rhs.center || extents != rhs.extents;
 }
@@ -299,25 +299,25 @@ bool AABB<Real>::operator!=(const AABB<Real>& rhs) const
 //
 
 template <class Real>
-Vec3<Real> AABB<Real>::inf() const
+Vec3<Real> AABB3<Real>::inf() const
 {
 	return center - extents;
 }
 
 template <class Real>
-Vec3<Real> AABB<Real>::sup() const
+Vec3<Real> AABB3<Real>::sup() const
 {
 	return center + extents;
 }
 
 template <class Real>
-Vec3<Real> AABB<Real>::size() const
+Vec3<Real> AABB3<Real>::size() const
 {
 	return extents * Real(2);
 }
 
 template <class Real>
-Sphere<Real> AABB<Real>::innerSphere() const
+Sphere<Real> AABB3<Real>::innerSphere() const
 {
 	Sphere<Real> result;
 	result.center = center;
@@ -326,7 +326,7 @@ Sphere<Real> AABB<Real>::innerSphere() const
 }
 
 template <class Real>
-Sphere<Real> AABB<Real>::outerSphere() const
+Sphere<Real> AABB3<Real>::outerSphere() const
 {
 	Sphere<Real> result;
 	result.center = center;
@@ -335,19 +335,19 @@ Sphere<Real> AABB<Real>::outerSphere() const
 }
 
 template <class Real>
-Real AABB<Real>::volume() const
+Real AABB3<Real>::volume() const
 {
 	return extents.x * extents.y * extents.z * Real(8);
 }
 
 template <class Real>
-bool AABB<Real>::isNull() const
+bool AABB3<Real>::isNull() const
 {
 	return extents.isNull();
 }
 
 template <class Real>
-Vec3<Real> AABB<Real>::pointAt(const Vec3<Real>& t) const
+Vec3<Real> AABB3<Real>::pointAt(const Vec3<Real>& t) const
 {
 	Vec3<Real> result = center;
 	result.x += extents.x * t.x;
@@ -357,7 +357,7 @@ Vec3<Real> AABB<Real>::pointAt(const Vec3<Real>& t) const
 }
 
 template <class Real>
-bool AABB<Real>::contains(const Vec3<Real>& point) const
+bool AABB3<Real>::contains(const Vec3<Real>& point) const
 {
 	return (point.x >= center.x - extents.x && point.x <= center.x + extents.x)
 		&& (point.y >= center.y - extents.y && point.y <= center.y + extents.y)
@@ -365,7 +365,7 @@ bool AABB<Real>::contains(const Vec3<Real>& point) const
 }
 
 template <class Real>
-bool AABB<Real>::contains(const Sphere<Real>& sphere) const
+bool AABB3<Real>::contains(const Sphere<Real>& sphere) const
 {
 	return (sphere.center.x - sphere.radius >= center.x - extents.x && sphere.center.x + sphere.radius <= center.x + extents.x)
 		&& (sphere.center.y - sphere.radius >= center.y - extents.y && sphere.center.y + sphere.radius <= center.y + extents.y)
@@ -373,7 +373,7 @@ bool AABB<Real>::contains(const Sphere<Real>& sphere) const
 }
 
 template <class Real>
-bool AABB<Real>::contains(const AABB<Real>& box) const
+bool AABB3<Real>::contains(const AABB3<Real>& box) const
 {
 	const Vec3<Real>& c = box.center;
 	const Vec3<Real>& e = box.extents;
@@ -383,7 +383,7 @@ bool AABB<Real>::contains(const AABB<Real>& box) const
 }
 
 template <class Real>
-bool AABB<Real>::intersects(const AABB<Real>& box) const
+bool AABB3<Real>::intersects(const AABB3<Real>& box) const
 {
 	const Vec3<Real>& m1 = inf();
 	const Vec3<Real>& M1 = sup();
@@ -399,9 +399,9 @@ bool AABB<Real>::intersects(const AABB<Real>& box) const
 
 #define IR(x)	(*(unsigned int*)&x)
 
-// http://www.codercorner.com/RayAABB.cpp
+// http://www.codercorner.com/RayAABB3.cpp
 
-bool AABB<Real>::intersects(Vec3<Real>& hit, const Line3<Real>& line) const
+bool AABB3<Real>::intersects(Vec3<Real>& hit, const Line3<Real>& line) const
 {
 	bool inside = true;
 	Vec3<Real> MaxT;
@@ -467,9 +467,9 @@ bool AABB<Real>::intersects(Vec3<Real>& hit, const Line3<Real>& line) const
 */
 template <class Real>
 template <class CastReturnType>
-AABB<CastReturnType> AABB<Real>::cast() const
+AABB3<CastReturnType> AABB3<Real>::cast() const
 {
-	AABB<CastReturnType> result;
+	AABB3<CastReturnType> result;
 	result.center = center.template cast<CastReturnType>();
 	result.extents = extents.template cast<CastReturnType>();
 	return result;

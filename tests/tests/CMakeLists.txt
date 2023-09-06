@@ -7,7 +7,8 @@ add_executable(mathlib_tests
 	src/test_colorrgb.cpp
 	src/test_colorrgba.cpp
 	src/test_colorhsv.cpp
-	src/test_aabb.cpp
+	src/test_aabb2.cpp
+	src/test_aabb3.cpp
 	src/test_vec2.cpp
 	src/test_vec3.cpp
 	src/test_vec4.cpp
@@ -22,6 +23,7 @@ add_executable(mathlib_tests
 	src/test_ray3.cpp
 	src/test_tri2.cpp
 	src/test_plane.cpp
+	src/test_circle.cpp
 	src/test_sphere.cpp
 	src/test_spline3.cpp
 	src/test_frustum.cpp

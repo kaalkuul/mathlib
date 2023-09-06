@@ -133,6 +133,13 @@ namespace Matches
     }
 
     template <class Real>
+    bool marginCheck(const mathlib::Circle<Real>& matchee, const mathlib::Circle<Real>& target, double margin)
+    {
+        return marginCheck(matchee.center, target.center, margin)
+            && marginCheck(matchee.radius, target.radius, margin);
+    }
+
+    template <class Real>
     bool marginCheck(const mathlib::Sphere<Real>& matchee, const mathlib::Sphere<Real>& target, double margin)
     {
         return marginCheck(matchee.center, target.center, margin)

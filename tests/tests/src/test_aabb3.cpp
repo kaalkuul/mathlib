@@ -4,14 +4,14 @@ namespace {
 
     using namespace mathlib;
 
-    TEST_CASE("AABB", "")
+    TEST_CASE("AABB3", "")
     {
         // Types
 
         SECTION("Real")
         {
-            REQUIRE(sizeof(AABBf::Real) == sizeof(float));
-            REQUIRE(sizeof(AABBd::Real) == sizeof(double));
+            REQUIRE(sizeof(AABB3f::Real) == sizeof(float));
+            REQUIRE(sizeof(AABB3d::Real) == sizeof(double));
         }
 
         // Constants
@@ -23,25 +23,25 @@ namespace {
             REQUIRE(Vec3f::Zero.z == 0.0f);
         }
 
-        SECTION("AABBf::One")
+        SECTION("AABB3f::One")
         {
-            REQUIRE(AABBf::One.center == Vec3f::Zero);
-            REQUIRE(AABBf::One.extents.x == 0.5f);
-            REQUIRE(AABBf::One.extents.y == 0.5f);
-            REQUIRE(AABBf::One.extents.z == 0.5f);
+            REQUIRE(AABB3f::One.center == Vec3f::Zero);
+            REQUIRE(AABB3f::One.extents.x == 0.5f);
+            REQUIRE(AABB3f::One.extents.y == 0.5f);
+            REQUIRE(AABB3f::One.extents.z == 0.5f);
         }
 
         // Constructors
 
-        SECTION("AABB()")
+        SECTION("AABB3()")
         {
-            AABBf box;
+            AABB3f box;
         }
 
-        SECTION("AABB(const Vec3<Real>& center, const Vec3<Real>& extents)")
+        SECTION("AABB3(const Vec3<Real>& center, const Vec3<Real>& extents)")
         {
-            AABBf box;
-            box = AABBf(Vec3f::Zero, Vec3f(1, 2, 3));
+            AABB3f box;
+            box = AABB3f(Vec3f::Zero, Vec3f(1, 2, 3));
             REQUIRE(box.center == Vec3f::Zero);
             REQUIRE(box.extents == Vec3f(0.5f, 1.0f, 1.5f));
         }
@@ -50,7 +50,7 @@ namespace {
 
         SECTION("set(const Vec3<Real>& point)")
         {
-            AABBf box;
+            AABB3f box;
             box.set(Vec3f(1, 2, 3));
             REQUIRE(box.center == Vec3f(1, 2, 3));
             REQUIRE(box.extents == Vec3f::Zero);
@@ -58,7 +58,7 @@ namespace {
 
         SECTION("set(const Vec3<Real>& center, const Vec3<Real>& size)")
         {
-            AABBf box;
+            AABB3f box;
             box.set(Vec3f::Zero, Vec3f(1, 2, 3));
             REQUIRE(box.center == Vec3f::Zero);
             REQUIRE(box.extents == Vec3f(0.5f, 1.0f, 1.5f));
@@ -66,7 +66,7 @@ namespace {
 
         SECTION("setInfSup(const Vec3<Real>& inf, const Vec3<Real>& sup)")
         {
-            AABBf box;
+            AABB3f box;
             box.setInfSup(Vec3f::Zero, Vec3f(1, 2, 3));
             REQUIRE(box.center == Vec3f(0.5f, 1.0f, 1.5f));
             REQUIRE(box.extents == Vec3f(0.5f, 1.0f, 1.5f));
@@ -81,7 +81,7 @@ namespace {
                 Vec3f(10, 10, 10)
             };
 
-            AABBf box;
+            AABB3f box;
             box.set(4, points);
             REQUIRE(box.center == Vec3f(0, 0, 0));
             REQUIRE(box.extents == Vec3f(10, 10, 10));
@@ -101,7 +101,7 @@ namespace {
                 Vec3f::OneX * 1000,
             };
 
-            AABBf box;
+            AABB3f box;
             box.set(4, &points[1], sizeof(Vec3f)*2);
             REQUIRE(box.center == Vec3f(0, 0, 0));
             REQUIRE(box.extents == Vec3f(10, 10, 10));
@@ -109,7 +109,7 @@ namespace {
 
         SECTION("add(const Vec3<Real>& point)")
         {
-            AABBf box;
+            AABB3f box;
             box.set(Vec3f::Zero)
                 .add(Vec3f(1, 1, 1))
                 .add(Vec3f(-1, -1, -1))
@@ -122,21 +122,21 @@ namespace {
 
         SECTION("from(const Vec3<Real>& point)")
         {
-            AABBf box = AABBf::from(Vec3f(1, 2, 3));
+            AABB3f box = AABB3f::from(Vec3f(1, 2, 3));
             REQUIRE(box.center == Vec3f(1, 2, 3));
             REQUIRE(box.extents == Vec3f::Zero);
         }
 
         SECTION("from(const Vec3<Real>& center, const Vec3<Real>& size)")
         {
-            AABBf box = AABBf::from(Vec3f::Zero, Vec3f(1, 2, 3));
+            AABB3f box = AABB3f::from(Vec3f::Zero, Vec3f(1, 2, 3));
             REQUIRE(box.center == Vec3f::Zero);
             REQUIRE(box.extents == Vec3f(0.5f, 1.0f, 1.5f));
         }
 
         SECTION("fromInfSup(const Vec3<Real>& inf, const Vec3<Real>& sup)")
         {
-            AABBf box = AABBf::fromInfSup(Vec3f::Zero, Vec3f(1, 2, 3));
+            AABB3f box = AABB3f::fromInfSup(Vec3f::Zero, Vec3f(1, 2, 3));
             REQUIRE(box.center == Vec3f(0.5f, 1.0f, 1.5f));
             REQUIRE(box.extents == Vec3f(0.5f, 1.0f, 1.5f));
         }
@@ -150,7 +150,7 @@ namespace {
                 Vec3f(10, 10, 10)
             };
 
-            AABBf box = AABBf::from(4, points);
+            AABB3f box = AABB3f::from(4, points);
             REQUIRE(box.center == Vec3f(0, 0, 0));
             REQUIRE(box.extents == Vec3f(10, 10, 10));
         }
@@ -169,7 +169,7 @@ namespace {
                 Vec3f::OneX * 1000,
             };
 
-            AABBf box = AABBf::from(4, &points[1], sizeof(Vec3f) * 2);
+            AABB3f box = AABB3f::from(4, &points[1], sizeof(Vec3f) * 2);
             REQUIRE(box.center == Vec3f(0, 0, 0));
             REQUIRE(box.extents == Vec3f(10, 10, 10));
         }
@@ -178,7 +178,7 @@ namespace {
 
         SECTION("operator+= (const Vec3& t)")
         {
-            AABBf box = AABBf::One;
+            AABB3f box = AABB3f::One;
             box += Vec3f(1, 2, 3);
             REQUIRE(box.center == Vec3f(1, 2, 3));
             REQUIRE(box.extents == Vec3f(0.5f, 0.5f, 0.5f));
@@ -186,7 +186,7 @@ namespace {
 
         SECTION("operator-= (const Vec3& t)")
         {
-            AABBf box = AABBf::One;
+            AABB3f box = AABB3f::One;
             box -= Vec3f(1, 2, 3);
             REQUIRE(box.center == Vec3f(-1, -2, -3));
             REQUIRE(box.extents == Vec3f(0.5f, 0.5f, 0.5f));
@@ -194,7 +194,7 @@ namespace {
 
         SECTION("operator*= (Real k)")
         {
-            AABBf box = AABBf::One;
+            AABB3f box = AABB3f::One;
             box *= 2.0f;
             REQUIRE(box.center == Vec3f::Zero);
             REQUIRE(box.extents == Vec3f(1, 1, 1));
@@ -202,7 +202,7 @@ namespace {
 
         SECTION("operator/= (Real k)")
         {
-            AABBf box = AABBf::One;
+            AABB3f box = AABB3f::One;
             box /= 2.0f;
             REQUIRE(box.center == Vec3f::Zero);
             REQUIRE(box.extents == Vec3f(0.25f, 0.25f, 0.25f));
@@ -212,89 +212,89 @@ namespace {
 
         SECTION("operator== (const Line3 &rhs)")
         {
-            AABBf box = AABBf::from(Vec3f::Zero, Vec3f(1, 2, 3));
+            AABB3f box = AABB3f::from(Vec3f::Zero, Vec3f(1, 2, 3));
             REQUIRE(box == box);
-            REQUIRE(box == AABBf::from(Vec3f::Zero, Vec3f(1, 2, 3)));
-            REQUIRE(!(box == AABBf::One));
+            REQUIRE(box == AABB3f::from(Vec3f::Zero, Vec3f(1, 2, 3)));
+            REQUIRE(!(box == AABB3f::One));
         }
 
         SECTION("operator!= (const Line3 &rhs)")
         {
-            AABBf box = AABBf::from(Vec3f::Zero, Vec3f(1, 2, 3));
+            AABB3f box = AABB3f::from(Vec3f::Zero, Vec3f(1, 2, 3));
             REQUIRE(!(box != box));
-            REQUIRE(box != AABBf::from(Vec3f::OneX, Vec3f(1, 2, 3)));
-            REQUIRE(box != AABBf::from(Vec3f::Zero, Vec3f(3, 2, 1)));
+            REQUIRE(box != AABB3f::from(Vec3f::OneX, Vec3f(1, 2, 3)));
+            REQUIRE(box != AABB3f::from(Vec3f::Zero, Vec3f(3, 2, 1)));
         }
 
         //  Functions
 
         SECTION("inf() const")
         {
-            AABBf box;
+            AABB3f box;
 
-            box = AABBf::One;
+            box = AABB3f::One;
             REQUIRE_THAT(box.inf(), Matches::WithinAbs(Vec3f(-0.5f, -0.5f, -0.5f), 1e-10));
         }
 
         SECTION("sup() const")
         {
-            AABBf box;
+            AABB3f box;
 
-            box = AABBf::One;
+            box = AABB3f::One;
             REQUIRE_THAT(box.sup(), Matches::WithinAbs(Vec3f(0.5f, 0.5f, 0.5f), 1e-10));
         }
 
         SECTION("size() const")
         {
-            AABBf box;
+            AABB3f box;
 
-            box = AABBf::One;
+            box = AABB3f::One;
             REQUIRE_THAT(box.size(), Matches::WithinAbs(Vec3f(1.0f, 1.0f, 1.0f), 1e-10));
         }
 
         SECTION("innerSphere() const")
         {
-            AABBf box;
+            AABB3f box;
 
-            box = AABBf::One;
+            box = AABB3f::One;
             REQUIRE_THAT(box.innerSphere(), Matches::WithinAbs(Spheref(Vec3f::Zero, 0.5f), 1e-10));
         }
 
         SECTION("outerSphere() const")
         {
-            AABBf box;
+            AABB3f box;
 
-            box = AABBf::One;
+            box = AABB3f::One;
             REQUIRE_THAT(box.outerSphere(), Matches::WithinAbs(Spheref(Vec3f::Zero, 0.866025f), 1e-6));
         }
 
         SECTION("volume()")
         {
-            AABBf box;
+            AABB3f box;
             
-            box = AABBf::One;
+            box = AABB3f::One;
             REQUIRE_THAT(box.volume(), Catch::Matchers::WithinAbs(1.0f, 1e-10));
-            box = AABBf(Vec3f::Zero, Vec3f(2, 2, 2));
+            box = AABB3f(Vec3f::Zero, Vec3f(2, 2, 2));
             REQUIRE_THAT(box.volume(), Catch::Matchers::WithinAbs(8.0f, 1e-10));
-            box = AABBf(Vec3f::Zero, Vec3f(1, 2, 3));
+            box = AABB3f(Vec3f::Zero, Vec3f(1, 2, 3));
             REQUIRE_THAT(box.volume(), Catch::Matchers::WithinAbs(6.0f, 1e-10));
         }
 
         SECTION("isNull()")
         {
-            AABBf box;
+            AABB3f box;
 
-            box = AABBf::One;
+            box = AABB3f::One;
             REQUIRE(!box.isNull());
-            box = AABBf(Vec3f::Zero, Vec3f::Zero);
+            box = AABB3f(Vec3f::Zero, Vec3f::Zero);
             REQUIRE(box.isNull());
         }
 
         SECTION("pointAt(Real t)")
         {
-            AABBf box;
+            AABB3f box;
 
-            box = AABBf::One;
+            box = AABB3f::One;
 
             REQUIRE_THAT(box.pointAt(Vec3f(0, 0, 0)), Matches::WithinAbs(Vec3f::Zero, 1e-10));
 
@@ -310,7 +310,7 @@ namespace {
 
         SECTION("contains(const Vec3<Real>& point)")
         {
-            AABBf box = AABBf::One;
+            AABB3f box = AABB3f::One;
 
             REQUIRE(box.contains(Vec3f::Zero));
 
@@ -335,7 +335,7 @@ namespace {
 
         SECTION("contains(const Sphere<Real>& sphere)")
         {
-            AABBf box = AABBf::One;
+            AABB3f box = AABB3f::One;
             Spheref sphere = Spheref::One * 0.1f;
 
             REQUIRE(box.contains(sphere));
@@ -359,10 +359,10 @@ namespace {
             REQUIRE(!box.contains(sphere + Vec3f(-0.41f, +0.41f, -0.41f)));
         }
 
-        SECTION("contains(const AABB<Real>& box)")
+        SECTION("contains(const AABB3<Real>& box)")
         {
-            AABBf box = AABBf::One;
-            AABBf box2 = AABBf::One * 0.1f;
+            AABB3f box = AABB3f::One;
+            AABB3f box2 = AABB3f::One * 0.1f;
 
             REQUIRE(box.contains(box2));
 
@@ -385,10 +385,10 @@ namespace {
             REQUIRE(!box.contains(box2 + Vec3f(-0.46f, +0.46f, -0.46f)));
         }
 
-        SECTION("intersects(const AABB<Real>& box)")
+        SECTION("intersects(const AABB3<Real>& box)")
         {
-            AABBf box = AABBf::One;
-            AABBf box2 = AABBf::One * 0.1f;
+            AABB3f box = AABB3f::One;
+            AABB3f box2 = AABB3f::One * 0.1f;
 
             REQUIRE(box.intersects(box2));
 
@@ -422,9 +422,9 @@ namespace {
 
         SECTION("cast()")
         {
-            REQUIRE(AABBf::One.cast<double>() == AABBd::One);
+            REQUIRE(AABB3f::One.cast<double>() == AABB3d::One);
 
-            REQUIRE(AABBd::One.cast<float>() == AABBf::One);
+            REQUIRE(AABB3d::One.cast<float>() == AABB3f::One);
         }
     }
 }
