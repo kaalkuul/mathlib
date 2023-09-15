@@ -35,6 +35,7 @@ Mat2<Real>::Mat2(Real k)
 
 template <class Real>
 Mat2<Real>::Mat2(const Vec2<Real> &x, const Vec2<Real> &y)
+	: flags(Flags::Uninitialized)
 {
 	set(x, y);
 }

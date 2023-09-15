@@ -36,6 +36,7 @@ Mat3<Real>::Mat3(Real k)
 
 template <class Real>
 Mat3<Real>::Mat3(const Vec3<Real> &x, const Vec3<Real> &y, const Vec3<Real> &z)
+	: flags(Flags::Uninitialized)
 {
 	set(x, y, z);
 }

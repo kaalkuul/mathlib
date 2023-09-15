@@ -42,12 +42,14 @@ Mat4<Real>::Mat4(Real k)
 
 template <class Real>
 Mat4<Real>::Mat4(const Vec3<Real>& x, const Vec3<Real>& y, const Vec3<Real>& z, const Vec3<Real>& t)
+	: flags(Flags::Uninitialized)
 {
 	set(x, y, z, t);
 }
 
 template <class Real>
 Mat4<Real>::Mat4(const Vec4<Real>& x, const Vec4<Real>& y, const Vec4<Real>& z, const Vec4<Real>& t)
+	: flags(Flags::Uninitialized)
 {
 	set(x, y, z, t);
 }
