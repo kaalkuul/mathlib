@@ -90,6 +90,7 @@ public:
 	bool isOrthogonal() const;
 	bool isOrthonormal() const;
 	bool isIdentity() const;
+	bool isTrs() const;
 	bool isInitialized() const;
 
 	const Real* data() const;
@@ -125,7 +126,8 @@ private:
 		Orthogonal = 0x2,
 		Orthonormal = 0x3,
 		Identity = 0x4,
-		Uninitialized = 0x8
+		Trs = 0x8,
+		Uninitialized = 0x10
 	};
 
 	unsigned int flags;

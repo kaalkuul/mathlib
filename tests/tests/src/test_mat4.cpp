@@ -750,29 +750,73 @@ namespace
         {
             Mat4f m, im;
 
-            m.set(Coord::X, Constantsf::PI_OVER_6).transformPre(Mat4f::from(Coord::Y, Constantsf::PI_OVER_3));
-            im.set(m).invert();
-            REQUIRE_THAT(m * im, Matches::WithinAbs(Mat4f::One));
-            REQUIRE(m.isInitialized());
-            REQUIRE(m.isNormal());
-            REQUIRE(m.isOrthogonal());
-            REQUIRE(m.isOrthonormal());
-            REQUIRE(!m.isIdentity());
+            SECTION("Case 1")
+            {
+                m.set(Coord::X, Constantsf::PI_OVER_6).transformPre(Mat4f::from(Coord::Y, Constantsf::PI_OVER_3));
+                im.set(m).invert();
+                REQUIRE_THAT(m * im, Matches::WithinAbs(Mat4f::One));
+                REQUIRE(m.isInitialized());
+                REQUIRE(m.isNormal());
+                REQUIRE(m.isOrthogonal());
+                REQUIRE(m.isOrthonormal());
+                REQUIRE(!m.isIdentity());
+            }
 
-            m.set(Vec3f(1, 7, 8), Vec3f(4, 2, 9), Vec3f(5, 6, 3));
-            im.set(m).invert();
-            REQUIRE_THAT(m * im, Matches::WithinAbs(Mat4f::One));
-            REQUIRE_THAT(im,
-                Matches::WithinAbs(Mat4f(
-                    Vec3f(-48 / 295.0f, 27 / 295.0f, 47 / 295.0f),
-                    Vec3f(33 / 295.0f, -37 / 295.0f, 23 / 295.0f),
-                    Vec3f(14 / 295.0f, 29 / 295.0f, -26 / 295.0f)
-                )));
-            REQUIRE(m.isInitialized());
-            REQUIRE(!m.isNormal());
-            REQUIRE(!m.isOrthogonal());
-            REQUIRE(!m.isOrthonormal());
-            REQUIRE(!m.isIdentity());
+            SECTION("Case 2")
+            {
+                m.set(Vec3f(1, 7, 8), Vec3f(4, 2, 9), Vec3f(5, 6, 3));
+                im.set(m).invert();
+                REQUIRE_THAT(m * im, Matches::WithinAbs(Mat4f::One));
+                REQUIRE_THAT(im,
+                    Matches::WithinAbs(Mat4f(
+                        Vec3f(-48 / 295.0f, 27 / 295.0f, 47 / 295.0f),
+                        Vec3f(33 / 295.0f, -37 / 295.0f, 23 / 295.0f),
+                        Vec3f(14 / 295.0f, 29 / 295.0f, -26 / 295.0f)
+                    )));
+                REQUIRE(m.isInitialized());
+                REQUIRE(!m.isNormal());
+                REQUIRE(!m.isOrthogonal());
+                REQUIRE(!m.isOrthonormal());
+                REQUIRE(!m.isIdentity());
+            }
+
+            SECTION("Case 3")
+            {
+                Mat4f m(Vec4f(1, 0, 0, 0), Vec4f(0, 1, 0, 0), Vec4f(0, 0, 1, 0), Vec4f(10, 20, 30, 1));
+                im.set(m).invert();
+                REQUIRE_THAT(m * im, Matches::WithinAbs(Mat4f::One));
+                REQUIRE_THAT(im,
+                    Matches::WithinAbs(Mat4f(
+                        Vec4f(1, 0, 0, 0),
+                        Vec4f(0, 1, 0, 0),
+                        Vec4f(0, 0, 1, 0),
+                        Vec4f(-10, -20, -30, 1)
+                    )));
+                REQUIRE(im.isInitialized());
+                REQUIRE(im.isNormal());
+                REQUIRE(im.isOrthogonal());
+                REQUIRE(im.isOrthonormal());
+                REQUIRE(!im.isIdentity());
+            }
+
+            SECTION("Case 4")
+            {
+                Mat4f m(Vec4f(1, 7, 8, 10), Vec4f(4, 2, 9, 20), Vec4f(5, 6, 3, 30), Vec4f(0, 0, 0, 1));
+                im.set(m).invert();
+                REQUIRE_THAT(m * im, Matches::WithinAbs(Mat4f::One));
+                REQUIRE_THAT(im,
+                    Matches::WithinAbs(Mat4f(
+                        Vec4f(-48 / 295.0f, 27 / 295.0f, 47 / 295.0f, -294 / 59.0f),
+                        Vec4f(33 / 295.0f, -37 / 295.0f, 23 / 295.0f, -56 / 59.0f),
+                        Vec4f(14 / 295.0f, 29 / 295.0f, -26 / 295.0f, 12 / 59.0f),
+                        Vec4f(0, 0, 0, 1)
+                    )));
+                REQUIRE(im.isInitialized());
+                REQUIRE(!im.isNormal());
+                REQUIRE(!im.isOrthogonal());
+                REQUIRE(!im.isOrthonormal());
+                REQUIRE(!im.isIdentity());
+            }
         }
 
         // Functions
@@ -849,19 +893,76 @@ namespace
 
         SECTION("inversed()")
         {
-            Mat4f k(Vec3f(1, 7, 8), Vec3f(4, 2, 9), Vec3f(5, 6, 3));
-            Mat4f m = k.inversed();
-            REQUIRE_THAT(m,
-                Matches::WithinAbs(Mat4f(
-                    Vec3f(-48 / 295.0f,  27 / 295.0f,  47 / 295.0f),
-                    Vec3f( 33 / 295.0f, -37 / 295.0f,  23 / 295.0f),
-                    Vec3f( 14 / 295.0f,  29 / 295.0f, -26 / 295.0f)
-                )));
-            REQUIRE(m.isInitialized());
-            REQUIRE(!m.isNormal());
-            REQUIRE(m.isOrthogonal());
-            REQUIRE(!m.isOrthonormal());
-            REQUIRE(!m.isIdentity());
+            Mat4f m, im;
+
+            SECTION("Case 1")
+            {
+                m.set(Coord::X, Constantsf::PI_OVER_6).transformPre(Mat4f::from(Coord::Y, Constantsf::PI_OVER_3));
+                im = m.inversed();
+                REQUIRE_THAT(m * im, Matches::WithinAbs(Mat4f::One));
+                REQUIRE(m.isInitialized());
+                REQUIRE(m.isNormal());
+                REQUIRE(m.isOrthogonal());
+                REQUIRE(m.isOrthonormal());
+                REQUIRE(!m.isIdentity());
+            }
+
+            SECTION("Case 2")
+            {
+                m.set(Vec3f(1, 7, 8), Vec3f(4, 2, 9), Vec3f(5, 6, 3));
+                im = m.inversed();
+                REQUIRE_THAT(m * im, Matches::WithinAbs(Mat4f::One));
+                REQUIRE_THAT(im,
+                    Matches::WithinAbs(Mat4f(
+                        Vec3f(-48 / 295.0f, 27 / 295.0f, 47 / 295.0f),
+                        Vec3f(33 / 295.0f, -37 / 295.0f, 23 / 295.0f),
+                        Vec3f(14 / 295.0f, 29 / 295.0f, -26 / 295.0f)
+                    )));
+                REQUIRE(m.isInitialized());
+                REQUIRE(!m.isNormal());
+                REQUIRE(!m.isOrthogonal());
+                REQUIRE(!m.isOrthonormal());
+                REQUIRE(!m.isIdentity());
+            }
+
+            SECTION("Case 3")
+            {
+                Mat4f m(Vec4f(1, 0, 0, 0), Vec4f(0, 1, 0, 0), Vec4f(0, 0, 1, 0), Vec4f(10, 20, 30, 1));
+                Mat4f im1 = m; im1.invert();
+                im = m.inversed();
+                REQUIRE_THAT(m * im, Matches::WithinAbs(Mat4f::One));
+                REQUIRE_THAT(im,
+                    Matches::WithinAbs(Mat4f(
+                        Vec4f(1, 0, 0, 0),
+                        Vec4f(0, 1, 0, 0),
+                        Vec4f(0, 0, 1, 0),
+                        Vec4f(-10, -20, -30, 1)
+                    )));
+                REQUIRE(im.isInitialized());
+                REQUIRE(im.isNormal());
+                REQUIRE(im.isOrthogonal());
+                REQUIRE(im.isOrthonormal());
+                REQUIRE(!im.isIdentity());
+            }
+
+            SECTION("Case 4")
+            {
+                Mat4f m(Vec4f(1, 7, 8, 10), Vec4f(4, 2, 9, 20), Vec4f(5, 6, 3, 30), Vec4f(0, 0, 0, 1));
+                im = m.inversed();
+                REQUIRE_THAT(m * im, Matches::WithinAbs(Mat4f::One));
+                REQUIRE_THAT(im,
+                    Matches::WithinAbs(Mat4f(
+                        Vec4f(-48 / 295.0f, 27 / 295.0f, 47 / 295.0f, -294 / 59.0f),
+                        Vec4f(33 / 295.0f, -37 / 295.0f, 23 / 295.0f, -56 / 59.0f),
+                        Vec4f(14 / 295.0f, 29 / 295.0f, -26 / 295.0f, 12 / 59.0f),
+                        Vec4f(0, 0, 0, 1)
+                    )));
+                REQUIRE(im.isInitialized());
+                REQUIRE(!im.isNormal());
+                REQUIRE(!im.isOrthogonal());
+                REQUIRE(!im.isOrthonormal());
+                REQUIRE(!im.isIdentity());
+            }
         }
 
         SECTION("isIdentity()")

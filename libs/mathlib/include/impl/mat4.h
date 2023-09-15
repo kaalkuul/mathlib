@@ -36,7 +36,7 @@ Mat4<Real>::Mat4(Real k)
 	flags = Flags::Orthogonal;
 	if (k == Real(1))
 	{
-		flags |= Flags::Normal | Flags::Identity;
+		flags |= Flags::Normal | Flags::Identity | Flags::Trs;
 	}
 }
 
@@ -66,7 +66,7 @@ Mat4<Real>& Mat4<Real>::setIdentity()
 	y.set(Real(0), Real(1), Real(0), Real(0));
 	z.set(Real(0), Real(0), Real(1), Real(0));
 	t.set(Real(0), Real(0), Real(0), Real(1));
-	flags = Flags::Orthonormal | Flags::Identity;
+	flags = Flags::Orthonormal | Flags::Identity | Flags::Trs;
 	return *this;
 }
 
@@ -602,6 +602,13 @@ Mat4<Real>& Mat4<Real>::optimize(const Tolerance* tolerance)
 	if (tolerance == nullptr)
 		tolerance = &DefaultTolerance;
 
+	bool istrs = x.w == Real(0) && y.w == Real(0) && z.w == Real(0) && t.w == Real(1);
+
+	if (istrs)
+		flags |= Flags::Trs;
+	else
+		flags &= ~Flags::Trs;
+
 	bool isnormal = normalError() <= tolerance->normal;
 	bool isorthogonal = orthogonalError() <= tolerance->orthogonal;
 	bool isidentity = isnormal && isorthogonal && identityError() <= tolerance->identity;
@@ -809,7 +816,33 @@ template <class Real>
 Mat4<Real> Mat4<Real>::inversed() const
 {
 	if (isOrthonormal())
-		return transposed();
+	{
+		Mat4<Real> result;
+
+		result.x.x = x.x;
+		result.x.y = y.x;
+		result.x.z = z.x;
+		result.x.w = Real(0);
+
+		result.y.x = x.y;
+		result.y.y = y.y;
+		result.y.z = z.y;
+		result.y.w = Real(0);
+
+		result.z.x = x.z;
+		result.z.y = y.z;
+		result.z.z = z.z;
+		result.z.w = Real(0);
+
+		result.t.x = -(result.x.x * t.x + result.y.x * t.y + result.z.x * t.z);
+		result.t.y = -(result.x.y * t.x + result.y.y * t.y + result.z.y * t.z);
+		result.t.z = -(result.x.z * t.x + result.y.z * t.y + result.z.z * t.z);
+		result.t.w = Real(1);
+
+		result.flags = flags;
+
+		return result;
+	}
 
 	Real CF00 = (z.z * t.w - z.w * t.z);
 	Real CF01 = (y.z * t.w - y.w * t.z);
@@ -866,20 +899,42 @@ Mat4<Real> Mat4<Real>::inversed() const
 template <class Real>
 Real Mat4<Real>::normalError() const
 {
-	Real cx = (x * x) - Real(1);
-	Real cy = (y * y) - Real(1);
-	Real cz = (z * z) - Real(1);
-	Real ct = (t * t) - Real(1);
-	return cx * cx + cy * cy + cz * cz + ct * ct;
+	if (flags & Flags::Trs)
+	{
+		Real cx = (x.x * x.x + x.y * x.y + x.z * x.z) - Real(1);
+		Real cy = (y.x * y.x + y.y * y.y + y.z * y.z) - Real(1);
+		Real cz = (z.x * z.x + z.y * z.y + z.z * z.z) - Real(1);
+		Real ct = Real(0); // (t * t) - Real(1);
+		return cx * cx + cy * cy + cz * cz + ct * ct;
+	}
+	else
+	{
+		Real cx = (x * x) - Real(1);
+		Real cy = (y * y) - Real(1);
+		Real cz = (z * z) - Real(1);
+		Real ct = (t * t) - Real(1);
+		return cx * cx + cy * cy + cz * cz + ct * ct;
+
+	}
 }
 
 template <class Real>
 Real Mat4<Real>::orthogonalError() const
 {
-	Real xy = x * y;
-	Real xz = x * z;
-	Real yz = y * z;
-	return xy * xy + xz * xz + yz * yz;
+	if (flags & Flags::Trs)
+	{
+		Real xy = x.x * y.x + x.y * y.y + x.z * y.z;
+		Real xz = x.x * z.x + x.y * z.y + x.z * z.z;
+		Real yz = y.x * z.x + y.y * z.y + y.z * z.z;
+		return xy * xy + xz * xz + yz * yz;
+	}
+	else
+	{
+		Real xy = x * y;
+		Real xz = x * z;
+		Real yz = y * z;
+		return xy * xy + xz * xz + yz * yz;
+	}
 }
 
 template <class Real>
@@ -914,6 +969,12 @@ template <class Real>
 bool Mat4<Real>::isIdentity() const
 {
 	return (flags & Flags::Identity);
+}
+
+template <class Real>
+bool Mat4<Real>::isTrs() const
+{
+	return (flags & Flags::Trs);
 }
 
 template <class Real>
