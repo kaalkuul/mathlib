@@ -499,6 +499,7 @@ Mat4<Real>& Mat4<Real>::scale(const Vec3<Real>& coefficients)
 	if (coefficients.x != Real(1) || coefficients.y != Real(1) || coefficients.z != Real(1))
 	{
 		flags &= ~Flags::Identity;
+		flags &= ~Flags::Normal;
 	}
 	return *this;
 }
@@ -568,6 +569,7 @@ Mat4<Real>& Mat4<Real>::scalePre(const Vec3<Real>& coefficients)
 	if (coefficients.x != Real(1) || coefficients.y != Real(1) || coefficients.z != Real(1))
 	{
 		flags &= ~Flags::Identity;
+		flags &= ~Flags::Normal;
 	}
 	return *this;
 }

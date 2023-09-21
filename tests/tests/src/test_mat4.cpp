@@ -559,6 +559,24 @@ namespace
                 m.setIdentity().scale(Vec3f(1.0f, 1.0f, 1.0f));
                 REQUIRE(m.isIdentity());
             }
+
+            SECTION("Unflags normal")
+            {
+                Mat4f m;
+                m.setIdentity().scale(Vec3f(2.0f, 1.0f, 1.0f));
+                REQUIRE(!m.isIdentity());
+                REQUIRE(!m.isNormal());
+                REQUIRE(!m.isOrthonormal());
+            }
+
+            SECTION("Does not unflag normal")
+            {
+                Mat4f m;
+                m.setIdentity().scale(Vec3f(1.0f, 1.0f, 1.0f));
+                REQUIRE(m.isIdentity());
+                REQUIRE(m.isNormal());
+                REQUIRE(m.isOrthonormal());
+            }
         }
 
         SECTION("transform(const Mat4& mat)")
@@ -695,6 +713,23 @@ namespace
                 Mat4f m;
                 m.setIdentity().scalePre(Vec3f(1.0f, 1.0f, 1.0f));
                 REQUIRE(m.isIdentity());
+            }
+
+            SECTION("Unflags normal")
+            {
+                Mat4f m;
+                m.setIdentity().scalePre(Vec3f(2.0f, 1.0f, 1.0f));
+                REQUIRE(!m.isNormal());
+                REQUIRE(!m.isOrthonormal());
+            }
+
+            SECTION("Does not unflag normal")
+            {
+                Mat4f m;
+                m.setIdentity().scalePre(Vec3f(1.0f, 1.0f, 1.0f));
+                REQUIRE(m.isIdentity());
+                REQUIRE(m.isNormal());
+                REQUIRE(m.isOrthonormal());
             }
         }
 
