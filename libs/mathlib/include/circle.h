@@ -2,11 +2,11 @@
 
 MATHLIB_NS_BEGIN
 
-template <class Real>
+template <class RealT>
 class Circle
 {
 public:
-	typedef Real Real;
+	typedef RealT Real;
 
 public:
 	// Constructors

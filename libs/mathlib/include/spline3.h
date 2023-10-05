@@ -2,11 +2,11 @@
 
 MATHLIB_NS_BEGIN
 
-template <class Real>
+template <class RealT>
 class HermiteSplineSegment3
 {
 public:
-	typedef Real Real;
+	typedef RealT Real;
 
 public:
     HermiteSplineSegment3();
@@ -41,11 +41,11 @@ private:
 // A free, online book for when you really need to know how to do Bézier things.
 // https://pomax.github.io/bezierinfo/
 
-template <class Real>
+template <class RealT>
 class BezierSegment3
 {
 public:
-	typedef Real Real;
+	typedef RealT Real;
 
 public:
     BezierSegment3();
@@ -84,11 +84,11 @@ private:
 	Vec3<Real> P1, P2, P3, P4;
 };
 
-template <class Real>
+template <class RealT>
 class BezierSegment3FwdDiff
 {
 public:
-	typedef Real Real;
+	typedef RealT Real;
 
 public:
 	BezierSegment3FwdDiff(const Vec3<Real>& P1, const Vec3<Real>& P2, const Vec3<Real>& P3, const Vec3<Real>& P4, Real d);

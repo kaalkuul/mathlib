@@ -2,11 +2,11 @@
 
 MATHLIB_NS_BEGIN
 
-template <class Real>
+template <class RealT>
 class Ray3
 {
 public:
-	typedef Real Real;
+	typedef RealT Real;
 
 public:
 	// Constructors
