@@ -127,13 +127,30 @@ namespace {
             
             REQUIRE(plane.contains(Vec3f(0.0f, 0.0f, 1.0f), 0.0f));
         }
-        
+
+        SECTION("flip()")
+        {
+            Planef plane = Planef::XY.moved(1);
+            plane.flip();
+            
+            REQUIRE(plane.distance(Vec3f::Zero) == 1.0f);
+            REQUIRE(plane.contains(Vec3f(0.0f, 0.0f, 1.0f), 0.0f));
+        }
+
         //  Functions
 
         SECTION("moved(Real distance)")
         {
             Planef plane = Planef::XY.moved(1.0f);
             
+            REQUIRE(plane.contains(Vec3f(0.0f, 0.0f, 1.0f), 0.0f));
+        }
+
+        SECTION("flipped()")
+        {
+            Planef plane = Planef::XY.moved(1.0f).flipped();
+            
+            REQUIRE(plane.distance(Vec3f::Zero) == 1.0f);
             REQUIRE(plane.contains(Vec3f(0.0f, 0.0f, 1.0f), 0.0f));
         }
 

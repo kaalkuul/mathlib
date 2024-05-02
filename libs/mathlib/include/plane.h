@@ -26,9 +26,12 @@ public:
 
     // Transformations
     Plane& move(Real distance);
+    Plane& flip();
 
     // Functions
     Plane moved(Real distance) const;
+    
+    Plane flipped() const;
     
     bool contains(const Vec3<Real>& point, Real tolerance) const;
 

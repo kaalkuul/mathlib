@@ -92,6 +92,14 @@ Plane<Real>& Plane<Real>::move(Real distance)
     return *this;
 }
 
+template <class Real>
+Plane<Real>& Plane<Real>::flip()
+{
+    this->normal = -this->normal;
+    this->d = -this->d;
+    return *this;
+}
+
 //
 //  Functions
 //
@@ -102,6 +110,15 @@ Plane<Real> Plane<Real>::moved(Real distance) const
     Plane<Real> result;
     result.normal = this->normal;
     result.d = this->d - distance;
+    return result;
+}
+
+template <class Real>
+Plane<Real> Plane<Real>::flipped() const
+{
+    Plane<Real> result;
+    result.normal = -this->normal;
+    result.d = -this->d;
     return result;
 }
 
