@@ -24,8 +24,13 @@ public:
 	bool operator== (const Plane& rhs) const;
 	bool operator!= (const Plane& rhs) const;
 
-	// Functions
-	bool contains(const Vec3<Real>& point, Real tolerance) const;
+    // Transformations
+    Plane& move(Real distance);
+
+    // Functions
+    Plane moved(Real distance) const;
+    
+    bool contains(const Vec3<Real>& point, Real tolerance) const;
 
 	Real distance(const Vec3<Real>& point) const;
 

@@ -82,8 +82,28 @@ bool Plane<Real>::operator!=(const Plane<Real>& rhs) const
 }
 
 //
+//  Transformations
+//
+
+template <class Real>
+Plane<Real>& Plane<Real>::move(Real distance)
+{
+    this->d -= distance;
+    return *this;
+}
+
+//
 //  Functions
 //
+
+template <class Real>
+Plane<Real> Plane<Real>::moved(Real distance) const
+{
+    Plane<Real> result;
+    result.normal = this->normal;
+    result.d = this->d - distance;
+    return result;
+}
 
 template <class Real>
 bool Plane<Real>::contains(const Vec3<Real>& p, Real tolerance) const

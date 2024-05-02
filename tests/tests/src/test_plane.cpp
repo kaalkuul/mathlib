@@ -118,7 +118,24 @@ namespace {
             REQUIRE(!(plane != Planef(Vec3f::OneZ, 2.0f)));
         }
 
+        //  Transformations
+
+        SECTION("move(Real distance)")
+        {
+            Planef plane = Planef::XY;
+            plane.move(1.0f);
+            
+            REQUIRE(plane.contains(Vec3f(0.0f, 0.0f, 1.0f), 0.0f));
+        }
+        
         //  Functions
+
+        SECTION("moved(Real distance)")
+        {
+            Planef plane = Planef::XY.moved(1.0f);
+            
+            REQUIRE(plane.contains(Vec3f(0.0f, 0.0f, 1.0f), 0.0f));
+        }
 
         SECTION("contains(const Vec3<Real>& point, Real tolerance)")
         {
