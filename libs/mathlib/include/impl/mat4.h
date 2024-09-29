@@ -723,6 +723,125 @@ Mat4<Real>& Mat4<Real>::invert()
 //
 
 template <class Real>
+Mat4<Real> Mat4<Real>::rotated(const Quat<Real>& q) const
+{
+    Mat4 rot;
+    rot.set(q);
+    return transformed(rot);
+}
+
+template <class Real>
+Mat4<Real> Mat4<Real>::rotated(const Vec3<Real>& axis, Real angle) const
+{
+    Mat4 rot;
+    rot.set(axis, angle);
+    return transformed(rot);
+}
+
+template <class Real>
+Mat4<Real> Mat4<Real>::rotated(Coord axis, Real angle) const
+{
+    Mat4 rot;
+    rot.set(axis, angle);
+    return transformed(rot);
+}
+
+template <class Real>
+Mat4<Real> Mat4<Real>::translated(const Vec3<Real>& translation) const
+{
+    return from(x, y, z, t + Vec4<Real>(translation, Real(0)));
+}
+
+template <class Real>
+Mat4<Real> Mat4<Real>::scaled(const Vec3<Real>& coefficients) const
+{
+    // r * v = scale * (rs * v + t)
+    //       = (scale * rs) * v + (scale * t)
+    return from(x * coefficients.x,
+                y * coefficients.y,
+                z * coefficients.z,
+                Vec4<Real>(t.x * coefficients.x,
+                           t.y * coefficients.y,
+                           t.z * coefficients.z,
+                           t.w));
+}
+
+template <class Real>
+Mat4<Real> Mat4<Real>::transformed(const Mat4& m) const
+{
+    if (m.isIdentity())
+        return *this;
+
+    if (isIdentity())
+        return m;
+
+    Mat4 d;
+    multiply(d, m, *this);
+
+    return d;
+}
+
+template <class Real>
+Mat4<Real> Mat4<Real>::rotatedPre(const Quat<Real>& q) const
+{
+    Mat4 rot;
+    rot.set(q);
+    return transformedPre(rot);
+}
+
+template <class Real>
+Mat4<Real> Mat4<Real>::rotatedPre(const Vec3<Real>& axis, Real angle) const
+{
+    Mat4 rot;
+    rot.set(axis, angle);
+    return transformedPre(rot);
+}
+
+template <class Real>
+Mat4<Real> Mat4<Real>::rotatedPre(Coord axis, Real angle) const
+{
+    Mat4 rot;
+    rot.set(axis, angle);
+    return transformedPre(rot);
+}
+
+template <class Real>
+Mat4<Real> Mat4<Real>::translatedPre(const Vec3<Real>& translation) const
+{
+    // r * v = rs * (v + translation) + t
+    //       = (rs) * v + (rs * translation + t)
+    Vec3<Real> delta;
+    transformVector(delta, translation);
+    return from(x, y, z, t + Vec4<Real>(delta, Real(0)));
+}
+
+template <class Real>
+Mat4<Real> Mat4<Real>::scaledPre(const Vec3<Real>& coefficients) const
+{
+    // r * v = rs * (scale * v) + t
+    //       = (rs * scale) * v + (t)
+    return from(x * coefficients.x,
+                y * coefficients.y,
+                z * coefficients.z,
+                t);
+}
+
+template <class Real>
+Mat4<Real> Mat4<Real>::transformedPre(const Mat4& m) const
+{
+    if (m.isIdentity())
+        return *this;
+
+    if (isIdentity())
+        return m;
+
+    Mat4 d;
+    multiply(d, *this, m);
+
+    return d;
+}
+
+template <class Real>
 Ray3<Real> Mat4<Real>::localAxis(Coord axis) const
 {
 	Vec3<Real> start = t.toVec3();

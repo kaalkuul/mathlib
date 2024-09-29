@@ -694,6 +694,190 @@ Mat3<Real> Mat3<Real>::scaled(const Vec3<Real>& coefficients) const
 }
 
 template <class Real>
+Mat3<Real> Mat3<Real>::rotated(const Mat3& m) const
+{
+    if (m.isIdentity())
+        return *this;
+
+    if (isIdentity())
+        return m;
+
+    Real x_x = x.x, y_x = y.x, z_x = z.x, x_y = x.y, y_y = y.y, z_y = z.y;
+
+    Mat3<Real> r;
+    
+    r.x.x = m.x.x * x_x + m.y.x * x_y + m.z.x * x.z;
+    r.y.x = m.x.x * y_x + m.y.x * y_y + m.z.x * y.z;
+    r.z.x = m.x.x * z_x + m.y.x * z_y + m.z.x * z.z;
+    r.x.y = m.x.y * x_x + m.y.y * x_y + m.z.y * x.z;
+    r.y.y = m.x.y * y_x + m.y.y * y_y + m.z.y * y.z;
+    r.z.y = m.x.y * z_x + m.y.y * z_y + m.z.y * z.z;
+    r.x.z = m.x.z * x_x + m.y.z * x_y + m.z.z * x.z;
+    r.y.z = m.x.z * y_x + m.y.z * y_y + m.z.z * y.z;
+    r.z.z = m.x.z * z_x + m.y.z * z_y + m.z.z * z.z;
+
+    r.flags = flags & m.flags;
+
+    return r;
+}
+
+template <class Real>
+Mat3<Real> Mat3<Real>::rotated(const Quat<Real>& q) const
+{
+    Mat3 m;
+    m.set(q);
+    return rotated(m);
+}
+
+template <class Real>
+Mat3<Real> Mat3<Real>::rotated(const Vec3<Real>& axis, Real angle) const
+{
+    Mat3 m;
+    m.set(axis, angle);
+    return rotated(m);
+}
+
+template <class Real>
+Mat3<Real> Mat3<Real>::rotated(Coord axis, Real angle) const
+{
+    Real s = sin(angle);
+    Real c = cos(angle);
+    Mat3<Real> r;
+    switch (axis)
+    {
+        case Coord::X:
+            r.x.x = x.x;
+            r.x.y = x.y * c - x.z * s;
+            r.x.z = x.y * s + x.z * c;
+            r.y.x = y.x;
+            r.y.y = y.y * c - y.z * s;
+            r.y.z = y.y * s + y.z * c;
+            r.z.x = z.x;
+            r.z.y = z.y * c - z.z * s;
+            r.z.z = z.y * s + z.z * c;
+            break;
+        case Coord::Y:
+            r.x.x = x.x * c + x.z * s;
+            r.x.y = x.y;
+            r.x.z = -x.x * s + x.z * c;
+            r.y.x = y.x * c + y.z * s;
+            r.y.y = y.y;
+            r.y.z = -y.x * s + y.z * c;
+            r.z.x = z.x * c + z.z * s;
+            r.z.y = z.y;
+            r.z.z = -z.x * s + z.z * c;
+            break;
+        case Coord::Z:
+            r.x.x = x.x * c - x.y * s;
+            r.x.y = x.x * s + x.y * c;
+            r.x.z = x.z;
+            r.y.x = y.x * c - y.y * s;
+            r.y.y = y.x * s + y.y * c;
+            r.y.z = y.z;
+            r.z.x = z.x * c - z.y * s;
+            r.z.y = z.x * s + z.y * c;
+            r.z.z = z.z;
+            break;
+        default:
+            assert(0);
+    }
+    r.flags = flags;
+    return r;
+}
+
+template <class Real>
+Mat3<Real> Mat3<Real>::rotatedPre(const Mat3& m) const
+{
+    if (m.isIdentity())
+        return *this;
+
+    if (isIdentity())
+        return m;
+
+    Real x_x = x.x, x_y = x.y, x_z = x.z, y_x = y.x, y_y = y.y, y_z = y.z;
+
+    Mat3<Real> r;
+    
+    r.x.x = x_x * m.x.x + y_x * m.x.y + z.x * m.x.z;
+    r.y.x = x_x * m.y.x + y_x * m.y.y + z.x * m.y.z;
+    r.z.x = x_x * m.z.x + y_x * m.z.y + z.x * m.z.z;
+    r.x.y = x_y * m.x.x + y_y * m.x.y + z.y * m.x.z;
+    r.y.y = x_y * m.y.x + y_y * m.y.y + z.y * m.y.z;
+    r.z.y = x_y * m.z.x + y_y * m.z.y + z.y * m.z.z;
+    r.x.z = x_z * m.x.x + y_z * m.x.y + z.z * m.x.z;
+    r.y.z = x_z * m.y.x + y_z * m.y.y + z.z * m.y.z;
+    r.z.z = x_z * m.z.x + y_z * m.z.y + z.z * m.z.z;
+
+    r.flags = flags & m.flags;
+
+    return r;
+}
+
+template <class Real>
+Mat3<Real> Mat3<Real>::rotatedPre(const Quat<Real>& q) const
+{
+    Mat3 m;
+    m.set(q);
+    return rotatedPre(m);
+}
+
+template <class Real>
+Mat3<Real> Mat3<Real>::rotatedPre(const Vec3<Real>& axis, Real angle) const
+{
+    Mat3 m;
+    m.set(axis, angle);
+    return rotatedPre(m);
+}
+
+template <class Real>
+Mat3<Real> Mat3<Real>::rotatedPre(Coord axis, Real angle) const
+{
+    Real s = sin(angle);
+    Real c = cos(angle);
+    Mat3<Real> r;
+    switch (axis)
+    {
+        case Coord::X:
+            r.x.x = x.x;
+            r.y.x = y.x * c + z.x * s;
+            r.z.x = -y.x * s + z.x * c;
+            r.x.y = x.y;
+            r.y.y = y.y * c + z.y * s;
+            r.z.y = -y.y * s + z.y * c;
+            r.x.z = x.z;
+            r.y.z = y.z * c + z.z * s;
+            r.z.z = -y.z * s + z.z * c;
+            break;
+        case Coord::Y:
+            r.x.x = x.x * c - z.x * s;
+            r.y.x = y.x;
+            r.z.x = x.x * s + z.x * c;
+            r.x.y = x.y * c - z.y * s;
+            r.y.y = y.y;
+            r.z.y = x.y * s + z.y * c;
+            r.x.z = x.z * c - z.z * s;
+            r.y.z = y.z;
+            r.z.z = x.z * s + z.z * c;
+            break;
+        case Coord::Z:
+            r.x.x = x.x * c + y.x * s;
+            r.y.x = -x.x * s + y.x * c;
+            r.z.x = z.x;
+            r.x.y = x.y * c + y.y * s;
+            r.y.y = -x.y * s + y.y * c;
+            r.z.y = z.y;
+            r.x.z = x.z * c + y.z * s;
+            r.y.z = -x.z * s + y.z * c;
+            r.z.z = z.z;
+            break;
+        default:
+            assert(0);
+    }
+    r.flags = flags;
+    return r;
+}
+
+template <class Real>
 Mat3<Real> Mat3<Real>::transposed() const
 {
 	Mat3 r;

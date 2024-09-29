@@ -856,6 +856,323 @@ namespace
 
         // Functions
 
+        SECTION("rotated(const Quat<Real> &q)")
+        {
+            Mat4f k;
+            k.set(Vec3f::OneZ, Constantsf::PI_OVER_3);
+            Mat4f m = k.rotated(Quatf::from(Vec3f::OneX, Constantsf::PI_OVER_6));
+            REQUIRE_THAT(m, Matches::WithinAbs(
+                Mat4f::from(Vec3f::OneX, Constantsf::PI_OVER_6) * Mat4f::from(Vec3f::OneZ, Constantsf::PI_OVER_3)
+            ));
+            REQUIRE(m.isInitialized());
+            REQUIRE(m.isNormal());
+            REQUIRE(m.isOrthogonal());
+            REQUIRE(m.isOrthonormal());
+            REQUIRE(!m.isIdentity());
+        }
+
+        SECTION("rotated(const Vec3<Real>& axis, Real angle)")
+        {
+            Mat4f k;
+            k.set(Vec3f::OneZ, Constantsf::PI_OVER_3);
+            Mat4f m = k.rotated(Vec3f::OneX, Constantsf::PI_OVER_6);
+            REQUIRE_THAT(m, Matches::WithinAbs(
+                Mat4f::from(Vec3f::OneX, Constantsf::PI_OVER_6) * Mat4f::from(Vec3f::OneZ, Constantsf::PI_OVER_3)
+            ));
+            REQUIRE(m.isInitialized());
+            REQUIRE(m.isNormal());
+            REQUIRE(m.isOrthogonal());
+            REQUIRE(m.isOrthonormal());
+            REQUIRE(!m.isIdentity());
+        }
+
+        SECTION("rotated(Coord axis, Real angle)")
+        {
+            Mat4f k;
+            k.set(Vec3f::OneZ, Constantsf::PI_OVER_3);
+            Mat4f m = k.rotated(Coord::X, Constantsf::PI_OVER_6);
+            REQUIRE_THAT(m, Matches::WithinAbs(
+                Mat4f::from(Vec3f::OneX, Constantsf::PI_OVER_6) * Mat4f::from(Vec3f::OneZ, Constantsf::PI_OVER_3)
+            ));
+            REQUIRE(m.isInitialized());
+            REQUIRE(m.isNormal());
+            REQUIRE(m.isOrthogonal());
+            REQUIRE(m.isOrthonormal());
+            REQUIRE(!m.isIdentity());
+        }
+
+        SECTION("translated(const Vec3<Real>& translation)")
+        {
+            SECTION("Case 1")
+            {
+                Mat4f k(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9), Vec3f(10, 11, 12));
+                Mat4f m = k.translated(Vec3f(2, 3, 4));
+                REQUIRE_THAT(m,
+                    Matches::WithinAbs(Mat4f(
+                        Vec3f(1, 2, 3),
+                        Vec3f(4, 5, 6),
+                        Vec3f(7, 8, 9),
+                        Vec3f(12, 14, 16)
+                    )));
+                REQUIRE(m.isInitialized());
+                REQUIRE(!m.isNormal());
+                REQUIRE(!m.isOrthogonal());
+                REQUIRE(!m.isOrthonormal());
+                REQUIRE(!m.isIdentity());
+            }
+
+            SECTION("Unflags identity")
+            {
+                Mat4f k;
+                k.setIdentity();
+                Mat4f m = k.translated(Vec3f::OneX);
+                REQUIRE(!m.isIdentity());
+            }
+
+            SECTION("Does not unflag identity")
+            {
+                Mat4f k;
+                k.setIdentity();
+                Mat4f m = k.translated(Vec3f::Zero);
+                REQUIRE(m.isIdentity());
+            }
+        }
+
+        SECTION("scaled(const Vec3<Real>& coefficients)")
+        {
+            SECTION("Case 1")
+            {
+                Mat4f k(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9), Vec3f(10, 11, 12));
+                Mat4f m = k.scaled(Vec3f(10, 100, 1000));
+                REQUIRE_THAT(m,
+                    Matches::WithinAbs(Mat4f(
+                        Vec3f(10, 20, 30),
+                        Vec3f(400, 500, 600),
+                        Vec3f(7000, 8000, 9000),
+                        Vec3f(100, 1100, 12000)
+                    )));
+                REQUIRE(m.isInitialized());
+                REQUIRE(!m.isNormal());
+                REQUIRE(!m.isOrthogonal());
+                REQUIRE(!m.isOrthonormal());
+                REQUIRE(!m.isIdentity());
+            }
+
+            SECTION("Unflags identity")
+            {
+                Mat4f k;
+                k.setIdentity();
+                Mat4f m = k.scaled(Vec3f(2.0f, 1.0f, 1.0f));
+                REQUIRE(!m.isIdentity());
+            }
+
+            SECTION("Does not unflag identity")
+            {
+                Mat4f k;
+                k.setIdentity();
+                Mat4f m = k.scaled(Vec3f(1.0f, 1.0f, 1.0f));
+                REQUIRE(m.isIdentity());
+            }
+
+            SECTION("Unflags normal")
+            {
+                Mat4f k;
+                k.setIdentity();
+                Mat4f m = k.scaled(Vec3f(2.0f, 1.0f, 1.0f));
+                REQUIRE(!m.isIdentity());
+                REQUIRE(!m.isNormal());
+                REQUIRE(!m.isOrthonormal());
+            }
+
+            SECTION("Does not unflag normal")
+            {
+                Mat4f k;
+                k.setIdentity();
+                Mat4f m = k.scaled(Vec3f(1.0f, 1.0f, 1.0f));
+                REQUIRE(m.isIdentity());
+                REQUIRE(m.isNormal());
+                REQUIRE(m.isOrthonormal());
+            }
+        }
+
+        SECTION("transformed(const Mat4& mat)")
+        {
+            Mat4f k;
+            k.set(Vec3f::OneZ, Constantsf::PI_OVER_3).translate(Vec3f(1, 10, 100));
+            Mat4f a;
+            a.set(Vec3f::OneX, Constantsf::PI_OVER_6).translate(Vec3f(4, 5, 6));
+            Mat4f m = k.transformed(a);
+            REQUIRE_THAT(m, Matches::WithinAbs(
+                Mat4f::from(Vec3f::OneX, Constantsf::PI_OVER_6).translate(Vec3f(4, 5, 6))
+                * Mat4f::from(Vec3f::OneZ, Constantsf::PI_OVER_3).translate(Vec3f(1, 10, 100))
+            ));
+            REQUIRE(m.isInitialized());
+            REQUIRE(m.isNormal());
+            REQUIRE(m.isOrthogonal());
+            REQUIRE(m.isOrthonormal());
+            REQUIRE(!m.isIdentity());
+        }
+
+
+        SECTION("rotatedPre(const Quat<Real> &q)")
+        {
+            Mat4f k;
+            k.set(Vec3f::OneZ, Constantsf::PI_OVER_3);
+            Mat4f m = k.rotatedPre(Quatf::from(Vec3f::OneX, Constantsf::PI_OVER_6));
+            REQUIRE_THAT(m, Matches::WithinAbs(
+                Mat4f::from(Vec3f::OneZ, Constantsf::PI_OVER_3)
+                * Mat4f::from(Vec3f::OneX, Constantsf::PI_OVER_6)
+            ));
+            REQUIRE(m.isInitialized());
+            REQUIRE(m.isNormal());
+            REQUIRE(m.isOrthogonal());
+            REQUIRE(m.isOrthonormal());
+            REQUIRE(!m.isIdentity());
+        }
+
+        SECTION("rotatedPre(const Vec3<Real>& axis, Real angle)")
+        {
+            Mat4f k;
+            k.set(Vec3f::OneZ, Constantsf::PI_OVER_3);
+            Mat4f m = k.rotatedPre(Vec3f::OneX, Constantsf::PI_OVER_6);
+            REQUIRE_THAT(m, Matches::WithinAbs(
+                Mat4f::from(Vec3f::OneZ, Constantsf::PI_OVER_3)
+                * Mat4f::from(Vec3f::OneX, Constantsf::PI_OVER_6)
+            ));
+            REQUIRE(m.isInitialized());
+            REQUIRE(m.isNormal());
+            REQUIRE(m.isOrthogonal());
+            REQUIRE(m.isOrthonormal());
+            REQUIRE(!m.isIdentity());
+        }
+
+        SECTION("rotatedPre(Coord axis, Real angle)")
+        {
+            Mat4f k;
+            k.set(Vec3f::OneZ, Constantsf::PI_OVER_3);
+            Mat4f m = k.rotatedPre(Coord::X, Constantsf::PI_OVER_6);
+            REQUIRE_THAT(m, Matches::WithinAbs(
+                Mat4f::from(Vec3f::OneZ, Constantsf::PI_OVER_3)
+                * Mat4f::from(Vec3f::OneX, Constantsf::PI_OVER_6)
+            ));
+            REQUIRE(m.isInitialized());
+            REQUIRE(m.isNormal());
+            REQUIRE(m.isOrthogonal());
+            REQUIRE(m.isOrthonormal());
+            REQUIRE(!m.isIdentity());
+        }
+
+        SECTION("translatedPre(const Vec3<Real>& translation)")
+        {
+            SECTION("Case 1")
+            {
+                Mat4f k(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9), Vec3f(10, 11, 12));
+                Mat4f m = k.translatedPre(Vec3f(2, 3, 4));
+                REQUIRE_THAT(m,
+                    Matches::WithinAbs(Mat4f(
+                        Vec3f(1, 2, 3),
+                        Vec3f(4, 5, 6),
+                        Vec3f(7, 8, 9),
+                        Vec3f(52, 62, 72)
+                    )));
+                REQUIRE(m.isInitialized());
+                REQUIRE(!m.isNormal());
+                REQUIRE(!m.isOrthogonal());
+                REQUIRE(!m.isOrthonormal());
+                REQUIRE(!m.isIdentity());
+            }
+
+            SECTION("Unflags identity")
+            {
+                Mat4f k;
+                k.setIdentity();
+                Mat4f m = k.translatedPre(Vec3f::OneX);
+                REQUIRE(!m.isIdentity());
+            }
+
+            SECTION("Does not unflag identity")
+            {
+                Mat4f k;
+                k.setIdentity();
+                Mat4f m = k.translatedPre(Vec3f::Zero);
+                REQUIRE(m.isIdentity());
+            }
+        }
+
+        SECTION("scaledPre(const Vec3<Real>& coefficients)")
+        {
+            SECTION("Case 1")
+            {
+                Mat4f k(Vec3f(1, 2, 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9), Vec3f(10, 11, 12));
+                Mat4f m = k.scaledPre(Vec3f(10, 100, 1000));
+                REQUIRE_THAT(m,
+                    Matches::WithinAbs(Mat4f(
+                        Vec3f(10, 20, 30),
+                        Vec3f(400, 500, 600),
+                        Vec3f(7000, 8000, 9000),
+                        Vec3f(10, 11, 12)
+                    )));
+                REQUIRE(m.isInitialized());
+                REQUIRE(!m.isNormal());
+                REQUIRE(!m.isOrthogonal());
+                REQUIRE(!m.isOrthonormal());
+                REQUIRE(!m.isIdentity());
+            }
+
+            SECTION("Unflags identity")
+            {
+                Mat4f k;
+                k.setIdentity();
+                Mat4f m = k.scaledPre(Vec3f(2.0f, 1.0f, 1.0f));
+                REQUIRE(!m.isIdentity());
+            }
+
+            SECTION("Does not unflag identity")
+            {
+                Mat4f k;
+                k.setIdentity();
+                Mat4f m = k.scaledPre(Vec3f(1.0f, 1.0f, 1.0f));
+                REQUIRE(m.isIdentity());
+            }
+
+            SECTION("Unflags normal")
+            {
+                Mat4f k;
+                k.setIdentity();
+                Mat4f m = k.scaledPre(Vec3f(2.0f, 1.0f, 1.0f));
+                REQUIRE(!m.isNormal());
+                REQUIRE(!m.isOrthonormal());
+            }
+
+            SECTION("Does not unflag normal")
+            {
+                Mat4f k;
+                k.setIdentity();
+                Mat4f m = k.scaledPre(Vec3f(1.0f, 1.0f, 1.0f));
+                REQUIRE(m.isIdentity());
+                REQUIRE(m.isNormal());
+                REQUIRE(m.isOrthonormal());
+            }
+        }
+
+        SECTION("transformedPre(const Mat34& mat)")
+        {
+            Mat4f k;
+            k.set(Vec3f::OneZ, Constantsf::PI_OVER_3).translate(Vec3f(1, 10, 100));
+            Mat4f a;
+            a.set(Vec3f::OneX, Constantsf::PI_OVER_6).translate(Vec3f(4, 5, 6));
+            Mat4f m = k.transformedPre(a);
+            REQUIRE_THAT(m, Matches::WithinAbs(
+                Mat4f::from(Vec3f::OneZ, Constantsf::PI_OVER_3).translate(Vec3f(1, 10, 100))
+                * Mat4f::from(Vec3f::OneX, Constantsf::PI_OVER_6).translate(Vec3f(4, 5, 6))
+            ));
+            REQUIRE(m.isInitialized());
+            REQUIRE(m.isNormal());
+            REQUIRE(m.isOrthogonal());
+            REQUIRE(m.isOrthonormal());
+            REQUIRE(!m.isIdentity());
+        }
+
         SECTION("localAxis(Coord axis)")
         {
             Mat4f m(Vec3f::OneX, Vec3f::OneY, Vec3f::OneZ, Vec3f(13, 14, 15));

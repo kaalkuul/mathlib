@@ -348,7 +348,7 @@ namespace
             REQUIRE(!m.isIdentity());
         }
 
-        SECTION("rotate(Coord coord, Real angle)")
+        SECTION("rotate(Real angle)")
         {
             Mat2f m;
             m.set(Constantsf::PI_OVER_3);
@@ -387,6 +387,19 @@ namespace
         }
 
         // Funtions
+
+        SECTION("rotated(Real angle)")
+        {
+            Mat2f k;
+            k.set(Constantsf::PI_OVER_3);
+            Mat2f m = k.rotated(Constantsf::PI_OVER_6);
+            REQUIRE_THAT(m, Matches::WithinAbs(Mat2f::from(Constantsf::PI_OVER_6) * Mat2f::from(Constantsf::PI_OVER_3)));
+            REQUIRE(m.isInitialized());
+            REQUIRE(m.isNormal());
+            REQUIRE(m.isOrthogonal());
+            REQUIRE(m.isOrthonormal());
+            REQUIRE(!m.isIdentity());
+        }
 
         SECTION("scaled()")
         {

@@ -328,6 +328,20 @@ Mat2<Real>& Mat2<Real>::optimize(const Tolerance *tolerance)
 //
 
 template <class Real>
+Mat2<Real> Mat2<Real>::rotated(Real angle) const
+{
+    Mat2 r;
+    Real s = sin(angle);
+    Real c = cos(angle);
+    r.x.x = x.x * c - x.y * s;
+    r.x.y = x.x * s + x.y * c;
+    r.y.x = y.x * c - y.y * s;
+    r.y.y = y.x * s + y.y * c;
+    r.optimize();
+    return r;
+}
+
+template <class Real>
 Mat2<Real> Mat2<Real>::scaled(const Vec2<Real>& coefficients) const
 {
 	Mat2 r;

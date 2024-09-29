@@ -800,6 +800,126 @@ namespace
 
         // Functions
 
+        SECTION("rotated(const Mat3& m)")
+        {
+            Mat3f k;
+            k.set(Vec3f::OneZ, Constantsf::PI_OVER_3);
+            Mat3f m = k.rotated(Mat3f::from(Vec3f::OneX, Constantsf::PI_OVER_6));
+            REQUIRE_THAT(m, Matches::WithinAbs(
+                Mat3f::from(Vec3f::OneX, Constantsf::PI_OVER_6) * Mat3f::from(Vec3f::OneZ, Constantsf::PI_OVER_3)
+            ));
+            REQUIRE(m.isInitialized());
+            REQUIRE(m.isNormal());
+            REQUIRE(m.isOrthogonal());
+            REQUIRE(m.isOrthonormal());
+            REQUIRE(!m.isIdentity());
+        }
+
+        SECTION("rotated(const Quat<Real>& q)")
+        {
+            Mat3f k;
+            k.set(Vec3f::OneZ, Constantsf::PI_OVER_3);
+            Mat3f m = k.rotated(Quatf::from(Vec3f::OneX, Constantsf::PI_OVER_6));
+            REQUIRE_THAT(m, Matches::WithinAbs(
+                Mat3f::from(Vec3f::OneX, Constantsf::PI_OVER_6) * Mat3f::from(Vec3f::OneZ, Constantsf::PI_OVER_3)
+            ));
+            REQUIRE(m.isInitialized());
+            REQUIRE(m.isNormal());
+            REQUIRE(m.isOrthogonal());
+            REQUIRE(m.isOrthonormal());
+            REQUIRE(!m.isIdentity());
+        }
+
+        SECTION("rotated(const Vec3<Real>& axis, Real angle)")
+        {
+            Mat3f k;
+            k.set(Vec3f::OneZ, Constantsf::PI_OVER_3);
+            Mat3f m = k.rotated(Vec3f::OneX, Constantsf::PI_OVER_6);
+            REQUIRE_THAT(m, Matches::WithinAbs(
+                Mat3f::from(Vec3f::OneX, Constantsf::PI_OVER_6) * Mat3f::from(Vec3f::OneZ, Constantsf::PI_OVER_3)
+            ));
+            REQUIRE(m.isInitialized());
+            REQUIRE(m.isNormal());
+            REQUIRE(m.isOrthogonal());
+            REQUIRE(m.isOrthonormal());
+            REQUIRE(!m.isIdentity());
+        }
+
+        SECTION("rotated(Coord coord, Real angle)")
+        {
+            Mat3f k;
+            k.set(Vec3f::OneZ, Constantsf::PI_OVER_3);
+            Mat3f m = k.rotated(Coord::X, Constantsf::PI_OVER_6);
+            REQUIRE_THAT(m, Matches::WithinAbs(
+                Mat3f::from(Vec3f::OneX, Constantsf::PI_OVER_6) * Mat3f::from(Vec3f::OneZ, Constantsf::PI_OVER_3)
+            ));
+            REQUIRE(m.isInitialized());
+            REQUIRE(m.isNormal());
+            REQUIRE(m.isOrthogonal());
+            REQUIRE(m.isOrthonormal());
+            REQUIRE(!m.isIdentity());
+        }
+
+        SECTION("rotatedPre(const Mat3& m)")
+        {
+            Mat3f k;
+            k.set(Vec3f::OneZ, Constantsf::PI_OVER_3);
+            Mat3f m = k.rotatedPre(Mat3f::from(Vec3f::OneX, Constantsf::PI_OVER_6));
+            REQUIRE_THAT(m, Matches::WithinAbs(
+                Mat3f::from(Vec3f::OneZ, Constantsf::PI_OVER_3) * Mat3f::from(Vec3f::OneX, Constantsf::PI_OVER_6)
+            ));
+            REQUIRE(m.isInitialized());
+            REQUIRE(m.isNormal());
+            REQUIRE(m.isOrthogonal());
+            REQUIRE(m.isOrthonormal());
+            REQUIRE(!m.isIdentity());
+        }
+
+        SECTION("rotatedPre(const Quat<Real>& q)")
+        {
+            Mat3f k;
+            k.set(Vec3f::OneZ, Constantsf::PI_OVER_3);
+            Mat3f m = k.rotatedPre(Quatf::from(Vec3f::OneX, Constantsf::PI_OVER_6));
+            REQUIRE_THAT(m, Matches::WithinAbs(
+                Mat3f::from(Vec3f::OneZ, Constantsf::PI_OVER_3) * Mat3f::from(Vec3f::OneX, Constantsf::PI_OVER_6)
+            ));
+            REQUIRE(m.isInitialized());
+            REQUIRE(m.isNormal());
+            REQUIRE(m.isOrthogonal());
+            REQUIRE(m.isOrthonormal());
+            REQUIRE(!m.isIdentity());
+        }
+
+        SECTION("rotatedPre(const Vec3<Real>& axis, Real angle)")
+        {
+            Mat3f k;
+            k.set(Vec3f::OneZ, Constantsf::PI_OVER_3);
+            Mat3f m = k.rotatedPre(Vec3f::OneX, Constantsf::PI_OVER_6);
+            REQUIRE_THAT(m, Matches::WithinAbs(
+                Mat3f::from(Vec3f::OneZ, Constantsf::PI_OVER_3) * Mat3f::from(Vec3f::OneX, Constantsf::PI_OVER_6)
+            ));
+            REQUIRE(m.isInitialized());
+            REQUIRE(m.isNormal());
+            REQUIRE(m.isOrthogonal());
+            REQUIRE(m.isOrthonormal());
+            REQUIRE(!m.isIdentity());
+        }
+
+        SECTION("rotatedPre(Coord coord, Real angle)")
+        {
+            Mat3f k;
+            k.set(Vec3f::OneZ, Constantsf::PI_OVER_3);
+            Mat3f m = k.rotatedPre(Coord::X, Constantsf::PI_OVER_6);
+            REQUIRE_THAT(m, Matches::WithinAbs(
+                Mat3f::from(Vec3f::OneZ, Constantsf::PI_OVER_3) * Mat3f::from(Vec3f::OneX, Constantsf::PI_OVER_6)
+            ));
+            REQUIRE(m.isInitialized());
+            REQUIRE(m.isNormal());
+            REQUIRE(m.isOrthogonal());
+            REQUIRE(m.isOrthonormal());
+            REQUIRE(!m.isIdentity());
+        }
+
         SECTION("scaled()")
         {
             Mat3f k(Vec3f(10, 10, 10), Vec3f(10, 10, 10), Vec3f(10, 10, 10));

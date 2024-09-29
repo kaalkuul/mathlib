@@ -71,7 +71,18 @@ public:
 
 	// Functions
 	Mat3 scaled(const Vec3<Real>& coefficients) const;
-	Mat3 transposed() const;
+
+    Mat3 rotated(const Mat3& m) const;
+    Mat3 rotated(const Quat<Real>& m) const;
+    Mat3 rotated(const Vec3<Real>& axis, Real angle) const;
+    Mat3 rotated(Coord axis, Real angle) const;
+
+    Mat3 rotatedPre(const Mat3& m) const;
+    Mat3 rotatedPre(const Quat<Real>& m) const;
+    Mat3 rotatedPre(const Vec3<Real>& axis, Real angle) const;
+    Mat3 rotatedPre(Coord axis, Real angle) const;
+
+    Mat3 transposed() const;
 	Mat3 cofactors() const;
 	Mat3 adjoint() const;
 	Real trace() const;

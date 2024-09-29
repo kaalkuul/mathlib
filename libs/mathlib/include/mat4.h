@@ -77,6 +77,20 @@ public:
 	Mat4& invert();
 
 	// Functions
+    Mat4 rotated(const Quat<Real>& q) const;
+    Mat4 rotated(const Vec3<Real>& axis, Real angle) const;
+    Mat4 rotated(Coord axis, Real angle) const;
+    Mat4 translated(const Vec3<Real>& translation) const;
+    Mat4 scaled(const Vec3<Real>& coefficients) const;
+    Mat4 transformed(const Mat4& m) const;
+
+    Mat4 rotatedPre(const Quat<Real>& q) const;
+    Mat4 rotatedPre(const Vec3<Real>& axis, Real angle) const;
+    Mat4 rotatedPre(Coord axis, Real angle) const;
+    Mat4 translatedPre(const Vec3<Real>& translation) const;
+    Mat4 scaledPre(const Vec3<Real>& coefficients) const;
+    Mat4 transformedPre(const Mat4& m) const;
+
 	Ray3<Real> localAxis(Coord axis) const;
 	Plane<Real> localPlane(Coord normal) const;
 	Mat4 transposed() const;

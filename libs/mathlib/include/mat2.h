@@ -54,7 +54,8 @@ public:
 	Mat2& optimize(const Tolerance *tolerance = nullptr);
 
 	// Functions
-	Mat2 scaled(const Vec2<Real>& coefficients) const;
+    Mat2 rotated(Real angle) const;
+    Mat2 scaled(const Vec2<Real>& coefficients) const;
 	Mat2 transposed() const;
 	Mat2 cofactors() const;
 	Mat2 adjoint() const;
