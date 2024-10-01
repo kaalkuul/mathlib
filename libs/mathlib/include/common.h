@@ -19,7 +19,8 @@ enum class Coord : unsigned int
 	Z,
 	NX,
 	NY,
-	NZ
+	NZ,
+    Undefined = 0xff
 };
 
 enum class ResponseCurveType : unsigned int
@@ -29,7 +30,8 @@ enum class ResponseCurveType : unsigned int
     Parabolic = 2,
     Cubic = 3,
     Exponential = 4,
-    Cosine = 5
+    Cosine = 5,
+    Undefined = 0xff
 };
 
 template <class Real>
