@@ -25,14 +25,73 @@ Plane<Real>::Plane(const Vec3<Real>& n, Real distance)
 {
 }
 
+
+// Creates a plane from a normal and distance to origin along normal
+template <class Real>
+Plane<Real>& Plane<Real>::set(const Vec3<Real>& normal, Real distance)
+{
+    this->normal = normal.normalized();
+    this->d = distance;
+    return *this;
+}
+
+// Creates a plane from a point and a normal
+template <class Real>
+Plane<Real>& Plane<Real>::set(const Vec3<Real>& point, const Vec3<Real>& normal)
+{
+    this->normal = normal.normalized();
+    this->d = this->normal * point;
+    return *this;
+}
+
+// Creates a plane from a point and a normal
+template <class Real>
+Plane<Real>& Plane<Real>::setFromPointAndTangents(const Vec3<Real>& point, const Vec3<Real>& u, const Vec3<Real>& v)
+{
+    Vec3<Real> n = u % v;
+    return set(point, n);
+}
+
+// Creates a plane going through the points a, b and c
+template <class Real>
+Plane<Real>& Plane<Real>::set(const Vec3<Real>& a, const Vec3<Real>& b, const Vec3<Real>& c)
+{
+    Vec3<Real> ab = b - a;
+    Vec3<Real> ac = c - a;
+
+    Vec3<Real> n = ab % ac;
+
+    return set(a, n);
+}
+
+// Creates a plane // to another, at a distance
+template <class Real>
+Plane<Real>& Plane<Real>::set(const Plane& plane, Real distance)
+{
+    this->normal = plane.normal;
+    this->d = plane.d + distance;
+    return *this;
+}
+
+
+// Creates a plane from a normal and distance to origin along normal
+template <class Real>
+Plane<Real> Plane<Real>::from(const Vec3<Real>& normal, Real distance)
+{
+    Plane<Real> plane;
+    plane.normal = normal.normalized();
+    plane.d = distance;
+    return plane;
+}
+
 // Creates a plane from a point and a normal
 template <class Real>
 Plane<Real> Plane<Real>::from(const Vec3<Real>& point, const Vec3<Real>& normal)
 {
-	Plane<Real> plane;
-	plane.normal = normal.normalized();
-	plane.d = -(plane.normal * point);
-	return plane;
+    Plane<Real> plane;
+    plane.normal = normal.normalized();
+    plane.d = plane.normal * point;
+    return plane;
 }
 
 // Creates a plane from a point and a normal
@@ -88,7 +147,7 @@ bool Plane<Real>::operator!=(const Plane<Real>& rhs) const
 template <class Real>
 Plane<Real>& Plane<Real>::move(Real distance)
 {
-    this->d -= distance;
+    this->d += distance;
     return *this;
 }
 
@@ -109,7 +168,7 @@ Plane<Real> Plane<Real>::moved(Real distance) const
 {
     Plane<Real> result;
     result.normal = this->normal;
-    result.d = this->d - distance;
+    result.d = this->d + distance;
     return result;
 }
 
@@ -132,13 +191,13 @@ bool Plane<Real>::contains(const Vec3<Real>& p, Real tolerance) const
 template <class Real>
 Real Plane<Real>::distance(const Vec3<Real>& point) const
 {
-	return point * normal + d;
+	return point * normal - d;
 }
 
 template <class Real>
 Real Plane<Real>::project(Vec3<Real>& projection, const Vec3<Real>& point) const
 {
-	Real t = point * normal + d;
+	Real t = point * normal - d;
 
 	projection.x = point.x - normal.x * t;
 	projection.y = point.y - normal.y * t;
@@ -163,7 +222,7 @@ bool Plane<Real>::project(Vec3<Real>& projection, const Vec3<Real>& point, const
 template <class Real>
 bool Plane<Real>::hits(Vec3<Real>& hit, Real& t, const Ray3<Real>& ray) const
 {
-	Real startDist = ray.start * normal + d;
+	Real startDist = ray.start * normal - d;
 
 	Real normalDotDir = normal * ray.direction;
 	if (normalDotDir >= Real(0))
@@ -182,8 +241,8 @@ bool Plane<Real>::hits(Vec3<Real>& hit, Real& t, const Ray3<Real>& ray) const
 template <class Real>
 bool Plane<Real>::hits(Vec3<Real>& hit, Real& t, const Line3<Real>& line) const
 {
-	Real startDist = line.start * normal + d;
-	Real endDist = line.end * normal + d;
+	Real startDist = line.start * normal - d;
+	Real endDist = line.end * normal - d;
 
 	if (startDist < Real(0))
 		return false;
@@ -201,8 +260,8 @@ bool Plane<Real>::hits(Vec3<Real>& hit, Real& t, const Line3<Real>& line) const
 template <class Real>
 bool Plane<Real>::hits(Vec3<Real>& hit, Real& t, const Line3<Real>& line, Real radius) const
 {
-	Real startDist = line.start * normal + d - radius;
-	Real endDist = line.end * normal + d - radius;
+	Real startDist = line.start * normal - d - radius;
+	Real endDist = line.end * normal - d - radius;
 
 	if (startDist < Real(0))
 		return false;
@@ -220,7 +279,7 @@ bool Plane<Real>::hits(Vec3<Real>& hit, Real& t, const Line3<Real>& line, Real r
 template <class Real>
 bool Plane<Real>::hits(Real& depth, const Sphere<Real>& sphere) const
 {
-	Real dist = sphere.center * normal + d;
+	Real dist = sphere.center * normal - d;
 
 	if (dist > sphere.radius)
 		return false;
@@ -236,7 +295,7 @@ bool Plane<Real>::hits(Real& depth, const Sphere<Real>& sphere) const
 template <class Real>
 bool Plane<Real>::intersects(Vec3<Real>& hit, Real& t, const Ray3<Real>& ray) const
 {
-	Real startDist = ray.start * normal + d;
+	Real startDist = ray.start * normal - d;
 
 	Real normalDotDir = normal * ray.direction;
 	if (normalDotDir == Real(0))
@@ -255,8 +314,8 @@ bool Plane<Real>::intersects(Vec3<Real>& hit, Real& t, const Ray3<Real>& ray) co
 template <class Real>
 bool Plane<Real>::intersects(Vec3<Real>& hit, Real& t, const Line3<Real>& line) const
 {
-	Real startDist = line.start * normal + d;
-	Real endDist = line.end * normal + d;
+	Real startDist = line.start * normal - d;
+	Real endDist = line.end * normal - d;
 
 	if (startDist == endDist)
 		return false;
@@ -277,7 +336,7 @@ bool Plane<Real>::intersects(Vec3<Real>& hit, Real& t, const Line3<Real>& line) 
 template <class Real>
 bool Plane<Real>::intersects(Real& depth, const Sphere<Real>& sphere) const
 {
-	Real dist = sphere.center * normal + d;
+	Real dist = sphere.center * normal - d;
 
 	if (dist > sphere.radius)
 		return false;

@@ -48,7 +48,113 @@ namespace {
             REQUIRE(plane.d == 10.0f);
         }
 
+        // Setters
+
+        SECTION("set(const Vec3<Real>& normal, Real distance)")
+        {
+            Planef plane;
+
+            plane.set(Vec3f::OneZ, 0.0f);
+            REQUIRE(plane == Planef::XY);
+
+            plane.set(Vec3f::OneY, 0.0f);
+            REQUIRE(plane == Planef::ZX);
+
+            plane.set(Vec3f::OneX, 0.0f);
+            REQUIRE(plane == Planef::YZ);
+
+            plane.set(Vec3f::OneX, 2.0f);
+            REQUIRE(plane.normal == Vec3f::OneX);
+            REQUIRE(plane.d == 2.0f);
+
+            plane.set(Vec3f::OneY, 2.0f);
+            REQUIRE(plane.normal == Vec3f::OneY);
+            REQUIRE(plane.d == 2.0f);
+
+            plane.set(Vec3f::OneZ, 2.0f);
+            REQUIRE(plane.normal == Vec3f::OneZ);
+            REQUIRE(plane.d == 2.0f);
+        }
+
+        SECTION("set(const Vec3<Real>& point, const Vec3<Real>& normal)")
+        {
+            Planef plane;
+
+            plane.set(Vec3f::Zero, Vec3f::OneZ);
+            REQUIRE(plane == Planef::XY);
+
+            plane.set(Vec3f::Zero, Vec3f::OneY);
+            REQUIRE(plane == Planef::ZX);
+
+            plane.set(Vec3f::Zero, Vec3f::OneX);
+            REQUIRE(plane == Planef::YZ);
+
+            plane.set(Vec3f(2.0f, 0.0f, 0.0f), Vec3f::OneX);
+            REQUIRE(plane.normal == Vec3f::OneX);
+            REQUIRE(plane.d == 2.0f);
+
+            plane.set(Vec3f(0.0f, 2.0f, 0.0f), Vec3f::OneY);
+            REQUIRE(plane.normal == Vec3f::OneY);
+            REQUIRE(plane.d == 2.0f);
+
+            plane.set(Vec3f(0.0f, 0.0f, 2.0f), Vec3f::OneZ);
+            REQUIRE(plane.normal == Vec3f::OneZ);
+            REQUIRE(plane.d == 2.0f);
+        }
+
+        SECTION("setFromPointAndTangents(const Vec3<Real>& point, const Vec3<Real>& u, const Vec3<Real>& v)")
+        {
+            Planef plane;
+
+            plane.setFromPointAndTangents(Vec3f::Zero, Vec3f::OneX, Vec3f::OneY);
+            REQUIRE(plane == Planef::XY);
+
+            plane.setFromPointAndTangents(Vec3f::Zero, Vec3f::OneZ, Vec3f::OneX);
+            REQUIRE(plane == Planef::ZX);
+
+            plane.setFromPointAndTangents(Vec3f::Zero, Vec3f::OneY, Vec3f::OneZ);
+            REQUIRE(plane == Planef::YZ);
+
+            plane.setFromPointAndTangents(Vec3f(2.0f, 0.0f, 0.0f), Vec3f::OneY, Vec3f::OneZ);
+            REQUIRE(plane.normal == Vec3f::OneX);
+            REQUIRE(plane.d == 2.0f);
+
+            plane.setFromPointAndTangents(Vec3f(0.0f, 2.0f, 0.0f), Vec3f::OneZ, Vec3f::OneX);
+            REQUIRE(plane.normal == Vec3f::OneY);
+            REQUIRE(plane.d == 2.0f);
+
+            plane.setFromPointAndTangents(Vec3f(0.0f, 0.0f, 2.0f), Vec3f::OneX, Vec3f::OneY);
+            REQUIRE(plane.normal == Vec3f::OneZ);
+            REQUIRE(plane.d == 2.0f);
+        }
+
         // Create from
+
+        SECTION("from(const Vec3<Real>& normal, Real distance)")
+        {
+            Planef plane;
+
+            plane = Planef::from(Vec3f::OneZ, 0.0f);
+            REQUIRE(plane == Planef::XY);
+
+            plane = Planef::from(Vec3f::OneY, 0.0f);
+            REQUIRE(plane == Planef::ZX);
+
+            plane = Planef::from(Vec3f::OneX, 0.0f);
+            REQUIRE(plane == Planef::YZ);
+
+            plane = Planef::from(Vec3f::OneX, 2.0f);
+            REQUIRE(plane.normal == Vec3f::OneX);
+            REQUIRE(plane.d == 2.0f);
+
+            plane = Planef::from(Vec3f::OneY, 2.0f);
+            REQUIRE(plane.normal == Vec3f::OneY);
+            REQUIRE(plane.d == 2.0f);
+
+            plane = Planef::from(Vec3f::OneZ, 2.0f);
+            REQUIRE(plane.normal == Vec3f::OneZ);
+            REQUIRE(plane.d == 2.0f);
+        }
 
         SECTION("from(const Vec3<Real>& point, const Vec3<Real>& normal)")
         {
@@ -65,15 +171,15 @@ namespace {
 
             plane = Planef::from(Vec3f(2.0f, 0.0f, 0.0f), Vec3f::OneX);
             REQUIRE(plane.normal == Vec3f::OneX);
-            REQUIRE(plane.d == -2.0f);
+            REQUIRE(plane.d == 2.0f);
 
             plane = Planef::from(Vec3f(0.0f, 2.0f, 0.0f), Vec3f::OneY);
             REQUIRE(plane.normal == Vec3f::OneY);
-            REQUIRE(plane.d == -2.0f);
+            REQUIRE(plane.d == 2.0f);
 
             plane = Planef::from(Vec3f(0.0f, 0.0f, 2.0f), Vec3f::OneZ);
             REQUIRE(plane.normal == Vec3f::OneZ);
-            REQUIRE(plane.d == -2.0f);
+            REQUIRE(plane.d == 2.0f);
         }
 
         SECTION("fromPointAndTangents(const Vec3<Real>& point, const Vec3<Real>& u, const Vec3<Real>& v)")
@@ -91,15 +197,15 @@ namespace {
 
             plane = Planef::fromPointAndTangents(Vec3f(2.0f, 0.0f, 0.0f), Vec3f::OneY, Vec3f::OneZ);
             REQUIRE(plane.normal == Vec3f::OneX);
-            REQUIRE(plane.d == -2.0f);
+            REQUIRE(plane.d == 2.0f);
 
             plane = Planef::fromPointAndTangents(Vec3f(0.0f, 2.0f, 0.0f), Vec3f::OneZ, Vec3f::OneX);
             REQUIRE(plane.normal == Vec3f::OneY);
-            REQUIRE(plane.d == -2.0f);
+            REQUIRE(plane.d == 2.0f);
 
             plane = Planef::fromPointAndTangents(Vec3f(0.0f, 0.0f, 2.0f), Vec3f::OneX, Vec3f::OneY);
             REQUIRE(plane.normal == Vec3f::OneZ);
-            REQUIRE(plane.d == -2.0f);
+            REQUIRE(plane.d == 2.0f);
         }
 
         // Comparison operators

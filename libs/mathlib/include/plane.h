@@ -13,12 +13,19 @@ public:
 	Plane();
 	Plane(const Vec3<Real>& normal, Real distance);
 
-	// Create from
-	static Plane from(const Vec3<Real>& point, const Vec3<Real>& normal);
-	static Plane fromPointAndTangents(const Vec3<Real>& point, const Vec3<Real>& u, const Vec3<Real>& v);
-	static Plane from(const Vec3<Real>& a,
-		const Vec3<Real>& b, const Vec3<Real>& c);
-	static Plane from(const Plane& plane, Real distance);
+    // Create from
+    Plane& set(const Vec3<Real>& normal, Real distance);
+    Plane& set(const Vec3<Real>& point, const Vec3<Real>& normal);
+    Plane& setFromPointAndTangents(const Vec3<Real>& point, const Vec3<Real>& u, const Vec3<Real>& v);
+    Plane& set(const Vec3<Real>& a, const Vec3<Real>& b, const Vec3<Real>& c);
+    Plane& set(const Plane& plane, Real distance);
+
+    // Create from
+    static Plane from(const Vec3<Real>& normal, Real distance);
+    static Plane from(const Vec3<Real>& point, const Vec3<Real>& normal);
+    static Plane fromPointAndTangents(const Vec3<Real>& point, const Vec3<Real>& u, const Vec3<Real>& v);
+    static Plane from(const Vec3<Real>& a, const Vec3<Real>& b, const Vec3<Real>& c);
+    static Plane from(const Plane& plane, Real distance);
 
 	// Comparison operators
 	bool operator== (const Plane& rhs) const;
