@@ -95,5 +95,11 @@ namespace {
             REQUIRE(Ray3d::from(Vec3d::Zero, Vec3d::OneX).cast<float>() == Ray3f::from(Vec3f::Zero, Vec3f::OneX));
             REQUIRE(Ray3d::from(Vec3d::Zero, Vec3d::OneY).cast<float>() == Ray3f::from(Vec3f::Zero, Vec3f::OneY));
         }
+        
+        SECTION("Matches::WithinAbs")
+        {
+            Ray3f value = Ray3f::from(Vec3f::Zero, Vec3f::OneX);
+            REQUIRE_THAT(value, Matches::WithinAbs(value));
+        }
     }
 }

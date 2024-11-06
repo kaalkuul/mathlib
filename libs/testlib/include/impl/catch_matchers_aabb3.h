@@ -10,9 +10,9 @@ namespace Catch
             std::ostringstream rss;
             rss << std::scientific
                 << std::setprecision(std::numeric_limits<double>::max_digits10 - 1)
-                << "[" << box.center.x << "," << box.center.y << "," << box.center.z << "]"
+                << "[" << box.inf.x << "," << box.inf.y << "," << box.inf.z << "]"
                 << "-"
-                << "[" << box.extents.x << "," << box.extents.y << "," << box.extents.z << "]";
+                << "[" << box.sup.x << "," << box.sup.y << "," << box.sup.z << "]";
             return rss.str();
         }
     };

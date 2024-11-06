@@ -88,5 +88,11 @@ namespace {
             REQUIRE(Ray2d::from(Vec2d::Zero, Vec2d::OneX).cast<float>() == Ray2f::from(Vec2f::Zero, Vec2f::OneX));
             REQUIRE(Ray2d::from(Vec2d::Zero, Vec2d::OneY).cast<float>() == Ray2f::from(Vec2f::Zero, Vec2f::OneY));
         }
+        
+        SECTION("Matches::WithinAbs")
+        {
+            Ray2f value = Ray2f::from(Vec2f::Zero, Vec2f::OneX);
+            REQUIRE_THAT(value, Matches::WithinAbs(value));
+        }
     }
 }

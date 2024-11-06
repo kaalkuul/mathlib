@@ -576,6 +576,11 @@ namespace {
                 REQUIRE(v.lengthSqr() <= 1.000001f);
             }
         }
-
+        
+        SECTION("Matches::WithinAbs")
+        {
+            Vec2f value = Vec2f::OneX;
+            REQUIRE_THAT(value, Matches::WithinAbs(value));
+        }
     }
 }

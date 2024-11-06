@@ -477,5 +477,12 @@ namespace {
                 REQUIRE(point == Vec3f(1.0f, 2.0f, 3.0f));
             }
         }
+        
+        SECTION("Matches::WithinAbs")
+        {
+            Planef value;
+            value.set(Vec3f(0.0f, 0.0f, 2.0f), Vec3f::OneZ);
+            REQUIRE_THAT(value, Matches::WithinAbs(value));
+        }
     }
 }

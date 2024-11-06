@@ -620,6 +620,11 @@ namespace {
                 REQUIRE(v.lengthSqr() <= 1.000001f);
             }
         }
-
+        
+        SECTION("Matches::WithinAbs")
+        {
+            Vec3f value = Vec3f::OneX;
+            REQUIRE_THAT(value, Matches::WithinAbs(value));
+        }
     }
 }

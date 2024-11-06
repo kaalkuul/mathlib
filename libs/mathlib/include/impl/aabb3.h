@@ -4,8 +4,8 @@ MATHLIB_NS_BEGIN
 
 template <class Real>
 const AABB3<Real> AABB3<Real>::One = AABB3<Real>(
-	Vec3<Real>(Real(0), Real(0), Real(0)),
-	Vec3<Real>(Real(1), Real(1), Real(1)));
+	Vec3<Real>(Real(-0.5), Real(-0.5), Real(-0.5)),
+	Vec3<Real>(Real(0.5), Real(0.5), Real(0.5)));
 
 template <class Real>
 AABB3<Real>::AABB3()
@@ -13,8 +13,8 @@ AABB3<Real>::AABB3()
 }
 
 template <class Real>
-AABB3<Real>::AABB3(const Vec3<Real>& _center, const Vec3<Real>& size)
-: center(_center), extents(size * Real(0.5))
+AABB3<Real>::AABB3(const Vec3<Real>& _inf, const Vec3<Real>& _sup)
+: inf(_inf), sup(_sup)
 {
 }
 
@@ -26,24 +26,23 @@ AABB3<Real>::AABB3(const Vec3<Real>& _center, const Vec3<Real>& size)
 template <class Real>
 AABB3<Real>& AABB3<Real>::set(const Vec3<Real>& point)
 {
-	center = point;
-	extents = Vec3<Real>::Zero;
+	inf = sup = point;
 	return *this;
 }
 
 template <class Real>
-AABB3<Real>& AABB3<Real>::set(const Vec3<Real>& center, const Vec3<Real>& size)
+AABB3<Real>& AABB3<Real>::set(const Vec3<Real>& inf, const Vec3<Real>& sup)
 {
-	this->center = center;
-	this->extents = size * Real(0.5);
+	this->inf = inf;
+    this->sup = sup;
 	return *this;
 }
 
 template <class Real>
-AABB3<Real>& AABB3<Real>::setInfSup(const Vec3<Real>& inf, const Vec3<Real>& sup)
+AABB3<Real>& AABB3<Real>::set(const CAABB3<Real>& box)
 {
-	center = (inf + sup) * Real(0.5);
-	extents = (sup - inf) * Real(0.5);
+	inf = box.center - box.extents;
+    sup = box.center + box.extents;
 	return *this;
 }
 
@@ -55,8 +54,8 @@ AABB3<Real>& AABB3<Real>::set(int count, const Vec3<Real>* points)
 
 	const Vec3<Real>* p = points;
 
-	Vec3<Real> inf = *p;
-	Vec3<Real> sup = *p;
+	inf = *p;
+	sup = *p;
 
 	p++;
 	count--;
@@ -74,7 +73,7 @@ AABB3<Real>& AABB3<Real>::set(int count, const Vec3<Real>* points)
 		p++;
 	}
 
-	return setInfSup(inf, sup);
+	return *this;
 }
 
 template <class Real>
@@ -86,8 +85,8 @@ AABB3<Real>& AABB3<Real>::set(int count, const Vec3<Real>* points, int stride)
 	const char* p = (const char*)(points);
 	const Vec3<Real>* v = (const Vec3<Real>*)(p);
 
-	Vec3<Real> inf = *v;
-	Vec3<Real> sup = *v;
+	inf = *v;
+	sup = *v;
 
 	p += stride;
 	count--;
@@ -107,50 +106,39 @@ AABB3<Real>& AABB3<Real>::set(int count, const Vec3<Real>* points, int stride)
 		p += stride;
 	}
 
-	return setInfSup(inf, sup);
+	return *this;
 }
 
 template <class Real>
 AABB3<Real>& AABB3<Real>::add(const Vec3<Real>& point)
 {
-	Vec3<Real> inf = center - extents;
-	Vec3<Real> sup = center + extents;
-
-	bool outside = false;
-
 	if (point.x < inf.x)
 	{
 		inf.x = point.x;
-		outside = true;
 	}
 	if (point.y < inf.y)
 	{
 		inf.y = point.y;
-		outside = true;
 	}
 	if (point.z < inf.z)
 	{
 		inf.z = point.z;
-		outside = true;
 	}
 
 	if (point.x > sup.x)
 	{
 		sup.x = point.x;
-		outside = true;
 	}
 	if (point.y > sup.y)
 	{
 		sup.y = point.y;
-		outside = true;
 	}
 	if (point.z > sup.z)
 	{
 		sup.z = point.z;
-		outside = true;
 	}
 
-	return outside ? setInfSup(inf, sup) : *this;
+	return *this;
 }
 
 
@@ -162,26 +150,25 @@ template <class Real>
 AABB3<Real> AABB3<Real>::from(const Vec3<Real>& point)
 {
 	AABB3<Real> result;
-	result.center = point;
-	result.extents = Vec3<Real>::Zero;
+	result.inf = result.sup = point;
 	return result;
 }
 
 template <class Real>
-AABB3<Real> AABB3<Real>::from(const Vec3<Real>& center, const Vec3<Real>& size)
+AABB3<Real> AABB3<Real>::from(const Vec3<Real>& inf, const Vec3<Real>& sup)
 {
 	AABB3<Real> result;
-	result.center = center;
-	result.extents = size * Real(0.5);
+	result.inf = inf;
+	result.sup = sup;
 	return result;
 }
 
 template <class Real>
-AABB3<Real> AABB3<Real>::fromInfSup(const Vec3<Real>& inf, const Vec3<Real>& sup)
+AABB3<Real> AABB3<Real>::from(const CAABB3<Real>& box)
 {
 	AABB3<Real> result;
-	result.center = (inf + sup) * Real(0.5);
-	result.extents = (sup - inf) * Real(0.5);
+	result.inf = box.center - box.extents;
+    result.sup = box.center + box.extents;
 	return result;
 }
 
@@ -209,30 +196,30 @@ AABB3<Real> AABB3<Real>::from(int count, const Vec3<Real>* points, int stride)
 template <class Real>
 AABB3<Real>& AABB3<Real>::operator+= (const Vec3<Real>& t)
 {
-	center += t;
+	inf += t;
+    sup += t;
 	return *this;
 }
 
 template <class Real>
 AABB3<Real>& AABB3<Real>::operator-= (const Vec3<Real>& t)
 {
-	center -= t;
+    inf -= t;
+    sup -= t;
 	return *this;
 }
 
 template <class Real>
 AABB3<Real>& AABB3<Real>::operator*= (Real k)
 {
-	extents *= k;
-	return *this;
+    return scaleCentered(k);
 }
 
 template <class Real>
 AABB3<Real>& AABB3<Real>::operator/= (Real k)
 {
 	assert(k != Real(0));
-	extents /= k;
-	return *this;
+    return scaleCentered(Real(1) / k);
 }
 
 
@@ -244,8 +231,8 @@ template <class Real>
 AABB3<Real> AABB3<Real>::operator+ (const Vec3<Real>& t) const
 {
 	AABB3<Real> result;
-	result.center = center + t;
-	result.extents = extents;
+	result.inf = inf + t;
+    result.sup = sup + t;
 	return result;
 }
 
@@ -253,17 +240,16 @@ template <class Real>
 AABB3<Real> AABB3<Real>::operator- (const Vec3<Real>& t) const
 {
 	AABB3<Real> result;
-	result.center = center - t;
-	result.extents = extents;
+    result.inf = inf - t;
+    result.sup = sup - t;
 	return result;
 }
 
 template <class Real>
 AABB3<Real> AABB3<Real>::operator* (Real k) const
 {
-	AABB3<Real> result;
-	result.center = center;
-	result.extents = extents * k;
+    AABB3<Real> result(inf, sup);
+	result.scaleCentered(k);
 	return result;
 }
 
@@ -271,9 +257,8 @@ template <class Real>
 AABB3<Real> AABB3<Real>::operator/ (Real k) const
 {
 	assert(k != Real(0));
-	AABB3<Real> result;
-	result.center = center;
-	result.extents = extents / k;
+    AABB3<Real> result(inf, sup);
+    result.scaleCentered(Real(1) / k);
 	return result;
 }
 
@@ -285,42 +270,58 @@ AABB3<Real> AABB3<Real>::operator/ (Real k) const
 template <class Real>
 bool AABB3<Real>::operator==(const AABB3<Real>& rhs) const
 {
-	return center == rhs.center && extents == rhs.extents;
+	return inf == rhs.inf && sup == rhs.sup;
 }
 
 template <class Real>
 bool AABB3<Real>::operator!=(const AABB3<Real>& rhs) const
 {
-	return center != rhs.center || extents != rhs.extents;
+	return inf != rhs.inf || sup != rhs.sup;
 }
+
+
+//
+// Transformations
+//
+
+template <class Real>
+AABB3<Real>& AABB3<Real>::scaleCentered(Real k)
+{
+    CAABB3<Real> box;
+    box.center = (inf + sup) * Real(0.5);
+    box.extents = (sup - inf) * Real(0.5) * k;
+    return set(box);
+}
+
 
 //
 // Functions
 //
 
 template <class Real>
-Vec3<Real> AABB3<Real>::inf() const
+Vec3<Real> AABB3<Real>::center() const
 {
-	return center - extents;
+	return (inf + sup) * Real(0.5);
 }
 
 template <class Real>
-Vec3<Real> AABB3<Real>::sup() const
+Vec3<Real> AABB3<Real>::extents() const
 {
-	return center + extents;
+    return (sup - inf) * Real(0.5);
 }
 
 template <class Real>
 Vec3<Real> AABB3<Real>::size() const
 {
-	return extents * Real(2);
+	return sup - inf;
 }
 
 template <class Real>
 Sphere<Real> AABB3<Real>::innerSphere() const
 {
+    Vec3<Real> extents = (sup - inf) * Real(0.5);
 	Sphere<Real> result;
-	result.center = center;
+    result.center = (inf + sup) * Real(0.5);
 	result.radius = abs(extents[extents.minorCoord()]);
 	return result;
 }
@@ -328,8 +329,9 @@ Sphere<Real> AABB3<Real>::innerSphere() const
 template <class Real>
 Sphere<Real> AABB3<Real>::outerSphere() const
 {
-	Sphere<Real> result;
-	result.center = center;
+    Vec3<Real> extents = (sup - inf) * Real(0.5);
+    Sphere<Real> result;
+    result.center = (inf + sup) * Real(0.5);
 	result.radius = extents.length();
 	return result;
 }
@@ -337,61 +339,55 @@ Sphere<Real> AABB3<Real>::outerSphere() const
 template <class Real>
 Real AABB3<Real>::volume() const
 {
-	return extents.x * extents.y * extents.z * Real(8);
+	return (sup.x - inf.x) * (sup.y - inf.y) * (sup.z - inf.z);
 }
 
 template <class Real>
 bool AABB3<Real>::isNull() const
 {
-	return extents.isNull();
+	return sup == inf;
 }
 
 template <class Real>
 Vec3<Real> AABB3<Real>::pointAt(const Vec3<Real>& t) const
 {
-	Vec3<Real> result = center;
-	result.x += extents.x * t.x;
-	result.y += extents.y * t.y;
-	result.z += extents.z * t.z;
+	Vec3<Real> result;
+	result.x = inf.x + (sup.x - inf.x) * t.x;
+	result.y = inf.y + (sup.y - inf.y) * t.y;
+	result.z = inf.z + (sup.z - inf.z) * t.z;
 	return result;
 }
 
 template <class Real>
 bool AABB3<Real>::contains(const Vec3<Real>& point) const
 {
-	return (point.x >= center.x - extents.x && point.x <= center.x + extents.x)
-		&& (point.y >= center.y - extents.y && point.y <= center.y + extents.y)
-		&& (point.z >= center.z - extents.z && point.z <= center.z + extents.z);
+	return (point.x >= inf.x && point.x <= sup.x)
+		&& (point.y >= inf.y && point.y <= sup.y)
+		&& (point.z >= inf.z && point.z <= sup.z);
 }
 
 template <class Real>
 bool AABB3<Real>::contains(const Sphere<Real>& sphere) const
 {
-	return (sphere.center.x - sphere.radius >= center.x - extents.x && sphere.center.x + sphere.radius <= center.x + extents.x)
-		&& (sphere.center.y - sphere.radius >= center.y - extents.y && sphere.center.y + sphere.radius <= center.y + extents.y)
-		&& (sphere.center.z - sphere.radius >= center.z - extents.z && sphere.center.z + sphere.radius <= center.z + extents.z);
+	return (sphere.center.x - sphere.radius >= inf.x && sphere.center.x + sphere.radius <= sup.x)
+		&& (sphere.center.y - sphere.radius >= inf.y && sphere.center.y + sphere.radius <= sup.y)
+		&& (sphere.center.z - sphere.radius >= inf.z && sphere.center.z + sphere.radius <= sup.z);
 }
 
 template <class Real>
 bool AABB3<Real>::contains(const AABB3<Real>& box) const
 {
-	const Vec3<Real>& c = box.center;
-	const Vec3<Real>& e = box.extents;
-	return (c.x - e.x >= center.x - extents.x && c.x + e.x <= center.x + extents.x)
-		&& (c.y - e.y >= center.y - extents.y && c.y + e.y <= center.y + extents.y)
-		&& (c.z - e.z >= center.z - extents.z && c.z + e.z <= center.z + extents.z);
+	return (box.inf.x >= inf.x && box.sup.x <= sup.x)
+		&& (box.inf.y >= inf.y && box.sup.y <= sup.y)
+		&& (box.inf.z >= inf.z && box.sup.z <= sup.z);
 }
 
 template <class Real>
 bool AABB3<Real>::intersects(const AABB3<Real>& box) const
 {
-	const Vec3<Real>& m1 = inf();
-	const Vec3<Real>& M1 = sup();
-	const Vec3<Real>& m2 = box.inf();
-	const Vec3<Real>& M2 = box.sup();
-	if (m2.x > M1.x || M2.x < m1.x) return false;
-	if (m2.y > M1.y || M2.y < m1.y) return false;
-	if (m2.z > M1.z || M2.z < m1.z) return false;
+	if (box.inf.x > sup.x || box.sup.x < inf.x) return false;
+	if (box.inf.y > sup.y || box.sup.y < inf.y) return false;
+	if (box.inf.z > sup.z || box.sup.z < inf.z) return false;
 	return true;
 }
 
@@ -470,8 +466,8 @@ template <class CastReturnType>
 AABB3<CastReturnType> AABB3<Real>::cast() const
 {
 	AABB3<CastReturnType> result;
-	result.center = center.template cast<CastReturnType>();
-	result.extents = extents.template cast<CastReturnType>();
+	result.inf = inf.template cast<CastReturnType>();
+	result.sup = sup.template cast<CastReturnType>();
 	return result;
 }
 

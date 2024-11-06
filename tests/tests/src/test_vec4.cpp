@@ -191,5 +191,11 @@ namespace {
             REQUIRE(Vec4d::OneZ.cast<float>() == Vec4f::OneZ);
             REQUIRE(Vec4d::OneW.cast<float>() == Vec4f::OneW);
         }
+        
+        SECTION("Matches::WithinAbs")
+        {
+            Vec4f value = Vec4f::OneX;
+            REQUIRE_THAT(value, Matches::WithinAbs(value));
+        }
     }
 }

@@ -133,5 +133,11 @@ namespace {
             REQUIRE(Line3d::from(Vec3d::Zero, Vec3d::OneX).cast<float>() == Line3f::from(Vec3f::Zero, Vec3f::OneX));
             REQUIRE(Line3d::from(Vec3d::Zero, Vec3d::OneY).cast<float>() == Line3f::from(Vec3f::Zero, Vec3f::OneY));
         }
+        
+        SECTION("Matches::WithinAbs")
+        {
+            Line3f line = Line3f::from(Vec3f::OneX, Vec3f::OneY);
+            REQUIRE_THAT(line, Matches::WithinAbs(line));
+        }
     }
 }

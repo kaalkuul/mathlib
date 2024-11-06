@@ -128,5 +128,11 @@ namespace {
             REQUIRE(Line2d::from(Vec2d::Zero, Vec2d::OneX).cast<float>() == Line2f::from(Vec2f::Zero, Vec2f::OneX));
             REQUIRE(Line2d::from(Vec2d::Zero, Vec2d::OneY).cast<float>() == Line2f::from(Vec2f::Zero, Vec2f::OneY));
         }
+        
+        SECTION("Matches::WithinAbs")
+        {
+            Line2f line = Line2f::from(Vec2f::OneX, Vec2f::OneY);
+            REQUIRE_THAT(line, Matches::WithinAbs(line));
+        }
     }
 }

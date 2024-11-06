@@ -6,6 +6,8 @@
 #include "impl/catch_matchers_colorhsv.h"
 #include "impl/catch_matchers_aabb2.h"
 #include "impl/catch_matchers_aabb3.h"
+#include "impl/catch_matchers_caabb2.h"
+#include "impl/catch_matchers_caabb3.h"
 #include "impl/catch_matchers_vec2.h"
 #include "impl/catch_matchers_vec3.h"
 #include "impl/catch_matchers_vec4.h"
@@ -21,3 +23,4 @@
 #include "impl/catch_matchers_plane.h"
 #include "impl/catch_matchers_circle.h"
 #include "impl/catch_matchers_sphere.h"
+#include "impl/catch_matchers_frustum.h"

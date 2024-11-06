@@ -265,6 +265,10 @@ namespace {
         {
             ColorRGBAf c = ColorRGBAf::random();
         }
-
+        
+        SECTION("Matches::WithinAbs")
+        {
+            REQUIRE_THAT(ColorRGBAf::White, Matches::WithinAbs(ColorRGBAf::White));
+        }
     }
 }

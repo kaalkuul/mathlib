@@ -144,5 +144,11 @@ namespace {
 
             REQUIRE(Quatd::One.cast<float>() == Quatf::One);
         }
+        
+        SECTION("Matches::WithinAbs")
+        {
+            Quatf value = Quatf::One;
+            REQUIRE_THAT(value, Matches::WithinAbs(value));
+        }
     }
 }

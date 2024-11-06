@@ -609,5 +609,10 @@ namespace
             REQUIRE(!m.isOrthonormal());
             REQUIRE(!m.isIdentity());
         }
+        
+        SECTION("Matches::WithinAbs")
+        {
+            REQUIRE_THAT(Mat2f::One, Matches::WithinAbs(Mat2f::One));
+        }
     }
 }

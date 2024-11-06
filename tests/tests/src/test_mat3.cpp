@@ -1129,5 +1129,10 @@ namespace
             REQUIRE(!m.isOrthonormal());
             REQUIRE(!m.isIdentity());
         }
+        
+        SECTION("Matches::WithinAbs")
+        {
+            REQUIRE_THAT(Mat3f::One, Matches::WithinAbs(Mat3f::One));
+        }
     }
 }

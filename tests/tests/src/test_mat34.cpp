@@ -999,6 +999,10 @@ namespace {
             REQUIRE(!m.isOrthonormal());
             REQUIRE(!m.isIdentity());
         }
-
+        
+        SECTION("Matches::WithinAbs")
+        {
+            REQUIRE_THAT(Mat34f::One, Matches::WithinAbs(Mat34f::One));
+        }
     }
 }

@@ -73,6 +73,34 @@ namespace Matches
     }
 
     template <class Real>
+    bool marginCheck(const mathlib::AABB2<Real>& matchee, const mathlib::AABB2<Real>& target, double margin)
+    {
+        return marginCheck(matchee.inf, target.inf, margin)
+            && marginCheck(matchee.sup, target.sup, margin);
+    }
+
+    template <class Real>
+    bool marginCheck(const mathlib::CAABB2<Real>& matchee, const mathlib::CAABB2<Real>& target, double margin)
+    {
+        return marginCheck(matchee.center, target.center, margin)
+            && marginCheck(matchee.extents, target.extents, margin);
+    }
+
+    template <class Real>
+    bool marginCheck(const mathlib::AABB3<Real>& matchee, const mathlib::AABB3<Real>& target, double margin)
+    {
+        return marginCheck(matchee.inf, target.inf, margin)
+            && marginCheck(matchee.sup, target.sup, margin);
+    }
+
+    template <class Real>
+    bool marginCheck(const mathlib::CAABB3<Real>& matchee, const mathlib::CAABB3<Real>& target, double margin)
+    {
+        return marginCheck(matchee.center, target.center, margin)
+            && marginCheck(matchee.extents, target.extents, margin);
+    }
+
+    template <class Real>
     bool marginCheck(const mathlib::ColorRGB<Real>& matchee, const mathlib::ColorRGB<Real>& target, double margin)
     {
         return marginCheck(matchee.r, target.r, margin)
@@ -115,7 +143,7 @@ namespace Matches
     bool marginCheck(const mathlib::Ray2<Real>& matchee, const mathlib::Ray2<Real>& target, double margin)
     {
         return marginCheck(matchee.start, target.start, margin)
-            && marginCheck(matchee.end, target.end, margin);
+            && marginCheck(matchee.direction, target.direction, margin);
     }
 
     template <class Real>
@@ -144,5 +172,18 @@ namespace Matches
     {
         return marginCheck(matchee.center, target.center, margin)
             && marginCheck(matchee.radius, target.radius, margin);
+    }
+
+    template <class Real>
+    bool marginCheck(const mathlib::Frustum<Real>& matchee, const mathlib::Frustum<Real>& target, double margin)
+    {
+        return marginCheck(matchee.corners[0], target.corners[0], margin)
+            && marginCheck(matchee.corners[1], target.corners[1], margin)
+            && marginCheck(matchee.corners[2], target.corners[2], margin)
+            && marginCheck(matchee.corners[3], target.corners[3], margin)
+            && marginCheck(matchee.corners[4], target.corners[4], margin)
+            && marginCheck(matchee.corners[5], target.corners[5], margin)
+            && marginCheck(matchee.corners[6], target.corners[6], margin)
+            && marginCheck(matchee.corners[7], target.corners[7], margin);
     }
 }

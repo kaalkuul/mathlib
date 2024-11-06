@@ -202,6 +202,10 @@ namespace {
         {
             ColorHSVf c = ColorHSVf::random();
         }
-
+        
+        SECTION("Matches::WithinAbs")
+        {
+            REQUIRE_THAT(ColorHSVf::White, Matches::WithinAbs(ColorHSVf::White));
+        }
     }
 }

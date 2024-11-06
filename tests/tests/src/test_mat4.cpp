@@ -1527,5 +1527,10 @@ namespace
             REQUIRE(!m.isOrthonormal());
             REQUIRE(!m.isIdentity());
         }
+        
+        SECTION("Matches::WithinAbs")
+        {
+            REQUIRE_THAT(Mat4f::One, Matches::WithinAbs(Mat4f::One));
+        }
     }
 }

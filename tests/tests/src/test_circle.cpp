@@ -484,5 +484,10 @@ namespace {
 
             REQUIRE(Circled::One.cast<float>() == Circlef::One);
         }
+
+        SECTION("Matches::WithinAbs")
+        {
+            REQUIRE_THAT(Circlef::One, Matches::WithinAbs(Circlef::One));
+        }
     }
 }

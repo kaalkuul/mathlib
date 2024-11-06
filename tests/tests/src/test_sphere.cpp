@@ -517,5 +517,11 @@ namespace {
 
             REQUIRE(Sphered::One.cast<float>() == Spheref::One);
         }
+        
+        SECTION("Matches::WithinAbs")
+        {
+            Spheref value = Spheref::One;
+            REQUIRE_THAT(value, Matches::WithinAbs(value));
+        }
     }
 }
