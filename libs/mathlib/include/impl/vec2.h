@@ -93,6 +93,18 @@ Vec2<Real>& Vec2<Real>::set(const Vec2& v)
 }
 
 template <class Real>
+Vec2<Real>& Vec2<Real>::set(Coord coord, Real value)
+{
+	switch (coord)
+	{
+	case Coord::X: x = value; break;
+	case Coord::Y: y = value; break;
+    default: assert(0); break;
+	}
+	return *this;
+}
+
+template <class Real>
 Vec2<Real>& Vec2<Real>::setAngle(Real angle, Real length)
 {
 	x = length * cos(angle);
@@ -364,6 +376,12 @@ bool Vec2<Real>::operator!=(const Vec2<Real> &u) const
 //
 
 template <class Real>
+Vec2<Real> Vec2<Real>::copy() const
+{
+    return *this;
+}
+
+template <class Real>
 Real Vec2<Real>::length() const
 {
 	return sqrt(x * x + y * y);
@@ -380,6 +398,17 @@ Vec2<Real> Vec2<Real>::normalized(Real k) const
 {
 	Real l = length();
 	return (l == Real(0)) ? Vec2(0, 0) : Vec2(x * k / l, y * k / l);
+}
+
+template <class Real>
+Vec2<Real> Vec2<Real>::moved(Coord coord, Real value) const
+{
+	switch (coord)
+	{
+	case Coord::X: return Vec2(x + value, y); break;
+	case Coord::Y: return Vec2(x, y + value); break;
+	default: return *this;
+	}
 }
 
 template <class Real>

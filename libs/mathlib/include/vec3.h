@@ -22,6 +22,7 @@ public:
 	// Setters
 	Vec3& set(Real x, Real y, Real z);
 	Vec3& set(const Vec3& v);
+	Vec3& set(Coord coord, Real value);
 	Vec3& slerp(const Vec3& u, const Vec3& v, Real ratio);
 	Vec3& slerpMaxAngle(const Vec3& u, const Vec3& v, Real maxAngle);
 
@@ -42,6 +43,7 @@ public:
 	Vec3& operator/=(Real k);
 	Vec3& operator%=(const Vec3& u);
 	Vec3& operator%=(Coord v);
+	Vec3& operator%=(Axis v);
 
 	// Arithmetic operators
 	Vec3 operator+ (const Vec3& u) const;
@@ -51,6 +53,7 @@ public:
 	Vec3 operator* (const Mat3<Real>& m) const;
 	Vec3 operator% (const Vec3& u) const;
 	Vec3 operator% (Coord v) const;
+	Vec3 operator% (Axis v) const;
 	Vec3 operator* (Real k) const;
 	Vec3 operator/ (Real k) const;
 
@@ -59,8 +62,10 @@ public:
 	bool operator!= (const Vec3& u) const;
 
 	// Functions
+	Vec3 copy() const;
 	Real length() const;
 	Real lengthSqr() const;
+	Vec3 moved(Coord coord, Real value) const;
 	Vec3 rotated(Coord axis, Real angle) const;
 	Vec3 normalized(Real k = Real(1)) const;
 	Vec3 mirrored(Coord plane) const;

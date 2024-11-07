@@ -87,6 +87,20 @@ Vec4<Real>& Vec4<Real>::set(const Vec4& v)
 	return *this;
 }
 
+template <class Real>
+Vec4<Real>& Vec4<Real>::set(Coord coord, Real value)
+{
+	switch (coord)
+	{
+	case Coord::X: x = value; break;
+	case Coord::Y: y = value; break;
+	case Coord::Z: z = value; break;
+	case Coord::W: w = value; break;
+    default: assert(0); break;
+	}
+	return *this;
+}
+
 
 //
 //  Assignments
@@ -216,6 +230,12 @@ bool Vec4<Real>::operator!= (const Vec4& u) const
 //
 
 template <class Real>
+Vec4<Real> Vec4<Real>::copy() const
+{
+    return *this;
+}
+
+template <class Real>
 Real Vec4<Real>::length() const
 {
 	return sqrt(x * x + y * y + z * z + w * w);
@@ -225,6 +245,19 @@ template <class Real>
 Real Vec4<Real>::lengthSqr() const
 {
 	return x * x + y * y + z * z + w * w;
+}
+
+template <class Real>
+Vec4<Real> Vec4<Real>::moved(Coord coord, Real value) const
+{
+	switch (coord)
+	{
+	case Coord::X: return Vec4(x + value, y, z, w); break;
+	case Coord::Y: return Vec4(x, y + value, z, w); break;
+	case Coord::Z: return Vec4(x, y, z + value, w); break;
+	case Coord::W: return Vec4(x, y, z, w + value); break;
+	default: return *this;
+	}
 }
 
 template <class Real>

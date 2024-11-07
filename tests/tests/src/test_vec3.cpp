@@ -131,6 +131,17 @@ TEST_CASE("Vec3", "")
         REQUIRE_THAT(v, Matches::WithinAbs(Vec3f(1, 2, 3)));
     }
 
+    SECTION("set(Coord coord, Real value)")
+    {
+        Vec3f v = Vec3f::Zero;
+        v.set(Coord::X, 1);
+        REQUIRE_THAT(v, Matches::WithinAbs(Vec3f(1, 0, 0)));
+        v.set(Coord::Y, 2);
+        REQUIRE_THAT(v, Matches::WithinAbs(Vec3f(1, 2, 0)));
+        v.set(Coord::Z, 3);
+        REQUIRE_THAT(v, Matches::WithinAbs(Vec3f(1, 2, 3)));
+    }
+
     SECTION("slerp(const Vec3& u, const Vec3& v, Real ratio)")
     {
         Vec3f v;
@@ -473,7 +484,15 @@ TEST_CASE("Vec3", "")
         REQUIRE(v != Vec3f(1.1, 2, 3));
     }
 
-    //  Functions
+    // Functions
+
+    SECTION("copy()")
+    {
+        REQUIRE_THAT(Vec3f::Zero.copy(), Matches::WithinAbs(Vec3f::Zero));
+        REQUIRE_THAT(Vec3f::OneX.copy(), Matches::WithinAbs(Vec3f::OneX));
+        REQUIRE_THAT(Vec3f::OneY.copy(), Matches::WithinAbs(Vec3f::OneY));
+        REQUIRE_THAT(Vec3f::OneZ.copy(), Matches::WithinAbs(Vec3f::OneZ));
+    }
 
     SECTION("length()")
     {
@@ -504,6 +523,16 @@ TEST_CASE("Vec3", "")
         REQUIRE_THAT(Vec3f::OneX.normalized(2.0f), Matches::WithinAbs(Vec3f::OneX * 2.0f));
         REQUIRE_THAT(Vec3f::OneY.normalized(2.0f), Matches::WithinAbs(Vec3f::OneY * 2.0f));
         REQUIRE_THAT(Vec3f::OneZ.normalized(2.0f), Matches::WithinAbs(Vec3f::OneZ * 2.0f));
+    }
+
+    SECTION("moved(Coord coord, Real value)")
+    {
+        REQUIRE(Vec3f::Zero.moved(Coord::X, 0.0f) == Vec3f::Zero);
+        REQUIRE(Vec3f::Zero.moved(Coord::Y, 0.0f) == Vec3f::Zero);
+        REQUIRE(Vec3f::Zero.moved(Coord::Z, 0.0f) == Vec3f::Zero);
+        REQUIRE(Vec3f::Zero.moved(Coord::X, 1.0f) == Vec3f::OneX);
+        REQUIRE(Vec3f::Zero.moved(Coord::Y, 1.0f) == Vec3f::OneY);
+        REQUIRE(Vec3f::Zero.moved(Coord::Z, 1.0f) == Vec3f::OneZ);
     }
 
     SECTION("rotated(Coord axis, Real angle)")

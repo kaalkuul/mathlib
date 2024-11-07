@@ -90,6 +90,19 @@ Vec3<Real>& Vec3<Real>::set(const Vec3& v)
 }
 
 template <class Real>
+Vec3<Real>& Vec3<Real>::set(Coord coord, Real value)
+{
+	switch (coord)
+	{
+	case Coord::X: x = value; break;
+	case Coord::Y: y = value; break;
+	case Coord::Z: z = value; break;
+    default: assert(0); break;
+	}
+	return *this;
+}
+
+template <class Real>
 Vec3<Real>& Vec3<Real>::slerp(const Vec3<Real>& u, const Vec3<Real>& v, Real ratio)
 {
 	if (ratio == Real(0))
@@ -372,17 +385,50 @@ Vec3<Real> & Vec3<Real>::operator%= (Coord v)
 		_y = -x;
 		_z = Real(0);
 		break;
-	case Coord::NX:	// -1 0 0
+	default:
+		_x = Real(0);
+		_y = Real(0);
+		_z = Real(0);
+		assert(0);
+	}
+	x = _x;
+	y = _y;
+	z = _z;
+	return *this;
+}
+
+template <class Real>
+Vec3<Real> & Vec3<Real>::operator%= (Axis v)
+{
+	Real _x, _y, _z;
+	switch (v)
+	{
+	case Axis::X:		// 1 0 0
+		_x = Real(0);
+		_y = z;
+		_z = -y;
+		break;
+	case Axis::Y:		// 0 1 0
+		_x = -z;
+		_y = Real(0);
+		_z = x;
+		break;
+	case Axis::Z:		// 0 0 1
+		_x = y;
+		_y = -x;
+		_z = Real(0);
+		break;
+	case Axis::NX:	// -1 0 0
 		_x = Real(0);
 		_y = -z;
 		_z = y;
 		break;
-	case Coord::NY:	// 0 -1 0
+	case Axis::NY:	// 0 -1 0
 		_x = z;
 		_y = Real(0);
 		_z = -x;
 		break;
-	case Coord::NZ:	// 0 0 -1
+	case Axis::NZ:	// 0 0 -1
 		_x = -y;
 		_y = x;
 		_z = Real(0);
@@ -457,17 +503,43 @@ Vec3<Real> Vec3<Real>::operator% (Coord v) const
 		r.y = -x;
 		r.z = Real(0);
 		break;
-	case Coord::NX:	// -1 0 0
+	default: assert(0);
+	}
+	return r;
+}
+
+template <class Real>
+Vec3<Real> Vec3<Real>::operator% (Axis v) const
+{
+	Vec3 r;
+	switch (v)
+	{
+	case Axis::X:		// 1 0 0
+		r.x = Real(0);
+		r.y = z;
+		r.z = -y;
+		break;
+	case Axis::Y:		// 0 1 0
+		r.x = -z;
+		r.y = Real(0);
+		r.z = x;
+		break;
+	case Axis::Z:		// 0 0 1
+		r.x = y;
+		r.y = -x;
+		r.z = Real(0);
+		break;
+	case Axis::NX:	// -1 0 0
 		r.x = Real(0);
 		r.y = -z;
 		r.z = y;
 		break;
-	case Coord::NY:	// 0 -1 0
+	case Axis::NY:	// 0 -1 0
 		r.x = z;
 		r.y = Real(0);
 		r.z = -x;
 		break;
-	case Coord::NZ:	// 0 0 -1
+	case Axis::NZ:	// 0 0 -1
 		r.x = -y;
 		r.y = x;
 		r.z = Real(0);
@@ -528,6 +600,12 @@ bool Vec3<Real>::operator!= (const Vec3 &u) const
 //
 
 template <class Real>
+Vec3<Real> Vec3<Real>::copy() const
+{
+    return *this;
+}
+
+template <class Real>
 Real Vec3<Real>::length() const
 {
 	return sqrt(x * x + y * y + z * z);
@@ -551,6 +629,18 @@ Vec3<Real> Vec3<Real>::normalized(Real k) const
 	{
 		Real coeff = k / l;
 		return Vec3<Real>(x * coeff, y * coeff, z * coeff);
+	}
+}
+
+template <class Real>
+Vec3<Real> Vec3<Real>::moved(Coord coord, Real value) const
+{
+	switch (coord)
+	{
+	case Coord::X: return Vec3(x + value, y, z); break;
+	case Coord::Y: return Vec3(x, y + value, z); break;
+	case Coord::Z: return Vec3(x, y, z + value); break;
+	default: return *this;
 	}
 }
 

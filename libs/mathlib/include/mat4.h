@@ -93,6 +93,7 @@ public:
 
 	Ray3<Real> localAxis(Coord axis) const;
 	Plane<Real> localPlane(Coord normal) const;
+	Plane<Real> localPlane(Axis normal) const;
 	Mat4 transposed() const;
 	Real trace() const;
 	Real determinant() const;

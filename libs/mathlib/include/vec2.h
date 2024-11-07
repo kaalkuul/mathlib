@@ -23,6 +23,7 @@ public:
 	// Setters
 	Vec2& set(Real x, Real y);
 	Vec2& set(const Vec2& v);
+	Vec2& set(Coord coord, Real value);
 	Vec2& setAngle(Real angle, Real length = Real(1));
 	Vec2& clerp(const Vec2& u, const Vec2& v, Real ratio);
 	Vec2& clerpMaxAngle(const Vec2& u, const Vec2& v, Real maxAngle);
@@ -61,8 +62,10 @@ public:
 	bool operator!=(const Vec2& u) const;
 
 	// Functions
+	Vec2 copy() const;
 	Real length() const;
 	Real lengthSqr() const;
+	Vec2 moved(Coord coord, Real value) const;
 	Vec2 rotated(Real angle) const;
 	Vec2 normalized(Real k = Real(1)) const;
 	Vec2 rotated90() const;

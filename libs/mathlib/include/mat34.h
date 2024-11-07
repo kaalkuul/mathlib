@@ -79,6 +79,7 @@ public:
 	// Functions
 	Ray3<Real> localAxis(Coord axis) const;
 	Plane<Real> localPlane(Coord normal) const;
+	Plane<Real> localPlane(Axis normal) const;
 	bool isNormal() const;
 	bool isOrthogonal() const;
 	bool isOrthonormal() const;

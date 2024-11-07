@@ -4,6 +4,18 @@
 
 MATHLIB_NS_BEGIN
 
+inline
+Coord next(Coord coord)
+{
+    switch (coord)
+    {
+        case Coord::X: return Coord::Y;
+        case Coord::Y: return Coord::Z;
+        case Coord::Z: return Coord::X;
+        default: return Coord::Undefined;
+    }
+}
+
 template <class Real>
 Real abs(Real value)
 {

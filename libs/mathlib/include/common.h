@@ -17,6 +17,15 @@ enum class Coord : unsigned int
 	X = 0,
 	Y,
 	Z,
+	W,
+    Undefined = 0xff
+};
+
+enum class Axis : unsigned int
+{
+	X = 0,
+	Y,
+	Z,
 	NX,
 	NY,
 	NZ,

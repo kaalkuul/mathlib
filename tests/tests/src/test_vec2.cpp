@@ -119,6 +119,15 @@ TEST_CASE("Vec2", "")
         REQUIRE_THAT(v, Matches::WithinAbs(Vec2f(1, 2)));
     }
 
+    SECTION("set(Coord coord, Real value)")
+    {
+        Vec2f v = Vec2f::Zero;
+        v.set(Coord::X, 1);
+        REQUIRE_THAT(v, Matches::WithinAbs(Vec2f(1, 0)));
+        v.set(Coord::Y, 2);
+        REQUIRE_THAT(v, Matches::WithinAbs(Vec2f(1, 2)));
+    }
+
     SECTION("setAngle(Real angle, Real length = Real(1))")
     {
         Vec2f v;
@@ -447,7 +456,14 @@ TEST_CASE("Vec2", "")
         REQUIRE(v != Vec2f(1.1, 2));
     }
 
-    //  Functions
+    // Functions
+
+    SECTION("copy()")
+    {
+        REQUIRE_THAT(Vec2f::Zero.copy(), Matches::WithinAbs(Vec2f::Zero));
+        REQUIRE_THAT(Vec2f::OneX.copy(), Matches::WithinAbs(Vec2f::OneX));
+        REQUIRE_THAT(Vec2f::OneY.copy(), Matches::WithinAbs(Vec2f::OneY));
+    }
 
     SECTION("length()")
     {
@@ -474,6 +490,15 @@ TEST_CASE("Vec2", "")
         REQUIRE_THAT(Vec2f::Zero.normalized(2.0f), Matches::WithinAbs(Vec2f::Zero));
         REQUIRE_THAT(Vec2f::OneX.normalized(2.0f), Matches::WithinAbs(Vec2f::OneX * 2.0f));
         REQUIRE_THAT(Vec2f::OneY.normalized(2.0f), Matches::WithinAbs(Vec2f::OneY * 2.0f));
+    }
+
+    SECTION("moved(Coord coord, Real value)")
+    {
+        REQUIRE(Vec2f::Zero.moved(Coord::X, 0.0f) == Vec2f::Zero);
+        REQUIRE(Vec2f::Zero.moved(Coord::Y, 0.0f) == Vec2f::Zero);
+        
+        REQUIRE(Vec2f::Zero.moved(Coord::X, 1.0f) == Vec2f::OneX);
+        REQUIRE(Vec2f::Zero.moved(Coord::Y, 1.0f) == Vec2f::OneY);
     }
 
     SECTION("rotated()")

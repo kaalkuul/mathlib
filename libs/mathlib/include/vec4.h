@@ -19,6 +19,7 @@ public:
 	Vec4& set(Real x, Real y, Real z, Real w = Real(0));
 	Vec4& set(const Vec3<Real>& v, Real w = Real(0));
 	Vec4& set(const Vec4& v);
+	Vec4& set(Coord coord, Real value);
 
 	// Assignments
 	Vec4& operator+=(const Vec3<Real>& u);
@@ -41,8 +42,10 @@ public:
 	bool operator!= (const Vec4& u) const;
 
 	// Functions
+	Vec4 copy() const;
 	Real length() const;
 	Real lengthSqr() const;
+	Vec4 moved(Coord coord, Real value) const;
 	Vec3<Real> toVec3() const;
 	bool isNull() const;
 

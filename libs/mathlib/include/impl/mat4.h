@@ -866,9 +866,24 @@ Plane<Real> Mat4<Real>::localPlane(Coord normal) const
 	case Coord::X: normalVector = x.toVec3(); break;
 	case Coord::Y: normalVector = y.toVec3(); break;
 	case Coord::Z: normalVector = z.toVec3(); break;
-	case Coord::NX: normalVector = -x.toVec3(); break;
-	case Coord::NY: normalVector = -y.toVec3(); break;
-	case Coord::NZ: normalVector = -z.toVec3(); break;
+	default: assert(0); normalVector = x.toVec3(); break;
+	}
+	return Plane<Real>::from(point, normalVector);
+}
+
+template <class Real>
+Plane<Real> Mat4<Real>::localPlane(Axis normal) const
+{
+	Vec3<Real> point = t.toVec3();
+	Vec3<Real> normalVector;
+	switch (normal)
+	{
+	case Axis::X: normalVector = x.toVec3(); break;
+	case Axis::Y: normalVector = y.toVec3(); break;
+	case Axis::Z: normalVector = z.toVec3(); break;
+	case Axis::NX: normalVector = -x.toVec3(); break;
+	case Axis::NY: normalVector = -y.toVec3(); break;
+	case Axis::NZ: normalVector = -z.toVec3(); break;
 	default: assert(0); normalVector = x.toVec3(); break;
 	}
 	return Plane<Real>::from(point, normalVector);

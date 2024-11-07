@@ -103,6 +103,19 @@ TEST_CASE("Vec4", "")
         REQUIRE_THAT(v, Matches::WithinAbs(Vec4f(1, 2, 3, 4)));
     }
 
+    SECTION("set(Coord coord, Real value)")
+    {
+        Vec4f v = Vec4f::Zero;
+        v.set(Coord::X, 1);
+        REQUIRE_THAT(v, Matches::WithinAbs(Vec4f(1, 0, 0, 0)));
+        v.set(Coord::Y, 2);
+        REQUIRE_THAT(v, Matches::WithinAbs(Vec4f(1, 2, 0, 0)));
+        v.set(Coord::Z, 3);
+        REQUIRE_THAT(v, Matches::WithinAbs(Vec4f(1, 2, 3, 0)));
+        v.set(Coord::W, 4);
+        REQUIRE_THAT(v, Matches::WithinAbs(Vec4f(1, 2, 3, 4)));
+    }
+
     // Arithmetic operators
 
     SECTION("operator+ (const Vec4 &u)")
@@ -142,6 +155,28 @@ TEST_CASE("Vec4", "")
     }
 
     //  Functions
+
+    SECTION("copy()")
+    {
+        REQUIRE_THAT(Vec4f::Zero.copy(), Matches::WithinAbs(Vec4f::Zero));
+        REQUIRE_THAT(Vec4f::OneX.copy(), Matches::WithinAbs(Vec4f::OneX));
+        REQUIRE_THAT(Vec4f::OneY.copy(), Matches::WithinAbs(Vec4f::OneY));
+        REQUIRE_THAT(Vec4f::OneZ.copy(), Matches::WithinAbs(Vec4f::OneZ));
+        REQUIRE_THAT(Vec4f::OneW.copy(), Matches::WithinAbs(Vec4f::OneW));
+    }
+
+    SECTION("moved(Coord coord, Real value)")
+    {
+        REQUIRE(Vec4f::Zero.moved(Coord::X, 0.0f) == Vec4f::Zero);
+        REQUIRE(Vec4f::Zero.moved(Coord::Y, 0.0f) == Vec4f::Zero);
+        REQUIRE(Vec4f::Zero.moved(Coord::Z, 0.0f) == Vec4f::Zero);
+        REQUIRE(Vec4f::Zero.moved(Coord::W, 0.0f) == Vec4f::Zero);
+
+        REQUIRE(Vec4f::Zero.moved(Coord::X, 1.0f) == Vec4f::OneXnw);
+        REQUIRE(Vec4f::Zero.moved(Coord::Y, 1.0f) == Vec4f::OneYnw);
+        REQUIRE(Vec4f::Zero.moved(Coord::Z, 1.0f) == Vec4f::OneZnw);
+        REQUIRE(Vec4f::Zero.moved(Coord::W, 1.0f) == Vec4f::OneW);
+    }
 
     SECTION("toVec3()")
     {
