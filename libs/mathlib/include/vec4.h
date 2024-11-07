@@ -52,11 +52,19 @@ public:
 	template <class CastReturnType>
 	Vec4<CastReturnType> cast() const;
 
+	static Vec4 product(const Vec4& a, const Vec4& b);
+
+	static Vec4 min(const Vec4& a, const Vec4& b);
+	static Vec4 max(const Vec4& a, const Vec4& b);
+
 	static const Vec4 Zero;
-	static const Vec4 OneX;
-	static const Vec4 OneY;
-	static const Vec4 OneZ;
-	static const Vec4 OneW;
+    static const Vec4 OneX;
+    static const Vec4 OneY;
+    static const Vec4 OneZ;
+    static const Vec4 OneW;
+    static const Vec4 OneXnw;
+    static const Vec4 OneYnw;
+    static const Vec4 OneZnw;
 
 public:
 	Real x, y, z, w;

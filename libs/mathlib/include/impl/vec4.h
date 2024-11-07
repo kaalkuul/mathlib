@@ -17,6 +17,15 @@ const Vec4<Real> Vec4<Real>::OneZ = Vec4<Real>(Real(0), Real(0), Real(1), Real(1
 template <class Real>
 const Vec4<Real> Vec4<Real>::OneW = Vec4<Real>(Real(0), Real(0), Real(0), Real(1));
 
+template <class Real>
+const Vec4<Real> Vec4<Real>::OneXnw = Vec4<Real>(Real(1), Real(0), Real(0), Real(0));
+
+template <class Real>
+const Vec4<Real> Vec4<Real>::OneYnw = Vec4<Real>(Real(0), Real(1), Real(0), Real(0));
+
+template <class Real>
+const Vec4<Real> Vec4<Real>::OneZnw = Vec4<Real>(Real(0), Real(0), Real(1), Real(0));
+
 //
 // Constructors
 //
@@ -252,6 +261,30 @@ Vec4<CastReturnType> Vec4<Real>::cast() const
 		static_cast<CastReturnType>(z), 
 		static_cast<CastReturnType>(w)
 	);
+}
+
+template <class Real>
+Vec4<Real> Vec4<Real>::product(const Vec4& a, const Vec4& b)
+{
+	return Vec4(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w);
+}
+
+template <class Real>
+Vec4<Real> Vec4<Real>::min(const Vec4& a, const Vec4& b)
+{
+	return Vec4(mathlib::min<Real>(a.x, b.x),
+                mathlib::min<Real>(a.y, b.y),
+                mathlib::min<Real>(a.z, b.z),
+                mathlib::min<Real>(a.w, b.w));
+}
+
+template <class Real>
+Vec4<Real> Vec4<Real>::max(const Vec4& a, const Vec4& b)
+{
+	return Vec4(mathlib::max<Real>(a.x, b.x),
+                mathlib::max<Real>(a.y, b.y),
+                mathlib::max<Real>(a.z, b.z),
+                mathlib::max<Real>(a.w, b.w));
 }
 
 MATHLIB_NS_END

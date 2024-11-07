@@ -644,6 +644,28 @@ Vec3<CastReturnType> Vec3<Real>::cast() const
 }
 
 template <class Real>
+Vec3<Real> Vec3<Real>::product(const Vec3& a, const Vec3& b)
+{
+	return Vec3(a.x * b.x, a.y * b.y, a.z * b.z);
+}
+
+template <class Real>
+Vec3<Real> Vec3<Real>::min(const Vec3& a, const Vec3& b)
+{
+	return Vec3(mathlib::min<Real>(a.x, b.x),
+                mathlib::min<Real>(a.y, b.y),
+                mathlib::min<Real>(a.z, b.z));
+}
+
+template <class Real>
+Vec3<Real> Vec3<Real>::max(const Vec3& a, const Vec3& b)
+{
+	return Vec3(mathlib::max<Real>(a.x, b.x),
+                mathlib::max<Real>(a.y, b.y),
+                mathlib::max<Real>(a.z, b.z));
+}
+
+template <class Real>
 Vec3<Real> Vec3<Real>::randomUnitVector()
 {
 	Vec3<Real> n;

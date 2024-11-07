@@ -75,6 +75,11 @@ public:
 	template <class CastReturnType>
 	Vec3<CastReturnType> cast() const;
 
+	static Vec3 product(const Vec3& a, const Vec3& b);
+
+	static Vec3 min(const Vec3& a, const Vec3& b);
+	static Vec3 max(const Vec3& a, const Vec3& b);
+
 	static Vec3 randomUnitVector();
 
 	static const Vec3 Zero;

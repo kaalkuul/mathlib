@@ -470,6 +470,26 @@ Vec2<CastReturnType> Vec2<Real>::cast() const
 }
 
 template <class Real>
+Vec2<Real> Vec2<Real>::product(const Vec2& a, const Vec2& b)
+{
+	return Vec2(a.x * b.x, a.y * b.y);
+}
+
+template <class Real>
+Vec2<Real> Vec2<Real>::min(const Vec2& a, const Vec2& b)
+{
+	return Vec2(mathlib::min<Real>(a.x, b.x),
+                mathlib::min<Real>(a.y, b.y));
+}
+
+template <class Real>
+Vec2<Real> Vec2<Real>::max(const Vec2& a, const Vec2& b)
+{
+	return Vec2(mathlib::max<Real>(a.x, b.x),
+                mathlib::max<Real>(a.y, b.y));
+}
+
+template <class Real>
 Real Vec2<Real>::crossProduct(const Vec2& a, const Vec2& b, const Vec2& c)
 {
 	return (b.x - a.x) * (c.y - a.y) - (c.x - a.x) * (b.y - a.y);

@@ -80,6 +80,11 @@ public:
 	template <class CastReturnType>
 	Vec2<CastReturnType> cast() const;
 
+	static Vec2 product(const Vec2& a, const Vec2& b);
+
+	static Vec2 min(const Vec2& a, const Vec2& b);
+	static Vec2 max(const Vec2& a, const Vec2& b);
+
 	static Real crossProduct(const Vec2& a, const Vec2& b, const Vec2& c);
 
 	static Vec2 randomUnitVector();
