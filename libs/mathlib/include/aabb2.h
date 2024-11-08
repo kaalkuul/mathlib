@@ -62,7 +62,12 @@ public:
 	bool contains(const Vec2<Real>& point) const;
 	bool contains(const AABB2<Real>& box) const;
 
+    bool hits(Real& t, const Ray2<Real>& ray) const;
+    bool hits(Real& t, const Line2<Real>& line) const;
+
 	bool intersects(const AABB2<Real>& box) const;
+    bool intersects(Real& t1, Real& t2, const Ray2<Real>& ray) const;
+    bool intersects(Real& t1, Real& t2, const Line2<Real>& ray) const;
 
 	template <class CastReturnType>
 	AABB2<CastReturnType> cast() const;

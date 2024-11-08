@@ -380,6 +380,253 @@ namespace {
             REQUIRE(!box.contains(box2 + Vec3f(-0.46f, +0.46f, -0.46f)));
         }
 
+        SECTION("hits(Real& t, const Ray3<Real>& ray)")
+        {
+            auto S = GENERATE(1.0f, 0.001f, 1000.0f);
+            auto U = GENERATE(Coord::X, Coord::Y, Coord::Z);
+            auto DIR = GENERATE(+1.0f, -1.0f);
+            
+            const float D = S * 5.0f;
+
+            Coord V = next3D(U);
+            Coord W = next3D(V);
+
+            AABB3f box(Vec3f(-S, -S, -S), Vec3f(S, S, S));
+            float t;
+            
+            SECTION("U out and towards")
+            {
+                const float T = D - S;
+                
+                Vec3f start = Vec3f::Zero.moved(U, DIR > 0.0f ? -D : D);
+                Vec3f direction = Vec3f::Zero.moved(U, DIR);
+                
+                SECTION("V in, W in") {
+                    REQUIRE(box.hits(t, Ray3f::from(start, direction)) == true);
+                    REQUIRE(t == T);
+                }
+
+                SECTION("V out, W in") {
+                    REQUIRE(box.hits(t, Ray3f::from(start.moved(V, D), direction)) == false);
+                    REQUIRE(box.hits(t, Ray3f::from(start.moved(V, -D), direction)) == false);
+                }
+
+                SECTION("V in, W out") {
+                    REQUIRE(box.hits(t, Ray3f::from(start.moved(W, D), direction)) == false);
+                    REQUIRE(box.hits(t, Ray3f::from(start.moved(W, -D), direction)) == false);
+                }
+            }
+
+            SECTION("U in to out")
+            {
+                Vec3f start = Vec3f::Zero;
+                Vec3f direction = Vec3f::Zero.moved(U, DIR);
+                
+                SECTION("V in, W in") {
+                    REQUIRE(box.hits(t, Ray3f::from(start, direction)) == false);
+                }
+
+                SECTION("V out, W in") {
+                    REQUIRE(box.hits(t, Ray3f::from(start.moved(V, D), direction)) == false);
+                    REQUIRE(box.hits(t, Ray3f::from(start.moved(V, -D), direction)) == false);
+                }
+
+                SECTION("V in, W out") {
+                    REQUIRE(box.hits(t, Ray3f::from(start.moved(W, D), direction)) == false);
+                    REQUIRE(box.hits(t, Ray3f::from(start.moved(W, -D), direction)) == false);
+                }
+            }
+
+            SECTION("U out to out")
+            {
+                Vec3f start = Vec3f::Zero.moved(U, DIR > 0.0f ? D : -D);
+                Vec3f direction = Vec3f::Zero.moved(U, DIR);
+                
+                SECTION("V in, W in") {
+                    REQUIRE(box.hits(t, Ray3f::from(start, direction)) == false);
+                }
+
+                SECTION("V out, W in") {
+                    REQUIRE(box.hits(t, Ray3f::from(start.moved(V, D), direction)) == false);
+                    REQUIRE(box.hits(t, Ray3f::from(start.moved(V, -D), direction)) == false);
+                }
+
+                SECTION("V in, W out") {
+                    REQUIRE(box.hits(t, Ray3f::from(start.moved(W, D), direction)) == false);
+                    REQUIRE(box.hits(t, Ray3f::from(start.moved(W, -D), direction)) == false);
+                }
+            }
+
+            SECTION("U out and towards")
+            {
+                Vec3f start0 = Vec3f::Zero.moved(U, DIR > 0.0f ? -D : D).moved(V, DIR > 0.0f ? -D : D);
+                Vec3f direction = Vec3f::Zero.moved(U, DIR).moved(V, DIR).normalized();
+
+                Vec3f starts[] = {
+                    start0,
+                    start0.moved(U, DIR*S),
+                    start0.moved(U, DIR*S*2),
+                    start0.moved(V, DIR*S),
+                    start0.moved(V, DIR*S*2)
+                };
+
+                int index = GENERATE(0, 1, 2, 3, 4);
+                
+                Vec3f start = starts[index];
+                float T = sqrtf(4.0f*4.0f*2.0f) * S;
+                
+                SECTION("V in, W in") {
+                    REQUIRE(box.hits(t, Ray3f::from(start, direction)) == true);
+                    REQUIRE_THAT(t, Catch::Matchers::WithinAbs(T, S / 1000.0));
+                }
+
+                SECTION("V in, W out") {
+                    REQUIRE(box.hits(t, Ray3f::from(start.moved(W, D), direction)) == false);
+                    REQUIRE(box.hits(t, Ray3f::from(start.moved(W, -D), direction)) == false);
+                }
+            }
+        }
+
+        SECTION("hits(Real& t, const Line3<Real>& ray)")
+        {
+            auto S = GENERATE(1.0f, 0.001f, 1000.0f);
+            auto U = GENERATE(Coord::X, Coord::Y, Coord::Z);
+            auto DIR = GENERATE(+1.0f, -1.0f);
+            
+            const float D = S * 5.0f;
+
+            Coord V = next3D(U);
+            Coord W = next3D(V);
+
+            AABB3f box(Vec3f(-S, -S, -S), Vec3f(S, S, S));
+            float t;
+            
+            SECTION("U out, across and out")
+            {
+                const float T = 0.4f;
+                
+                Vec3f start = Vec3f::Zero.moved(U, DIR > 0.0f ? -D : D);
+                Vec3f end = Vec3f::Zero.moved(U, DIR > 0.0f ? D : -D);
+                
+                SECTION("V in, W in") {
+                    REQUIRE(box.hits(t, Line3f::from(start, end)) == true);
+                    REQUIRE_THAT(t, Catch::Matchers::WithinRel(T, 0.0001f));
+                }
+
+                SECTION("V out, W in") {
+                    REQUIRE(box.hits(t, Line3f::from(start.moved(V, +D), end.moved(V, +D))) == false);
+                    REQUIRE(box.hits(t, Line3f::from(start.moved(V, -D), end.moved(V, -D))) == false);
+                }
+
+                SECTION("V in, W out") {
+                    REQUIRE(box.hits(t, Line3f::from(start.moved(W, +D), end.moved(W, +D))) == false);
+                    REQUIRE(box.hits(t, Line3f::from(start.moved(W, -D), end.moved(W, -D))) == false);
+                }
+            }
+
+            SECTION("U in to out")
+            {
+                Vec3f start = Vec3f::Zero;
+                Vec3f end = Vec3f::Zero.moved(U, DIR > 0.0f ? D : -D);
+                
+                SECTION("V in, W in") {
+                    REQUIRE(box.hits(t, Line3f::from(start, end)) == false);
+                }
+
+                SECTION("V out, W in") {
+                    REQUIRE(box.hits(t, Line3f::from(start.moved(V, +D), end.moved(V, +D))) == false);
+                    REQUIRE(box.hits(t, Line3f::from(start.moved(V, -D), end.moved(V, -D))) == false);
+                }
+
+                SECTION("V in, W out") {
+                    REQUIRE(box.hits(t, Line3f::from(start.moved(W, +D), end.moved(W, +D))) == false);
+                    REQUIRE(box.hits(t, Line3f::from(start.moved(W, -D), end.moved(W, -D))) == false);
+                }
+            }
+
+            SECTION("U out to in")
+            {
+                const float T = 0.8f;
+                
+                Vec3f start = Vec3f::Zero.moved(U, DIR > 0.0f ? -D : D);
+                Vec3f end = Vec3f::Zero;
+                
+                SECTION("V in, W in") {
+                    REQUIRE(box.hits(t, Line3f::from(start, end)) == true);
+                    REQUIRE_THAT(t, Catch::Matchers::WithinRel(T, 0.0001f));
+                }
+
+                SECTION("V out, W in") {
+                    REQUIRE(box.hits(t, Line3f::from(start.moved(V, +D), end.moved(V, +D))) == false);
+                    REQUIRE(box.hits(t, Line3f::from(start.moved(V, -D), end.moved(V, -D))) == false);
+                }
+
+                SECTION("V in, W out") {
+                    REQUIRE(box.hits(t, Line3f::from(start.moved(W, +D), end.moved(W, +D))) == false);
+                    REQUIRE(box.hits(t, Line3f::from(start.moved(W, -D), end.moved(W, -D))) == false);
+                }
+            }
+
+            SECTION("U out to out")
+            {
+                Vec3f start = Vec3f::Zero.moved(U, DIR > 0.0f ? D : -D);
+                Vec3f end = start.moved(U, S);
+                
+                SECTION("V in, W in") {
+                    bool result = box.hits(t, Line3f::from(start, end));
+                    REQUIRE(result == false);
+                }
+
+                SECTION("V out, W in") {
+                    REQUIRE(box.hits(t, Line3f::from(start.moved(V, +D), end.moved(V, +D))) == false);
+                    REQUIRE(box.hits(t, Line3f::from(start.moved(V, -D), end.moved(V, -D))) == false);
+                }
+
+                SECTION("V in, W out") {
+                    REQUIRE(box.hits(t, Line3f::from(start.moved(W, +D), end.moved(W, +D))) == false);
+                    REQUIRE(box.hits(t, Line3f::from(start.moved(W, -D), end.moved(W, -D))) == false);
+                }
+            }
+
+            SECTION("U and V out and towards diagonally")
+            {
+                Vec3f start0 = Vec3f::Zero.moved(U, DIR > 0.0f ? -D : D).moved(V, DIR > 0.0f ? -D : D);
+
+                Vec3f starts[] = {
+                    start0,
+                    start0.moved(U, DIR*S),
+                    start0.moved(U, DIR*S*2),
+                    start0.moved(V, DIR*S),
+                    start0.moved(V, DIR*S*2)
+                };
+
+                float t2s[] = {
+                    0.6f,
+                    0.5f,
+                    0.4f,
+                    0.5f,
+                    0.4f
+                };
+
+                int index = GENERATE(0, 1, 2, 3, 4);
+                
+                Vec3f start = starts[index];
+                Vec3f end = start.moved(U, DIR*D*2.0f).moved(V, DIR*D*2.0f);
+                float T = 0.4f;
+                
+                SECTION("V in, W in") {
+                    bool result = box.hits(t, Line3f::from(start, end));
+                    REQUIRE(result == true);
+                    REQUIRE_THAT(t, Catch::Matchers::WithinAbs(T, 0.0001));
+                }
+
+                SECTION("V in, W out") {
+                    REQUIRE(box.hits(t, Line3f::from(start.moved(W, +D), end.moved(W, +D))) == false);
+                    REQUIRE(box.hits(t, Line3f::from(start.moved(W, -D), end.moved(W, -D))) == false);
+                }
+            }
+        }
+
         SECTION("intersects(const AABB3<Real>& box)")
         {
             AABB3f box = AABB3f::One;
@@ -413,6 +660,281 @@ namespace {
             REQUIRE(!box.intersects(box2 + Vec3f(+0.56f, -0.56f, -0.56f)));
             REQUIRE(!box.intersects(box2 + Vec3f(-0.56f, -0.56f, -0.56f)));
             REQUIRE(!box.intersects(box2 + Vec3f(-0.56f, +0.56f, -0.56f)));
+        }
+
+        SECTION("intersects(Real& t1, Real& t2, const Ray3<Real>& ray)")
+        {
+            auto S = GENERATE(1.0f, 0.001f, 1000.0f);
+            auto U = GENERATE(Coord::X, Coord::Y, Coord::Z);
+            auto DIR = GENERATE(+1.0f, -1.0f);
+            
+            const float D = S * 5.0f;
+
+            Coord V = next3D(U);
+            Coord W = next3D(V);
+
+            AABB3f box(Vec3f(-S, -S, -S), Vec3f(S, S, S));
+            float t1, t2;
+            
+            SECTION("U out and towards")
+            {
+                const float T1 = D - S;
+                const float T2 = D + S;
+                
+                Vec3f start = Vec3f::Zero.moved(U, DIR > 0.0f ? -D : D);
+                Vec3f direction = Vec3f::Zero.moved(U, DIR);
+                
+                SECTION("V in, W in") {
+                    REQUIRE(box.intersects(t1, t2, Ray3f::from(start, direction)) == true);
+                    REQUIRE(t1 == T1);
+                    REQUIRE(t2 == T2);
+                }
+
+                SECTION("V out, W in") {
+                    REQUIRE(box.intersects(t1, t2, Ray3f::from(start.moved(V, D), direction)) == false);
+                    REQUIRE(box.intersects(t1, t2, Ray3f::from(start.moved(V, -D), direction)) == false);
+                }
+
+                SECTION("V in, W out") {
+                    REQUIRE(box.intersects(t1, t2, Ray3f::from(start.moved(W, D), direction)) == false);
+                    REQUIRE(box.intersects(t1, t2, Ray3f::from(start.moved(W, -D), direction)) == false);
+                }
+            }
+
+            SECTION("U in to out")
+            {
+                const float T1 = 0.0f;
+                const float T2 = S;
+                
+                Vec3f start = Vec3f::Zero;
+                Vec3f direction = Vec3f::Zero.moved(U, DIR);
+                
+                SECTION("V in, W in") {
+                    REQUIRE(box.intersects(t1, t2, Ray3f::from(start, direction)) == true);
+                    REQUIRE(t1 == T1);
+                    REQUIRE(t2 == T2);
+                }
+
+                SECTION("V out, W in") {
+                    REQUIRE(box.intersects(t1, t2, Ray3f::from(start.moved(V, D), direction)) == false);
+                    REQUIRE(box.intersects(t1, t2, Ray3f::from(start.moved(V, -D), direction)) == false);
+                }
+
+                SECTION("V in, W out") {
+                    REQUIRE(box.intersects(t1, t2, Ray3f::from(start.moved(W, D), direction)) == false);
+                    REQUIRE(box.intersects(t1, t2, Ray3f::from(start.moved(W, -D), direction)) == false);
+                }
+            }
+
+            SECTION("U out to out")
+            {
+                Vec3f start = Vec3f::Zero.moved(U, DIR > 0.0f ? D : -D);
+                Vec3f direction = Vec3f::Zero.moved(U, DIR);
+                
+                SECTION("V in, W in") {
+                    REQUIRE(box.intersects(t1, t2, Ray3f::from(start, direction)) == false);
+                }
+
+                SECTION("V out, W in") {
+                    REQUIRE(box.intersects(t1, t2, Ray3f::from(start.moved(V, D), direction)) == false);
+                    REQUIRE(box.intersects(t1, t2, Ray3f::from(start.moved(V, -D), direction)) == false);
+                }
+
+                SECTION("V in, W out") {
+                    REQUIRE(box.intersects(t1, t2, Ray3f::from(start.moved(W, D), direction)) == false);
+                    REQUIRE(box.intersects(t1, t2, Ray3f::from(start.moved(W, -D), direction)) == false);
+                }
+            }
+
+            SECTION("U out and towards")
+            {
+                Vec3f start0 = Vec3f::Zero.moved(U, DIR > 0.0f ? -D : D).moved(V, DIR > 0.0f ? -D : D);
+                Vec3f direction = Vec3f::Zero.moved(U, DIR).moved(V, DIR).normalized();
+
+                Vec3f starts[] = {
+                    start0,
+                    start0.moved(U, DIR*S),
+                    start0.moved(U, DIR*S*2),
+                    start0.moved(V, DIR*S),
+                    start0.moved(V, DIR*S*2)
+                };
+
+                float t2s[] = {
+                    sqrtf(6.0f*6.0f*2.0f),
+                    sqrtf(5.0f*5.0f*2.0f),
+                    sqrtf(4.0f*4.0f*2.0f),
+                    sqrtf(5.0f*5.0f*2.0f),
+                    sqrtf(4.0f*4.0f*2.0f)
+                };
+
+                int index = GENERATE(0, 1, 2, 3, 4);
+                
+                Vec3f start = starts[index];
+                float T1 = sqrtf(4.0f*4.0f*2.0f) * S;
+                float T2 = t2s[index] * S;
+                
+                SECTION("V in, W in") {
+                    REQUIRE(box.intersects(t1, t2, Ray3f::from(start, direction)) == true);
+                    REQUIRE_THAT(t1, Catch::Matchers::WithinAbs(T1, S / 1000.0));
+                    REQUIRE_THAT(t2, Catch::Matchers::WithinAbs(T2, S / 1000.0));
+                }
+
+                SECTION("V in, W out") {
+                    REQUIRE(box.intersects(t1, t2, Ray3f::from(start.moved(W, D), direction)) == false);
+                    REQUIRE(box.intersects(t1, t2, Ray3f::from(start.moved(W, -D), direction)) == false);
+                }
+            }
+        }
+
+        SECTION("intersects(Real& t1, Real& t2, const Line3<Real>& line)")
+        {
+            auto S = GENERATE(1.0f, 0.001f, 1000.0f);
+            auto U = GENERATE(Coord::X, Coord::Y, Coord::Z);
+            auto DIR = GENERATE(+1.0f, -1.0f);
+            
+            const float D = S * 5.0f;
+
+            Coord V = next3D(U);
+            Coord W = next3D(V);
+
+            AABB3f box(Vec3f(-S, -S, -S), Vec3f(S, S, S));
+            float t1, t2;
+            
+            SECTION("U out, across and out")
+            {
+                const float T1 = 0.4f;
+                const float T2 = 0.6f;
+                
+                Vec3f start = Vec3f::Zero.moved(U, DIR > 0.0f ? -D : D);
+                Vec3f end = Vec3f::Zero.moved(U, DIR > 0.0f ? D : -D);
+                
+                SECTION("V in, W in") {
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start, end)) == true);
+                    REQUIRE_THAT(t1, Catch::Matchers::WithinRel(T1, 0.0001f));
+                    REQUIRE_THAT(t2, Catch::Matchers::WithinRel(T2, 0.0001f));
+                }
+
+                SECTION("V out, W in") {
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start.moved(V, +D), end.moved(V, +D))) == false);
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start.moved(V, -D), end.moved(V, -D))) == false);
+                }
+
+                SECTION("V in, W out") {
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start.moved(W, +D), end.moved(W, +D))) == false);
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start.moved(W, -D), end.moved(W, -D))) == false);
+                }
+            }
+
+            SECTION("U in to out")
+            {
+                const float T1 = 0.0f;
+                const float T2 = 0.2f;
+                
+                Vec3f start = Vec3f::Zero;
+                Vec3f end = Vec3f::Zero.moved(U, DIR > 0.0f ? D : -D);
+                
+                SECTION("V in, W in") {
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start, end)) == true);
+                    REQUIRE_THAT(t1, Catch::Matchers::WithinRel(T1, 0.0001f));
+                    REQUIRE_THAT(t2, Catch::Matchers::WithinRel(T2, 0.0001f));
+                }
+
+                SECTION("V out, W in") {
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start.moved(V, +D), end.moved(V, +D))) == false);
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start.moved(V, -D), end.moved(V, -D))) == false);
+                }
+
+                SECTION("V in, W out") {
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start.moved(W, +D), end.moved(W, +D))) == false);
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start.moved(W, -D), end.moved(W, -D))) == false);
+                }
+            }
+
+            SECTION("U out to in")
+            {
+                const float T1 = 0.8f;
+                const float T2 = 1.0f;
+                
+                Vec3f start = Vec3f::Zero.moved(U, DIR > 0.0f ? -D : D);
+                Vec3f end = Vec3f::Zero;
+                
+                SECTION("V in, W in") {
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start, end)) == true);
+                    REQUIRE_THAT(t1, Catch::Matchers::WithinRel(T1, 0.0001f));
+                    REQUIRE_THAT(t2, Catch::Matchers::WithinRel(T2, 0.0001f));
+                }
+
+                SECTION("V out, W in") {
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start.moved(V, +D), end.moved(V, +D))) == false);
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start.moved(V, -D), end.moved(V, -D))) == false);
+                }
+
+                SECTION("V in, W out") {
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start.moved(W, +D), end.moved(W, +D))) == false);
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start.moved(W, -D), end.moved(W, -D))) == false);
+                }
+            }
+
+            SECTION("U out to out")
+            {
+                Vec3f start = Vec3f::Zero.moved(U, DIR > 0.0f ? D : -D);
+                Vec3f end = start.moved(U, S);
+                
+                SECTION("V in, W in") {
+                    bool result = box.intersects(t1, t2, Line3f::from(start, end));
+                    REQUIRE(result == false);
+                }
+
+                SECTION("V out, W in") {
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start.moved(V, +D), end.moved(V, +D))) == false);
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start.moved(V, -D), end.moved(V, -D))) == false);
+                }
+
+                SECTION("V in, W out") {
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start.moved(W, +D), end.moved(W, +D))) == false);
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start.moved(W, -D), end.moved(W, -D))) == false);
+                }
+            }
+
+            SECTION("U and V out and towards diagonally")
+            {
+                Vec3f start0 = Vec3f::Zero.moved(U, DIR > 0.0f ? -D : D).moved(V, DIR > 0.0f ? -D : D);
+
+                Vec3f starts[] = {
+                    start0,
+                    start0.moved(U, DIR*S),
+                    start0.moved(U, DIR*S*2),
+                    start0.moved(V, DIR*S),
+                    start0.moved(V, DIR*S*2)
+                };
+
+                float t2s[] = {
+                    0.6f,
+                    0.5f,
+                    0.4f,
+                    0.5f,
+                    0.4f
+                };
+
+                int index = GENERATE(0, 1, 2, 3, 4);
+                
+                Vec3f start = starts[index];
+                Vec3f end = start.moved(U, DIR*D*2.0f).moved(V, DIR*D*2.0f);
+                float T1 = 0.4f;
+                float T2 = t2s[index];
+                
+                SECTION("V in, W in") {
+                    bool result = box.intersects(t1, t2, Line3f::from(start, end));
+                    REQUIRE(result == true);
+                    REQUIRE_THAT(t1, Catch::Matchers::WithinAbs(T1, 0.0001));
+                    REQUIRE_THAT(t2, Catch::Matchers::WithinAbs(T2, 0.0001));
+                }
+
+                SECTION("V in, W out") {
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start.moved(W, +D), end.moved(W, +D))) == false);
+                    REQUIRE(box.intersects(t1, t2, Line3f::from(start.moved(W, -D), end.moved(W, -D))) == false);
+                }
+            }
         }
 
         SECTION("cast()")

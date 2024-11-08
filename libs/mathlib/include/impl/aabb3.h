@@ -382,76 +382,152 @@ bool AABB3<Real>::contains(const AABB3<Real>& box) const
 		&& (box.inf.z >= inf.z && box.sup.z <= sup.z);
 }
 
-//template <class Real>
-//bool AABB3<Real>::hits(Vec3<Real>& hit, Real& t, const Ray3<Real>& ray) const
-//{
-//    t = Real(0);
-//
-//    if (ray.direction.x == Real(0))
-//    {
-//        // Ray is parallel to the slab. Check if the start point is outside the slab.
-//        if (ray.start.x < inf.x || ray.start.x > sup.x)
-//            return false;  // No intersection if outside the slab
-//    }
-//    else
-//    {
-//        // Compute intersection tinf and tsup with the near and far slabs
-//        Real invD = Real(1) / ray.direction.x;
-//        Real tinf = (inf.x - ray.start.x) * invD;
-//        Real tsup = (sup.x - ray.start.x) * invD;
-//
-//        if (tinf > tsup) std::swap(tinf, tsup);
-//
-//        if (tinf < Real(0))
-//            return false;
-//
-//        t = std::max(t, tinf);
-//    }
-//
-//    if (ray.direction.y == Real(0))
-//    {
-//        // Ray is parallel to the slab. Check if the start point is outside the slab.
-//        if (ray.start.y < inf.y || ray.start.y > sup.y)
-//            return false;  // No intersection if outside the slab
-//    }
-//    else
-//    {
-//        // Compute intersection tinf and tsup with the near and far slabs
-//        Real invD = Real(1) / ray.direction.y;
-//        Real tinf = (inf.y - ray.start.y) * invD;
-//        Real tsup = (sup.y - ray.start.y) * invD;
-//
-//        if (tinf > tsup) std::swap(tinf, tsup);
-//
-//        if (tinf < Real(0))
-//            return false;
-//
-//        t = std::max(t, tinf);
-//    }
-//
-//    if (ray.direction.z == Real(0))
-//    {
-//        // Ray is parallel to the slab. Check if the start point is outside the slab.
-//        if (ray.start.z < inf.z || ray.start.z > sup.z)
-//            return false;  // No intersection if outside the slab
-//    }
-//    else
-//    {
-//        // Compute intersection tinf and tsup with the near and far slabs
-//        Real invD = Real(1) / ray.direction.z;
-//        Real tinf = (inf.z - ray.start.z) * invD;
-//        Real tsup = (sup.z - ray.start.z) * invD;
-//
-//        if (tinf > tsup) std::swap(tinf, tsup);
-//
-//        if (tinf < Real(0))
-//            return false;
-//
-//        t = std::max(t, tinf);
-//    }
-//
-//    return true;
-//}
+template <class Real>
+bool AABB3<Real>::hits(Real& t, const Ray3<Real>& ray) const
+{
+    t = Real(0);
+
+    if (ray.direction.x == Real(0))
+    {
+        // Ray is parallel to the slab. Check if the start point is outside the slab.
+        if (ray.start.x < inf.x || ray.start.x > sup.x)
+            return false;  // No intersection if outside the slab
+    }
+    else
+    {
+        // Compute intersection tinf and tsup with the near and far slabs
+        Real invD = Real(1) / ray.direction.x;
+        Real tinf = (inf.x - ray.start.x) * invD;
+        Real tsup = (sup.x - ray.start.x) * invD;
+        
+        if (tinf > tsup) std::swap(tinf, tsup);
+
+        if (tinf < Real(0))
+            return false;
+
+        t = std::max(t, tinf);
+    }
+
+    if (ray.direction.y == Real(0))
+    {
+        // Ray is parallel to the slab. Check if the start point is outside the slab.
+        if (ray.start.y < inf.y || ray.start.y > sup.y)
+            return false;  // No intersection if outside the slab
+    }
+    else
+    {
+        // Compute intersection tinf and tsup with the near and far slabs
+        Real invD = Real(1) / ray.direction.y;
+        Real tinf = (inf.y - ray.start.y) * invD;
+        Real tsup = (sup.y - ray.start.y) * invD;
+        
+        if (tinf > tsup) std::swap(tinf, tsup);
+
+        if (tinf < Real(0))
+            return false;
+
+        t = std::max(t, tinf);
+    }
+
+    if (ray.direction.z == Real(0))
+    {
+        // Ray is parallel to the slab. Check if the start point is outside the slab.
+        if (ray.start.z < inf.z || ray.start.z > sup.z)
+            return false;  // No intersection if outside the slab
+    }
+    else
+    {
+        // Compute intersection tinf and tsup with the near and far slabs
+        Real invD = Real(1) / ray.direction.z;
+        Real tinf = (inf.z - ray.start.z) * invD;
+        Real tsup = (sup.z - ray.start.z) * invD;
+        
+        if (tinf > tsup) std::swap(tinf, tsup);
+
+        if (tinf < Real(0))
+            return false;
+
+        t = std::max(t, tinf);
+    }
+
+    return true;
+}
+
+template <class Real>
+bool AABB3<Real>::hits(Real& t, const Line3<Real>& line) const
+{
+    t = Real(0);
+
+    Vec3<Real> delta = line.end - line.start;
+
+    if (delta.x == Real(0))
+    {
+        // Line is parallel to the slab. Check if the start point is outside the slab.
+        if (line.start.x < inf.x || line.start.x > sup.x)
+            return false;  // No intersection if outside the slab
+    }
+    else
+    {
+        // Compute intersection tinf and tsup with the near and far slabs
+        Real invD = Real(1) / delta.x;
+        Real tinf = (inf.x - line.start.x) * invD;
+        Real tsup = (sup.x - line.start.x) * invD;
+        
+        if (tinf > tsup) std::swap(tinf, tsup);
+
+        if (tinf < Real(0))
+            return false;
+
+        t = std::max(t, tinf);
+    }
+
+    if (delta.y == Real(0))
+    {
+        // Line is parallel to the slab. Check if the start point is outside the slab.
+        if (line.start.y < inf.y || line.start.y > sup.y)
+            return false;  // No intersection if outside the slab
+    }
+    else
+    {
+        // Compute intersection tinf and tsup with the near and far slabs
+        Real invD = Real(1) / delta.y;
+        Real tinf = (inf.y - line.start.y) * invD;
+        Real tsup = (sup.y - line.start.y) * invD;
+        
+        if (tinf > tsup) std::swap(tinf, tsup);
+
+        if (tinf < Real(0))
+            return false;
+
+        t = std::max(t, tinf);
+    }
+
+    if (delta.z == Real(0))
+    {
+        // Line is parallel to the slab. Check if the start point is outside the slab.
+        if (line.start.z < inf.z || line.start.z > sup.z)
+            return false;  // No intersection if outside the slab
+    }
+    else
+    {
+        // Compute intersection tinf and tsup with the near and far slabs
+        Real invD = Real(1) / delta.z;
+        Real tinf = (inf.z - line.start.z) * invD;
+        Real tsup = (sup.z - line.start.z) * invD;
+        
+        if (tinf > tsup) std::swap(tinf, tsup);
+
+        if (tinf < Real(0))
+            return false;
+
+        t = std::max(t, tinf);
+    }
+
+    if (t > Real(1))
+        return false;
+    
+    return true;
+}
 
 template <class Real>
 bool AABB3<Real>::intersects(const AABB3<Real>& box) const
@@ -462,83 +538,173 @@ bool AABB3<Real>::intersects(const AABB3<Real>& box) const
 	return true;
 }
 
-//template <class Real>
-//bool AABB3<Real>::intersects(Vec3<Real>& hit, Real& t1, Real& t2, const Ray3<Real>& ray) const
-//{
-//    t1 = Real(0);
-//    t2 = std::numeric_limits<Real>::max();
-//
-//    if (ray.direction.x == Real(0))
-//    {
-//        // Ray is parallel to the slab. Check if the start point is outside the slab.
-//        if (ray.start.x < inf.x || ray.start.x > sup.x)
-//            return false;  // No intersection if outside the slab
-//    }
-//    else
-//    {
-//        // Compute intersection tinf and tsup with the near and far slabs
-//        Real invD = Real(1) / ray.direction.x;
-//        Real tinf = (inf.x - ray.start.x) * invD;
-//        Real tsup = (sup.x - ray.start.x) * invD;
-//        
-//        if (tinf > tsup) std::swap(tinf, tsup);
-//
-//        // Narrow down the intersection interval [t1, t2]
-//        t1 = std::max(t1, tinf);
-//        t2 = std::min(t2, tsup);
-//
-//        if (t2 < t1)
-//            return false;
-//    }
-//
-//    if (ray.direction.y == Real(0))
-//    {
-//        // Ray is parallel to the slab. Check if the start point is outside the slab.
-//        if (ray.start.y < inf.y || ray.start.y > sup.y)
-//            return false;  // No intersection if outside the slab
-//    }
-//    else
-//    {
-//        // Compute intersection tinf and tsup with the near and far slabs
-//        Real invD = Real(1) / ray.direction.y;
-//        Real tinf = (inf.y - ray.start.y) * invD;
-//        Real tsup = (sup.y - ray.start.y) * invD;
-//        
-//        if (tinf > tsup) std::swap(tinf, tsup);
-//
-//        // Narrow down the intersection interval [t1, t2]
-//        t1 = std::max(t1, tinf);
-//        t2 = std::min(t2, tsup);
-//
-//        if (t2 < t1)
-//            return false;
-//    }
-//
-//    if (ray.direction.z == Real(0))
-//    {
-//        // Ray is parallel to the slab. Check if the start point is outside the slab.
-//        if (ray.start.z < inf.z || ray.start.z > sup.z)
-//            return false;  // No intersection if outside the slab
-//    }
-//    else
-//    {
-//        // Compute intersection tinf and tsup with the near and far slabs
-//        Real invD = Real(1) / ray.direction.z;
-//        Real tinf = (inf.z - ray.start.z) * invD;
-//        Real tsup = (sup.z - ray.start.z) * invD;
-//        
-//        if (tinf > tsup) std::swap(tinf, tsup);
-//
-//        // Narrow down the intersection interval [t1, t2]
-//        t1 = std::max(t1, tinf);
-//        t2 = std::min(t2, tsup);
-//
-//        if (t2 < t1)
-//            return false;
-//    }
-//
-//    return true;
-//}
+template <class Real>
+bool AABB3<Real>::intersects(Real& t1, Real& t2, const Ray3<Real>& ray) const
+{
+    t1 = Real(0);
+    t2 = std::numeric_limits<Real>::max();
+
+    if (ray.direction.x == Real(0))
+    {
+        // Ray is parallel to the slab. Check if the start point is outside the slab.
+        if (ray.start.x < inf.x || ray.start.x > sup.x)
+            return false;  // No intersection if outside the slab
+    }
+    else
+    {
+        // Compute intersection tinf and tsup with the near and far slabs
+        Real invD = Real(1) / ray.direction.x;
+        Real tinf = (inf.x - ray.start.x) * invD;
+        Real tsup = (sup.x - ray.start.x) * invD;
+        
+        if (tinf > tsup) std::swap(tinf, tsup);
+
+        // Narrow down the intersection interval [t1, t2]
+        t1 = std::max(t1, tinf);
+        t2 = std::min(t2, tsup);
+
+        if (t2 < t1)
+            return false;
+    }
+
+    if (ray.direction.y == Real(0))
+    {
+        // Ray is parallel to the slab. Check if the start point is outside the slab.
+        if (ray.start.y < inf.y || ray.start.y > sup.y)
+            return false;  // No intersection if outside the slab
+    }
+    else
+    {
+        // Compute intersection tinf and tsup with the near and far slabs
+        Real invD = Real(1) / ray.direction.y;
+        Real tinf = (inf.y - ray.start.y) * invD;
+        Real tsup = (sup.y - ray.start.y) * invD;
+        
+        if (tinf > tsup) std::swap(tinf, tsup);
+
+        // Narrow down the intersection interval [t1, t2]
+        t1 = std::max(t1, tinf);
+        t2 = std::min(t2, tsup);
+
+        if (t2 < t1)
+            return false;
+    }
+
+    if (ray.direction.z == Real(0))
+    {
+        // Ray is parallel to the slab. Check if the start point is outside the slab.
+        if (ray.start.z < inf.z || ray.start.z > sup.z)
+            return false;  // No intersection if outside the slab
+    }
+    else
+    {
+        // Compute intersection tinf and tsup with the near and far slabs
+        Real invD = Real(1) / ray.direction.z;
+        Real tinf = (inf.z - ray.start.z) * invD;
+        Real tsup = (sup.z - ray.start.z) * invD;
+        
+        if (tinf > tsup) std::swap(tinf, tsup);
+
+        // Narrow down the intersection interval [t1, t2]
+        t1 = std::max(t1, tinf);
+        t2 = std::min(t2, tsup);
+
+        if (t2 < t1)
+            return false;
+    }
+
+    return true;
+}
+
+template <class Real>
+bool AABB3<Real>::intersects(Real& t1, Real& t2, const Line3<Real>& line) const
+{
+    t1 = Real(0);
+    t2 = std::numeric_limits<Real>::max();
+
+    Vec3<Real> delta = line.end - line.start;
+
+    if (delta.x == Real(0))
+    {
+        // Line is parallel to the slab. Check if the start point is outside the slab.
+        if (line.start.x < inf.x || line.start.x > sup.x)
+            return false;  // No intersection if outside the slab
+    }
+    else
+    {
+        // Compute intersection tinf and tsup with the near and far slabs
+        Real invD = Real(1) / delta.x;
+        Real tinf = (inf.x - line.start.x) * invD;
+        Real tsup = (sup.x - line.start.x) * invD;
+        
+        if (tinf > tsup) std::swap(tinf, tsup);
+
+        // Narrow down the intersection interval [t1, t2]
+        t1 = std::max(t1, tinf);
+        t2 = std::min(t2, tsup);
+
+        if (t2 < t1)
+            return false;
+    }
+
+    if (delta.y == Real(0))
+    {
+        // Line is parallel to the slab. Check if the start point is outside the slab.
+        if (line.start.y < inf.y || line.start.y > sup.y)
+            return false;  // No intersection if outside the slab
+    }
+    else
+    {
+        // Compute intersection tinf and tsup with the near and far slabs
+        Real invD = Real(1) / delta.y;
+        Real tinf = (inf.y - line.start.y) * invD;
+        Real tsup = (sup.y - line.start.y) * invD;
+        
+        if (tinf > tsup) std::swap(tinf, tsup);
+
+        // Narrow down the intersection interval [t1, t2]
+        t1 = std::max(t1, tinf);
+        t2 = std::min(t2, tsup);
+
+        if (t2 < t1)
+            return false;
+    }
+
+    if (delta.z == Real(0))
+    {
+        // Line is parallel to the slab. Check if the start point is outside the slab.
+        if (line.start.z < inf.z || line.start.z > sup.z)
+            return false;  // No intersection if outside the slab
+    }
+    else
+    {
+        // Compute intersection tinf and tsup with the near and far slabs
+        Real invD = Real(1) / delta.z;
+        Real tinf = (inf.z - line.start.z) * invD;
+        Real tsup = (sup.z - line.start.z) * invD;
+        
+        if (tinf > tsup) std::swap(tinf, tsup);
+
+        // Narrow down the intersection interval [t1, t2]
+        t1 = std::max(t1, tinf);
+        t2 = std::min(t2, tsup);
+
+        if (t2 < t1)
+            return false;
+    }
+
+    if (t1 < Real(0) && t2 < Real(0))
+        return false;
+    if (t1 > Real(1) && t2 > Real(1))
+        return false;
+
+    if (t1 < Real(0))
+        t1 = Real(0);
+    if (t2 > Real(1))
+        t2 = Real(1);
+    
+    return true;
+}
 
 template <class Real>
 template <class CastReturnType>

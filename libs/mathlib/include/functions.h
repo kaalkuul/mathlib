@@ -4,8 +4,17 @@
 
 MATHLIB_NS_BEGIN
 
-inline
-Coord next(Coord coord)
+inline Coord next2D(Coord coord)
+{
+    switch (coord)
+    {
+        case Coord::X: return Coord::Y;
+        case Coord::Y: return Coord::X;
+        default: return Coord::Undefined;
+    }
+}
+
+inline Coord next3D(Coord coord)
 {
     switch (coord)
     {

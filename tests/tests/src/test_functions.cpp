@@ -4,12 +4,20 @@ using namespace mathlib;
 
 TEST_CASE("Functions", "")
 {
-    SECTION("next")
+    SECTION("next2D")
     {
-        REQUIRE(next(Coord::X) == Coord::Y);
-        REQUIRE(next(Coord::Y) == Coord::Z);
-        REQUIRE(next(Coord::Z) == Coord::X);
-        REQUIRE(next(Coord::Undefined) == Coord::Undefined);
+        REQUIRE(next2D(Coord::X) == Coord::Y);
+        REQUIRE(next2D(Coord::Y) == Coord::X);
+        REQUIRE(next2D(Coord::Z) == Coord::Undefined);
+        REQUIRE(next2D(Coord::Undefined) == Coord::Undefined);
+    }
+    
+    SECTION("next3D")
+    {
+        REQUIRE(next3D(Coord::X) == Coord::Y);
+        REQUIRE(next3D(Coord::Y) == Coord::Z);
+        REQUIRE(next3D(Coord::Z) == Coord::X);
+        REQUIRE(next3D(Coord::Undefined) == Coord::Undefined);
     }
     
     SECTION("degreeToRadian")
