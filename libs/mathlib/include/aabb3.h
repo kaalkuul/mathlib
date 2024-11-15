@@ -29,6 +29,9 @@ public:
 	static AABB3 from(int count, const Vec3<Real>* points);
 	static AABB3 from(int count, const Vec3<Real>* points, int stride);
 
+    static AABB3 fromIntersection(const AABB3<Real>& a, const AABB3<Real>& b);
+    static AABB3 fromUnion(const AABB3<Real>& a, const AABB3<Real>& b);
+
 	// Assignments
 	AABB3& operator+=(const Vec3<Real>& t);
 	AABB3& operator-=(const Vec3<Real>& t);
@@ -73,7 +76,8 @@ public:
 	template <class CastReturnType>
 	AABB3<CastReturnType> cast() const;
 
-	static const AABB3 One;
+    static const AABB3 Zero;
+    static const AABB3 One;
 
 public:
 	Vec3<Real> inf;

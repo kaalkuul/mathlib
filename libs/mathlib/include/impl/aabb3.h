@@ -3,9 +3,14 @@
 MATHLIB_NS_BEGIN
 
 template <class Real>
+const AABB3<Real> AABB3<Real>::Zero = AABB3<Real>(
+    Vec3<Real>(Real(0), Real(0), Real(0)),
+    Vec3<Real>(Real(0), Real(0), Real(0)));
+
+template <class Real>
 const AABB3<Real> AABB3<Real>::One = AABB3<Real>(
-	Vec3<Real>(Real(-0.5), Real(-0.5), Real(-0.5)),
-	Vec3<Real>(Real(0.5), Real(0.5), Real(0.5)));
+    Vec3<Real>(Real(-0.5), Real(-0.5), Real(-0.5)),
+    Vec3<Real>(Real(0.5), Real(0.5), Real(0.5)));
 
 template <class Real>
 AABB3<Real>::AABB3()
@@ -186,6 +191,21 @@ AABB3<Real> AABB3<Real>::from(int count, const Vec3<Real>* points, int stride)
 	AABB3<Real> result;
 	result.set(count, points, stride);
 	return result;
+}
+
+template <class Real>
+AABB3<Real> AABB3<Real>::fromIntersection(const AABB3<Real>& a, const AABB3<Real>& b)
+{
+    if (a.inf.x > b.sup.x || a.sup.x < b.inf.x) return Zero;
+    if (a.inf.y > b.sup.y || a.sup.y < b.inf.y) return Zero;
+    if (a.inf.z > b.sup.z || a.sup.z < b.inf.z) return Zero;
+    return from(Vec3<Real>::max(a.inf, b.inf), Vec3<Real>::min(a.sup, b.sup));
+}
+
+template <class Real>
+AABB3<Real> AABB3<Real>::fromUnion(const AABB3<Real>& a, const AABB3<Real>& b)
+{
+    return from(Vec3<Real>::min(a.inf, b.inf), Vec3<Real>::max(a.sup, b.sup));
 }
 
 

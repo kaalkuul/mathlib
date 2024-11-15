@@ -3,9 +3,14 @@
 MATHLIB_NS_BEGIN
 
 template <class Real>
+const AABB2<Real> AABB2<Real>::Zero = AABB2<Real>(
+    Vec2<Real>(Real(0), Real(0)),
+    Vec2<Real>(Real(0), Real(0)));
+
+template <class Real>
 const AABB2<Real> AABB2<Real>::One = AABB2<Real>(
-	Vec2<Real>(Real(-0.5), Real(-0.5)),
-	Vec2<Real>(Real(0.5), Real(0.5)));
+    Vec2<Real>(Real(-0.5), Real(-0.5)),
+    Vec2<Real>(Real(0.5), Real(0.5)));
 
 template <class Real>
 AABB2<Real>::AABB2()
@@ -175,6 +180,20 @@ AABB2<Real> AABB2<Real>::from(int count, const Vec2<Real>* points, int stride)
 	AABB2<Real> result;
 	result.set(count, points, stride);
 	return result;
+}
+
+template <class Real>
+AABB2<Real> AABB2<Real>::fromIntersection(const AABB2<Real>& a, const AABB2<Real>& b)
+{
+    if (a.inf.x > b.sup.x || a.sup.x < b.inf.x) return Zero;
+    if (a.inf.y > b.sup.y || a.sup.y < b.inf.y) return Zero;
+    return from(Vec2<Real>::max(a.inf, b.inf), Vec2<Real>::min(a.sup, b.sup));
+}
+
+template <class Real>
+AABB2<Real> AABB2<Real>::fromUnion(const AABB2<Real>& a, const AABB2<Real>& b)
+{
+    return from(Vec2<Real>::min(a.inf, b.inf), Vec2<Real>::max(a.sup, b.sup));
 }
 
 
